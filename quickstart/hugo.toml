@@ -2,3 +2,6 @@ baseURL = 'https://rolandgao.github.io/'
 languageCode = 'en-us'
 title = 'Roland Gao personal website'
 theme = 'ananke'
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
