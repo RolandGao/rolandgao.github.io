@@ -71,7 +71,7 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "Roland Gao"
-    Content: UofT CS -> Meta Ads Quality-> Meta Llama Safety
+    Content: Research Engineer at Meta Llama Safety. Previously studied CS at UofT.
 
   socialIcons:
     - name: linkedin
