@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on ExampleSite</title>
+    <title>Posts on Roland&#39;s blog</title>
     <link>http://localhost:1313/posts/</link>
-    <description>Recent content in Posts on ExampleSite</description>
+    <description>Recent content in Posts on Roland&#39;s blog</description>
     <image>
-      <title>ExampleSite</title>
+      <title>Roland&#39;s blog</title>
       <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
       <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- 0.147.3</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 15 Sep 2020 11:30:03 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 18 May 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My 1st post</title>
+      <title>Path to AGI</title>
       <link>http://localhost:1313/posts/my-first-post/</link>
-      <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
+      <pubDate>Sun, 18 May 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/my-first-post/</guid>
-      <description>Desc Text.</description>
+      <description>&lt;ol&gt;
+&lt;li&gt;An optimizer that always works
+&lt;ol&gt;
+&lt;li&gt;Minimizes the loss function without any hyper parameters&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;Efficient video understanding
+&lt;ol&gt;
+&lt;li&gt;Essentially solving the long context problem&lt;/li&gt;
+&lt;li&gt;Constant memory, constant disk. The model has to keep on compressing to meet the constant memory constraint.&lt;/li&gt;
+&lt;li&gt;Memory could be the hidden state in RNN, or in the weights like in test time training.&lt;/li&gt;
+&lt;li&gt;Disk is queried using RAG. Conceptually, agentic AI can go to the queried time in a video player, or navigate to any file in any folder.
+&lt;ol&gt;
+&lt;li&gt;AI outputs “Go to time 1m20s in the video”, and then the future input tokens would be the frames of the video starting at 1m20s. The model would output nothing at first, looking at the video, until it eventually gives another instruction.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;Good RL algorithm that can achieve superhuman in Go, StarCraft, math, and code
+&lt;ol&gt;
+&lt;li&gt;Some combination of deep seek r1 and the classical RL in Go and StarCraft&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;RL environments with proper reward functions.
+&lt;ol&gt;
+&lt;li&gt;Agents is an application of 4&lt;/li&gt;
+&lt;li&gt;An example RL environment is using the computer, where it gets a reward if it achieves some specified task.&lt;/li&gt;
+&lt;li&gt;Robotics is also an application of 4.&lt;/li&gt;
+&lt;li&gt;The environment is the real world, where the reward is some specified task such as moving some object, cleaning the house, or cooking a meal. Touching someone without consent would be a negative reward.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Lingering questions&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
