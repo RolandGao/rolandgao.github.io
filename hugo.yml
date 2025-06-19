@@ -25,6 +25,7 @@ params:
 
   ShowReadingTime: true
   ShowShareButtons: true
+  ShareButtons: ["x", "linkedin","reddit"]
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
@@ -41,7 +42,7 @@ params:
 
   assets:
     disableHLJS: true # to disable highlight.js
-    # # disableFingerprinting: true
+    disableFingerprinting: true
     # favicon: "<link / abs url>"
     # favicon16x16: "<link / abs url>"
     # favicon32x32: "<link / abs url>"
@@ -71,23 +72,30 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "Roland Gao"
-    Content: Research Engineer at Meta Llama Safety. Previously studied CS at UofT.
+    Content: > 
+      Research Engineer at Meta Llama Safety. Previously studied CS at UofT.
 
-  socialIcons:
-    - name: linkedin
-      url: "https://www.linkedin.com/in/roland-gao/"
-    - name: github
-      url: "https://github.com/RolandGao"
-    - name: googlescholar
-      url: "https://scholar.google.ca/citations?user=gZWmCKYAAAAJ&hl=en"
+      - Email: gaoroland [at] gmail.com
 
-  analytics:
-    google:
-      SiteVerificationTag: "XYZabc"
-    bing:
-      SiteVerificationTag: "XYZabc"
-    yandex:
-      SiteVerificationTag: "XYZabc"
+      - [LinkedIn](https://www.linkedin.com/in/roland-gao/), [Twitter](https://x.com/Roland65821498), [Github](https://github.com/RolandGao), [Google Scholar](https://scholar.google.ca/citations?user=gZWmCKYAAAAJ&hl=en)
+
+  # socialIcons: 
+  #   - name: linkedin
+  #     url: "https://www.linkedin.com/in/roland-gao/"
+  #   - name: x 
+  #     url: "https://x.com/Roland65821498"
+  #   - name: github
+  #     url: "https://github.com/RolandGao"
+  #   - name: googlescholar
+  #     url: "https://scholar.google.ca/citations?user=gZWmCKYAAAAJ&hl=en"
+
+  # analytics:
+  #   google:
+  #     SiteVerificationTag: "XYZabc"
+  #   bing:
+  #     SiteVerificationTag: "XYZabc"
+  #   yandex:
+  #     SiteVerificationTag: "XYZabc"
 
   cover:
     hidden: true # hide everywhere but not in structured data
@@ -110,17 +118,14 @@ params:
     minMatchCharLength: 0
     limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
     keys: ["title", "permalink", "summary", "content"]
-# menu:
-#   main:
-    # - name: Archive
-    #   url: archives
-    #   weight: 5
-    # - name: Search
-    #   url: search
-    #   weight: 10
-    # - name: Tags
-    #   url: tags
-    #   weight: 10
+menu:
+  main:
+    # - name: About
+    #   url: /about/
+    #   weight: 1
+    - name: Archive
+      url: /archive/
+      weight: 1
 
 outputs:
   home:
@@ -129,11 +134,74 @@ outputs:
     - JSON
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
+# markup:
+#   highlight:
+#     # noClasses: false
+#     # anchorLineNos: true
+#     codeFences: true
+#     guessSyntax: true
+#     # lineNos: true
+#     style: monokai
+
 markup:
-  highlight:
-    noClasses: false
-    # anchorLineNos: true
-    # codeFences: true
-    # guessSyntax: true
-    # lineNos: true
-    # style: monokai
+  goldmark:
+    duplicateResourceFiles: false
+    extensions:
+      attributes: true
+      cjk:
+        eastAsianLineBreaks: false
+        eastAsianLineBreaksStyle: simple
+        enable: false
+        escapedSpace: false
+      definitionList: true
+      extras:
+        delete:
+          enable: false
+        insert:
+          enable: false
+        mark:
+          enable: false
+        subscript:
+          enable: false
+        superscript:
+          enable: false
+      footnote: true
+      linkify: true
+      linkifyProtocol: https
+      passthrough:
+        delimiters:
+          block: []
+          inline: []
+        enable: false
+      strikethrough: true
+      table: true
+      taskList: true
+      typographer:
+        apostrophe: '&rsquo;'
+        disable: false
+        ellipsis: '&hellip;'
+        emDash: '&mdash;'
+        enDash: '&ndash;'
+        leftAngleQuote: '&laquo;'
+        leftDoubleQuote: '&ldquo;'
+        leftSingleQuote: '&lsquo;'
+        rightAngleQuote: '&raquo;'
+        rightDoubleQuote: '&rdquo;'
+        rightSingleQuote: '&rsquo;'
+    parser:
+      attribute:
+        block: false
+        title: true
+      autoDefinitionTermID: false
+      autoHeadingID: true
+      autoIDType: github
+      wrapStandAloneImageWithinParagraph: true
+    renderHooks:
+      image:
+        enableDefault: true
+      link:
+        enableDefault: false
+    renderer:
+      hardWraps: false
+      unsafe: true
+      xhtml: false

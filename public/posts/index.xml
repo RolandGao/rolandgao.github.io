@@ -11,13 +11,135 @@
     </image>
     <generator>Hugo -- 0.147.3</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 May 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Browsing Evals</title>
+      <link>http://localhost:1313/posts/eval/</link>
+      <pubDate>Thu, 05 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/eval/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m browsing some evals today. And what better way to do it than ask o3 to gather all the data for me.&lt;/p&gt;
+&lt;p&gt;conversation: &lt;a href=&#34;https://chatgpt.com/share/68412890-0828-8011-9a22-34371e165f19&#34;&gt;https://chatgpt.com/share/68412890-0828-8011-9a22-34371e165f19&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;name&#34; loading=&#34;lazy&#34; src=&#34;http://localhost:1313/posts/eval/images/eval_results.png&#34;&gt;&lt;/p&gt;
+&lt;!-- ![name](eval_results.png) --&gt;
+&lt;style&gt;
+table {
+  font-size: 12px;
+}
+table th,
+table td {
+  /* padding: 0 !important; */
+  min-width: 0px !important;
+}
+&lt;/style&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Rank&lt;/th&gt;
+          &lt;th&gt;Model&lt;/th&gt;
+          &lt;th&gt;LiveBench&lt;/th&gt;
+          &lt;th&gt;HLE (Text-only)&lt;/th&gt;
+          &lt;th&gt;MASK&lt;/th&gt;
+          &lt;th&gt;Multi-Challenge&lt;/th&gt;
+          &lt;th&gt;Aider Polyglot&lt;/th&gt;
+          &lt;th&gt;VISTA&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Agg (−Vista)&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Agg (+Vista)&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;1&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;o3 (high)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;0.720&lt;/td&gt;
+          &lt;td&gt;0.206&lt;/td&gt;
+          &lt;td&gt;0.845&lt;/td&gt;
+          &lt;td&gt;0.565&lt;/td&gt;
+          &lt;td&gt;0.796&lt;/td&gt;
+          &lt;td&gt;0.501&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.626&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.605&lt;/strong&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;2&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;Claude Opus 4 (Thinking)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;0.659&lt;/td&gt;
+          &lt;td&gt;0.108&lt;/td&gt;
+          &lt;td&gt;0.879&lt;/td&gt;
+          &lt;td&gt;0.539&lt;/td&gt;
+          &lt;td&gt;0.720&lt;/td&gt;
+          &lt;td&gt;0.470&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.581&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.562&lt;/strong&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;3&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;Gemini 2.5 Pro&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;0.720&lt;/td&gt;
+          &lt;td&gt;0.184&lt;/td&gt;
+          &lt;td&gt;0.559&lt;/td&gt;
+          &lt;td&gt;0.519&lt;/td&gt;
+          &lt;td&gt;0.769&lt;/td&gt;
+          &lt;td&gt;0.547&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.550&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.550&lt;/strong&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;4&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;DeepSeek R1 (0528)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;0.694&lt;/td&gt;
+          &lt;td&gt;0.140&lt;/td&gt;
+          &lt;td&gt;0.530&lt;/td&gt;
+          &lt;td&gt;0.446&lt;/td&gt;
+          &lt;td&gt;0.716&lt;/td&gt;
+          &lt;td&gt;–&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.505&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;–&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;Qwen 3-235B-A22B&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;0.649&lt;/td&gt;
+          &lt;td&gt;0.118&lt;/td&gt;
+          &lt;td&gt;0.564&lt;/td&gt;
+          &lt;td&gt;0.405&lt;/td&gt;
+          &lt;td&gt;0.596&lt;/td&gt;
+          &lt;td&gt;–&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.466&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;–&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;6&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;GPT-4o&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;0.474&lt;/td&gt;
+          &lt;td&gt;0.023&lt;/td&gt;
+          &lt;td&gt;0.601&lt;/td&gt;
+          &lt;td&gt;0.278&lt;/td&gt;
+          &lt;td&gt;0.231&lt;/td&gt;
+          &lt;td&gt;0.380&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.321&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.331&lt;/strong&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;7&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;Llama 4 Maverick&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;0.478&lt;/td&gt;
+          &lt;td&gt;0.053&lt;/td&gt;
+          &lt;td&gt;0.497&lt;/td&gt;
+          &lt;td&gt;0.321&lt;/td&gt;
+          &lt;td&gt;0.156&lt;/td&gt;
+          &lt;td&gt;0.383&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.301&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;0.315&lt;/strong&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</description>
+    </item>
+    <item>
       <title>Path to AGI</title>
-      <link>http://localhost:1313/posts/my-first-post/</link>
+      <link>http://localhost:1313/posts/path_to_agi/</link>
       <pubDate>Sun, 18 May 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/my-first-post/</guid>
+      <guid>http://localhost:1313/posts/path_to_agi/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;An optimizer that always works
 &lt;ol&gt;
