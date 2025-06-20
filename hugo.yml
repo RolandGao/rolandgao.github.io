@@ -73,7 +73,10 @@ params:
   homeInfoParams:
     Title: "Roland Gao"
     Content: > 
-      Research Engineer at Meta Llama Safety. Previously studied CS at UofT.
+
+      - <img src="images/profile_pic.png" width="200">
+
+      - Research Engineer at Meta Llama Safety Alignment. Previously studied CS at UofT.
 
       - Email: gaoroland [at] gmail.com
 
