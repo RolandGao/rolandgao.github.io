@@ -1,20 +1,9 @@
----
-title: "Browsing Evals"
-date: 2025-06-19
-# weight: 1
-tags: ["ML"]
-draft: true
----
-
 I'm browsing some evals today. And what better way to do it than ask o3 to gather all the data for me.
 
 conversation: https://chatgpt.com/share/6854f927-5a04-8011-98e5-0d94030ca71d
 
 
-<!-- ![name](eval_results.png) -->
-
-
-<style>
+<!-- <style>
 table {
   font-size: 12px;
 }
@@ -23,7 +12,7 @@ table td {
   /* padding: 0 !important; */
   min-width: 0px !important;
 }
-</style>
+</style> -->
 | Model                           | LiveBench | HLE (Text-only) | MASK | MultiChallenge | Aider Polyglot | Vista | Aggregate (no Vista) | Aggregate (with Vista) |
 | ------------------------------- | --------- | --------------- | ---- | -------------- | -------------- | ----- | -------------------- | ---------------------- |
 | **o3 (high)**                   | 0.75      | 0.21            | 0.84 | 0.59           | 0.83           | 0.50  | **0.64**             | **0.62**               |

@@ -1,10 +1,3 @@
----
-title: "Path to AGI"
-date: 2025-05-18
-# weight: 1
-tags: ["ML"]
----
-
 1. An optimizer that always works
     1. Minimizes the loss function without any hyper parameters 
 2. Efficient video understanding
