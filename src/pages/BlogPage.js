@@ -8,7 +8,7 @@ const BlogPage = () => {
     // In a real app, you'd fetch this from an API or import directly
     const posts = [
       { id: 'path_to_agi', title: 'Path to AGI', date: '2025-06-01' },
-      { id: 'evals', title: 'Evals', date: '2025-07-01' }
+      // { id: 'evals', title: 'Evals', date: '2025-07-01' }
     ];
     setBlogPosts(posts);
   }, []);
