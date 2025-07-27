@@ -1,6 +1,8 @@
 # Hi, I'm Roland Gao
 
-Welcome to my personal website! I am a Research Engineer at Meta Llama Safety Alignment. Previously, I studied CS at UofT.
+Welcome to my personal website! I am a Research Engineer at Meta working on Llama Safety Alignment. Previously, I studied Computer Science at the University of Toronto.
+
+My work focuses on AI safety, large language models, and developing techniques to ensure responsible AI development.
 
 Email: gaoroland [at] gmail.com
 
