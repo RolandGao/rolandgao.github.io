@@ -28,7 +28,7 @@ jobs:
       # Upload the build output as an artifact for the deploy step
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist        # change if your output folder differs
+          path: ./build        # change if your output folder differs
 
   deploy:
     needs: build
