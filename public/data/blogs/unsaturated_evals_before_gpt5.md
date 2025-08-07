@@ -6,14 +6,14 @@ I compiled a list of unsaturated evals prior to GPT5's launch. Can't wait to see
 | Category | Benchmark | Leaderboard | Latest Reported Score (Model) |
 |----------|------------------|-------------|------------------------------|
 | **Knowledge** | [HLE](https://agi.safe.ai/) | Yes | 44.4 (Grok 4 Heavy) |
-| **Math** | [FrontierMath](https://epoch.ai/frontiermath) | Yes | 20 % (tiers 1–3) |
+| **Math** | [FrontierMath](https://epoch.ai/frontiermath) | Yes | 20 % (o4-mini, tiers 1–3) |
 |  | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html) | Yes | 86 / 657 solved |
 |  | [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) | No | — |
 | **Image Understanding** | [ZeroBench](https://zerobench.github.io/) | Yes | 4 / 100 (o3) |
 | **Coding** | [SWE-Lancer IC SWE Diamond](https://openai.com/index/swe-lancer/) | No | \$86 K / \$236 K (o3) |
 |  | [CodeForces](https://codeforces.com/) | Yes ([ratings](https://livecodebenchpro.com/)) | 2706 / 3820 rating (o3) |
 |  | [Terminal-Bench](https://www.tbench.ai/leaderboard) | Yes | 52 % |
-| **Video Understanding** | [LVBench](https://lvbench.github.io/#leaderboard) | Yes | 74.2 % (top model) |
+| **Video Understanding** | [LVBench](https://lvbench.github.io/#leaderboard) | Yes | 74.2 % |
 | **Puzzles** | [ARC-AGI 2](https://arcprize.org/leaderboard) | Yes | 16 % (Grok 4) |
 |  | [EnigmaEval](https://scale.com/leaderboard/enigma_eval) | Yes | 13 % (o3) |
 |  | [SimpleBench](https://simple-bench.com/) | Yes | 62.4 % (Gemini 2.5 Pro) |
