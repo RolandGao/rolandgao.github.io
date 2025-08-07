@@ -26,8 +26,6 @@ Rumors say GPT5 will get released on Aug 7, 2025, so let's wait and see how if p
 | **Multi-turn Dialog** | [MultiChallenge](https://scale.com/leaderboard/multichallenge) | Yes | 63.77 % (o3-pro) |
 | **Safety** | [FORTRESS](https://scale.com/leaderboard/fortress) | Yes | Risk 24.76 / Refusal 1.89 % (Claude Opus 4) |
 | **Video Games** | [VideoGameBench](https://www.vgbench.com/) | Yes | 0.48 % (Gemini 2.5 Pro) |
-|  | [Universe](https://openai.com/index/universe/) | No | — |
-|  | [Melting Pot](https://github.com/google-deepmind/meltingpot) | No | — |
 |  | [Game Arena](https://www.kaggle.com/game-arena) | Coming soon | — |
 | **Multilingual** | [MultiNRC](https://scale.com/leaderboard/multinrc) | Yes | 49 % (o3-pro) |
 
