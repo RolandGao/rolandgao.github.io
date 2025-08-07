@@ -1,10 +1,7 @@
 # Unsaturated Evals before GPT5
 date: 2025-08-07
 
-The AI community needs unsaturated evals to track the progress of AI, but most popular evals are saturated already. This blog surveys existing unsaturated evals. 
-
-Rumors say GPT5 will get released on Aug 7, 2025, so let's wait and see how if performs on these unsaturated benchmarks.
-
+I compiled a list of unsaturated evals prior to GPT5's launch. Can't wait to see how GPT5 performs on these. 
 
 | Category | Benchmark | Leaderboard | Latest Reported Score (Model) |
 |----------|------------------|-------------|------------------------------|
