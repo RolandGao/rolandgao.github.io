@@ -1,7 +1,9 @@
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import React from 'react'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import 'github-markdown-css/github-markdown.css';
+
+
 
 const MarkdownRenderer = ({ filePath }) => {
   const [content, setContent] = React.useState('');
@@ -9,33 +11,18 @@ const MarkdownRenderer = ({ filePath }) => {
   React.useEffect(() => {
     fetch(filePath)
       .then(response => response.text())
-      .then(text => setContent(text));
+      .then(text => {
+        // Remove HTML comments
+        const noComments = text.replace(/<!--[\s\S]*?-->/g, '');
+        setContent(noComments);
+      });
   }, [filePath]);
 
   return (
     <div className="markdown-body">
-      <ReactMarkdown
-        components={{
-          code({ node, inline, className, children, ...props }) {
-            const match = /language-(\w+)/.exec(className || '');
-            return !inline && match ? (
-              <SyntaxHighlighter
-                style={atomDark}
-                language={match[1]}
-                PreTag="div"
-                children={String(children).replace(/\n$/, '')}
-                {...props}
-              />
-            ) : (
-              <code className={className} {...props}>
-                {children}
-              </code>
-            );
-          }
-        }}
-      >
+      <Markdown remarkPlugins={[remarkGfm]}>
         {content}
-      </ReactMarkdown>
+      </Markdown>
     </div>
   );
 };

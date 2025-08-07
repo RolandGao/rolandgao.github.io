@@ -2,7 +2,7 @@
 
 Welcome to my personal website! I am a Research Engineer at Meta working on Llama Safety Alignment. Previously, I studied Computer Science at the University of Toronto.
 
-My work focuses on AI safety, large language models, and developing techniques to ensure responsible AI development.
+I'm interested in alignment, adversarial training, long context, optimizer, and scalable RL algorithms.
 
 Email: gaoroland [at] gmail.com
 
