@@ -11,7 +11,7 @@ I compiled a list of unsaturated evals prior to GPT5's launch. Can't wait to see
 |  | [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) | No | — |
 | **Image Understanding** | [ZeroBench](https://zerobench.github.io/) | Yes | 4 / 100 (o3) |
 | **Coding** | [SWE-Lancer IC SWE Diamond](https://openai.com/index/swe-lancer/) | No | \$86 K / \$236 K (o3) |
-|  | [CodeForces](https://codeforces.com/) | Yes ([ratings](https://livecodebenchpro.com/)) | 2706 / 3820 rating (o3) |
+|  | [CodeForces](https://codeforces.com/) | Yes ([livecodebench_pro](https://livecodebenchpro.com/)) | 2706 / 3820 rating (o3) |
 |  | [Terminal-Bench](https://www.tbench.ai/leaderboard) | Yes | 52 % |
 | **Video Understanding** | [LVBench](https://lvbench.github.io/#leaderboard) | Yes | 74.2 % |
 | **Puzzles** | [ARC-AGI 2](https://arcprize.org/leaderboard) | Yes | 16 % (Grok 4) |
