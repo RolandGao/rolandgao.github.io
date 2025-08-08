@@ -1,24 +1,32 @@
-# Unsaturated Evals before GPT5
+# Unsaturated Evals in Aug 2025
 date: 2025-08-07
 
-I compiled a list of unsaturated evals prior to GPT5's launch. Can't wait to see how GPT5 performs on these. 
+I compiled a list of unsaturated evals, they are shown below.
+
+We need more video game evals and improve LLMs performance on them. Solving video games is a great step towards solving robotics and achieving AGI, since simulated environments can be made quite close real world environments.
+
+It will be pretty cool to have an LLM that's good at math, Go, and video games. Currently, no model is simultaneously good at even two of these three.
+
+We also need more synthetic evals, each of which focuses on only one problem and pushes that problem to the limit. For example, [MRCR](https://huggingface.co/datasets/openai/mrcr) reveals the shortcomings of current LLMs on long-context inputs. As another example, LLMs fail to multiply two integers with more than 20 digits, unless they use tools.
+
+Here's a genius idea: evaluate the LLM's ability to create an unsaturated eval. This eval will be unsaturated until there's no more unsaturated evals and AGI is achieved. In order for the model to create an unsaturated eval, it needs to be able to verify the results. There are still many tasks that are easy to verify but hard to do. For example, a task can be to create the code that has the specified UI interactions. The UI interactions are easy to verify but the code is hard to write. As another example, winning at a game is easy to verify but hard to do. This paradigm seems limitless and maybe working on this will help us achieve AGI.
 
 | Category | Benchmark | Leaderboard | Latest Reported Score (Model) |
 |----------|------------------|-------------|------------------------------|
-| **Knowledge** | [HLE](https://agi.safe.ai/) | Yes | 44.4 (Grok 4 Heavy) |
-| **Math** | [FrontierMath](https://epoch.ai/frontiermath) | Yes | 20 % (o4-mini, tiers 1–3) |
+| **Knowledge** | [HLE](https://scale.com/leaderboard/humanitys_last_exam) | Yes | 44.4 (Grok 4 Heavy) |
+| **Math** | [FrontierMath](https://epoch.ai/frontiermath) | Yes | 24.8 % (gpt5, tiers 1–3) |
 |  | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html) | Yes | 86 / 657 solved |
 |  | [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) | No | — |
-| **Image Understanding** | [ZeroBench](https://zerobench.github.io/) | Yes | 4 / 100 (o3) |
+| **Image Understanding** | [ZeroBench](https://zerobench.github.io/) | Yes | 5 / 100 (Claude Opus 4.1) |
 | **Coding** | [SWE-Lancer IC SWE Diamond](https://openai.com/index/swe-lancer/) | No | \$86 K / \$236 K (o3) |
-|  | [CodeForces](https://codeforces.com/) | Yes ([livecodebench_pro](https://livecodebenchpro.com/)) | 2706 / 3820 rating (o3) |
+|  | [LiveCodeBench Pro](https://livecodebenchpro.com/) | Yes | 1791 (o4-mini) |
 |  | [Terminal-Bench](https://www.tbench.ai/leaderboard) | Yes | 52 % |
 | **Video Understanding** | [LVBench](https://lvbench.github.io/#leaderboard) | Yes | 74.2 % |
 | **Puzzles** | [ARC-AGI 2](https://arcprize.org/leaderboard) | Yes | 16 % (Grok 4) |
 |  | [EnigmaEval](https://scale.com/leaderboard/enigma_eval) | Yes | 13 % (o3) |
 |  | [SimpleBench](https://simple-bench.com/) | Yes | 62.4 % (Gemini 2.5 Pro) |
 | **Web Browsing** | [BrowseComp](https://openai.com/index/browsecomp/) | No | 68.9 % (OpenAI Agent) |
-| **Long Context** | [MRCR](https://huggingface.co/datasets/openai/mrcr) | Yes ([contextarena](https://contextarena.ai/?needles=8)) | 23 % (Gemini 2.5 Pro, 8 needles / 1 M) |
+| **Long Context** | [MRCR](https://huggingface.co/datasets/openai/mrcr) | Yes ([contextarena](https://contextarena.ai/?needles=8)) | 8 needles at 1M: 27.5 % (Gemini 2.5 Pro), 8 needs at 128K: 40.0% (gpt5) |
 | **Agentic** | [Tau-Bench Airline](https://sierra.ai/blog/benchmarking-ai-agents) | No | 60 % (Claude Sonnet 4) |
 | **Multi-turn Dialog** | [MultiChallenge](https://scale.com/leaderboard/multichallenge) | Yes | 63.77 % (o3-pro) |
 | **Safety** | [FORTRESS](https://scale.com/leaderboard/fortress) | Yes | Risk 24.76 / Refusal 1.89 % (Claude Opus 4) |
