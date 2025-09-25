@@ -33,3 +33,6 @@ Lingering questions
     1. Even if AI cannot learn as efficiently, it can still achieve super human intelligence by using significantly more data and compute than humans.
     2. But if the AI can learn as efficiently, its intelligence will be even more super human than before.
     3. In fact, we could define the intelligence quotient as the data and compute efficiency. And intelligence = intelligence quotient x data x compute.
+
+
+https://www.metaculus.com/questions/38598/when-will-an-ai-model-using-neuralese-recurrence-be-publicly-available/

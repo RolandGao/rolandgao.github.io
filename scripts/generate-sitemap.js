@@ -8,7 +8,7 @@ const pages = [
   '',
   '/blogs',
   '/blog/path_to_agi',
-  '/blog/path_tunsaturated_evals_before_gpt5o_agi',
+  '/blog/unsaturated_evals_before_gpt5',
   // Add paths to your blog posts here
 ];
 

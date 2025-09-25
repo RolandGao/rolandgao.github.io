@@ -7,7 +7,7 @@ const BlogPage = () => {
   useEffect(() => {
     // In a real app, you'd fetch this from an API or import directly
     const posts = [
-      { id: 'unsaturated_evals_before_gpt5', title: 'Unsaturated Evals in Aug 2025', date: '2025-08-07' },
+      { id: 'unsaturated_evals_before_gpt5', title: 'Finding Unsaturated Evals', date: '2025-08-07' },
       { id: 'path_to_agi', title: 'Path to AGI', date: '2025-06-01' },
 
     ];
