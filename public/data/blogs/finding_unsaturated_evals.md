@@ -7,14 +7,15 @@ I compiled a list of unsaturated evals, as shown below. I also discuss some idea
 |----------|------------------|-------------|------------------------------|
 | **Knowledge** | [HLE](https://scale.com/leaderboard/humanitys_last_exam) | Yes | 44.4 (Grok 4 Heavy) |
 | **Math** | [FrontierMath](https://epoch.ai/frontiermath) | Yes | 24.8 % (gpt5, tiers 1–3) |
-|  | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html) | Yes | 86 / 657 solved |
+|  | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html) | Yes | 329 / 657 (Seed-Prover) |
 |  | [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) | No | — |
 | **Image Understanding** | [ZeroBench](https://zerobench.github.io/) | Yes | 5 / 100 (Claude Opus 4.1) |
 | **Coding** | [SWE-Lancer IC SWE Diamond](https://openai.com/index/swe-lancer/) | No | \$86 K / \$236 K (o3) |
-|  | [LiveCodeBench Pro](https://livecodebenchpro.com/) | Yes | 1791 (o4-mini) |
-|  | [Terminal-Bench](https://www.tbench.ai/leaderboard) | Yes | 52 % |
+|  | [LiveCodeBench Pro](https://livecodebenchpro.com/) | Yes | 48% (gpt5, medium) |
+|  | [Terminal-Bench](https://www.tbench.ai/leaderboard) | Yes | 59 % (Droid) |
+|  | [SWE-Bench Pro](https://scale.com/leaderboard/swe_bench_pro_commercial) | Yes | 18% (Claude Opus 4.1) |
 | **Video Understanding** | [LVBench](https://lvbench.github.io/#leaderboard) | Yes | 74.2 % |
-| **Puzzles** | [ARC-AGI 2](https://arcprize.org/leaderboard) | Yes | 16 % (Grok 4) |
+| **Puzzles** | [ARC-AGI 2](https://arcprize.org/leaderboard) | Yes | 29 % (Grok 4 + scaffolding) |
 |  | [EnigmaEval](https://scale.com/leaderboard/enigma_eval) | Yes | 13 % (o3) |
 |  | [SimpleBench](https://simple-bench.com/) | Yes | 62.4 % (Gemini 2.5 Pro) |
 |  | [TrackingAI offline IQ test](https://www.trackingai.org/home) | Yes | 118 (Claude Opus 4.0) |
@@ -24,9 +25,7 @@ I compiled a list of unsaturated evals, as shown below. I also discuss some idea
 | **Multi-turn Dialog** | [MultiChallenge](https://scale.com/leaderboard/multichallenge) | Yes | 63.77 % (o3-pro) |
 | **Safety** | [FORTRESS](https://scale.com/leaderboard/fortress) | Yes | Risk 24.76 / Refusal 1.89 % (Claude Opus 4) |
 | **Video Games** | [VideoGameBench](https://www.vgbench.com/) | Yes | 0.48 % (Gemini 2.5 Pro) |
-|  | [Game Arena](https://www.kaggle.com/game-arena) | Coming soon | — |
-| **Multilingual** | [MultiNRC](https://scale.com/leaderboard/multinrc) | Yes | 49 % (o3-pro) |
-
+| **Multilingual** | [MultiNRC](https://scale.com/leaderboard/multinrc) | Yes | 52% (gpt5) |
 
 
 We need more video game evals and improve LLMs performance on them. Solving video games is a great step towards solving robotics and achieving AGI, since simulated environments can be made quite close real world environments.
@@ -86,6 +85,15 @@ should mention that noise reduction is 20%.
 
 ```
 create an eval that you cannot solve but can verify, and at least 1 human can solve. You and the human can read only text, no image or audio. You and the human both have 5 minutes, and you both have the same resources: a laptop and the internet. you are not constrained by the runtime of your chat environment. The human also has to comply with your safety and content policies. write out the runnable python code that proves you are not able to solve it.
+```
+
+
+```
+Write the complete python code for a new LLM eval, where model calls use openai's API. The eval has to satisfy the below constraints
+1. gpt-5 fails the eval
+2. At least 1 human can succeed on the eval, given the same inputs, time constraint, and compute resources as gpt-5
+3. The human also has to comply with gpt-5's safety and content policies
+4. The input is text only, no image or audio
 ```
 
 

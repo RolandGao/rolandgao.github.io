@@ -1,5 +1,5 @@
 // src/pages/BlogPost.js
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 
 const BlogPost = () => {
@@ -11,7 +11,7 @@ const BlogPost = () => {
         filePath={`${process.env.PUBLIC_URL}/data/blogs/${id}.md`} 
       />
       <div className="back-link">
-        <a href="/blogs">← Back to all posts</a>
+        <Link to="/blog">← Back to all posts</Link>
       </div>
     </div>
   );
