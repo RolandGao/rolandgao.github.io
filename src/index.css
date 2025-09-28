@@ -4,6 +4,7 @@ body {
   background-color: white;
   color: #333;
   line-height: 1.6;
+  overflow-y: scroll; /* reserve scrollbar width so layout doesn't shift between pages */
 }
 
 .app {
