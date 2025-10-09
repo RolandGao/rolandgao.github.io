@@ -3,7 +3,8 @@ const path = require('path');
 
 const domain = 'https://rolandgao.github.io';
 const buildPath = path.join(__dirname, '../build');
-const blogDirectory = path.join(__dirname, '../public/data/blogs');
+const publicPath = path.join(__dirname, '../public');
+const blogDirectory = path.join(publicPath, 'data/blogs');
 const blogIndexPath = path.join(blogDirectory, 'index.json');
 
 const loadBlogPages = () => {
@@ -31,6 +32,7 @@ const loadBlogPages = () => {
 };
 
 const blogPages = loadBlogPages();
+const extraSpaRoutes = ['/blog/unsaturated_evals_before_gpt5'];
 
 const pages = Array.from(
   new Set([
@@ -55,3 +57,30 @@ ${pages
 </urlset>`;
 
 fs.writeFileSync(path.join(buildPath, 'sitemap.xml'), sitemap);
+
+const ensureSpaFallbacks = routes => {
+  const indexHtmlPath = path.join(buildPath, 'index.html');
+
+  if (!fs.existsSync(indexHtmlPath)) {
+    console.warn('Skipping SPA fallback creation because build/index.html is missing.');
+    return;
+  }
+
+  Array.from(new Set(routes))
+    .filter(route => route !== '/')
+    .forEach(route => {
+      const trimmed = route.replace(/^\//, '');
+
+      if (!trimmed) {
+        return;
+      }
+
+      const targetDir = path.join(buildPath, trimmed);
+      const destination = path.join(targetDir, 'index.html');
+
+      fs.mkdirSync(targetDir, { recursive: true });
+      fs.copyFileSync(indexHtmlPath, destination);
+    });
+};
+
+ensureSpaFallbacks([...pages, ...extraSpaRoutes]);

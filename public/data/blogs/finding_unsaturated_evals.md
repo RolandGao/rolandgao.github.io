@@ -35,55 +35,13 @@ We also need more synthetic evals, each of which focuses on only one problem and
 
 Here's a genius idea: evaluate the LLM's ability to create an unsaturated eval. This eval will be unsaturated until there's no more unsaturated evals and AGI is achieved. In order for the model to create an unsaturated eval, it needs to be able to verify the results. There are still many tasks that are easy to verify but hard to do. For example, a task can be to create the code that has the specified UI interactions. The UI interactions are easy to verify but the code is hard to write. As another example, winning at a game is easy to verify but hard to do. This paradigm seems limitless and maybe working on this will help us achieve AGI.
 <!-- 
-One prompt I always try on a new LLM is the following:
-
-```
-The following is a list of current Stanford CS PhDs; find where they attended undergrad. Each line in the output should be in the format of "{name} | {school}". Avoid citations so that I can easily copy and paste later. If the school is not found, say "unknown" as the school.
-
-FNU Aditi
-Ahmed Ahmed
-[47 more names...]
-Owen Dugan
-```
-
-
-Another prompt I use nowadays:
-```
-create evals such that top LLMs would fail but grade 6 students would succeed
-```
-I have not seen a single satisfactory answer by any LLM.
-
-```
-LLMs cannot reliably multiply 2 numbers with many digits, but LLMs can solve them with tools. What are some compositional tasks that LLMs cannot solve even with tools? grade 6 students need to be able to do them.
-```
-
-find 15 unsaturated evals for the frontier llms that have a public leaderbaord
-
-another prompt:
-```
-Did egoist sing for guilty crown?
-```
-failed once: https://chatgpt.com/share/68b62767-16cc-8011-ba35-3d0f353db63a
-but succeeded another time: https://chatgpt.com/share/68b62779-9f1c-8011-826f-fe0ad5015b94 
 
 ```
 compare tesla model y 2024 vs 2025
 ```
 both o3 and gpt 5 thinking didn't mention LR RWD 2024
 
-```
-find unsaturated evals for the frontier llms. 
-```
-
-```
-compare tesla model y 2024 vs 2025
-```
 should mention that noise reduction is 20%.
-
-
-```
-create an eval that you cannot solve but can verify, and at least 1 human can solve. You and the human can read only text, no image or audio. You and the human both have 5 minutes, and you both have the same resources: a laptop and the internet. you are not constrained by the runtime of your chat environment. The human also has to comply with your safety and content policies. write out the runnable python code that proves you are not able to solve it.
-```
 
 
 ```
