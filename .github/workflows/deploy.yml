@@ -28,7 +28,7 @@ jobs:
       # Upload the build output as an artifact for the deploy step
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build        # change if your output folder differs
+          path: ./out         # Upload the static export produced by Next.js
 
   deploy:
     needs: build
