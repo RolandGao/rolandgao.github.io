@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BlogPage from './pages/BlogPage';
 import BlogPost from './pages/BlogPost';
@@ -19,7 +19,8 @@ const CanonicalUpdater = () => {
     let canonicalPath = pathname || '/';
 
     if (!looksLikeFile) {
-      canonicalPath = canonicalPath.replace(/\/+$/, '') || '/';
+      const trimmedPath = canonicalPath.replace(/\/+$/, '');
+      canonicalPath = trimmedPath ? `${trimmedPath}/` : '/';
     }
 
     const canonicalUrl = canonicalPath === '/' ? `${origin}/` : `${origin}${canonicalPath}`;
@@ -57,14 +58,37 @@ const TrailingSlashRedirector = () => {
       return;
     }
 
-    const trimmedPath = pathname.replace(/\/+$/, '');
+    const normalizedPath = pathname.replace(/\/+$/, '');
+    const targetPath = normalizedPath ? `${normalizedPath}/` : '/';
 
-    if (trimmedPath !== pathname) {
-      navigate(`${trimmedPath || '/'}${search}${hash}`, { replace: true });
+    if (pathname !== targetPath) {
+      navigate(`${targetPath}${search}${hash}`, { replace: true });
     }
   }, [location, navigate]);
 
   return null;
+};
+
+const BlogPostTrailingSlashRedirect = () => {
+  const { id } = useParams();
+  const location = useLocation();
+  if (!id) {
+    return null;
+  }
+
+  const search = location.search || '';
+  const hash = location.hash || '';
+
+  return (
+    <Navigate
+      to={{
+        pathname: `/blog/${id}/`,
+        search,
+        hash,
+      }}
+      replace
+    />
+  );
 };
 
 function App() {
@@ -76,18 +100,20 @@ function App() {
         <nav>
           <ul className="navigation">
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/blog">Blog</Link></li>
+            <li><Link to="/blog/">Blog</Link></li>
           </ul>
         </nav>
         
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog" element={<Navigate to="/blog/" replace />} />
+          <Route path="/blog/" element={<BlogPage />} />
           <Route
             path="/blog/unsaturated_evals_before_gpt5"
             element={<Navigate to="/blog/finding_unsaturated_evals" replace />}
           />
-          <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/blog/:id" element={<BlogPostTrailingSlashRedirect />} />
+          <Route path="/blog/:id/*" element={<BlogPost />} />
         </Routes>
       </div>
     </Router>

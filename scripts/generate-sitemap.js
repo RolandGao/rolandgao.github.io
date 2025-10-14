@@ -7,6 +7,25 @@ const publicPath = path.join(__dirname, '../public');
 const blogDirectory = path.join(publicPath, 'data/blogs');
 const blogIndexPath = path.join(blogDirectory, 'index.json');
 
+const ensureCanonicalPath = route => {
+  if (!route) {
+    return '/';
+  }
+
+  const looksLikeFile = /\.[a-zA-Z0-9]+$/.test(route);
+  if (looksLikeFile) {
+    return route;
+  }
+
+  const trimmed = route.replace(/\/+$/, '');
+  if (!trimmed) {
+    return '/';
+  }
+
+  const normalized = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  return `${normalized}/`;
+};
+
 const loadBlogPages = () => {
   if (fs.existsSync(blogIndexPath)) {
     try {
@@ -14,7 +33,7 @@ const loadBlogPages = () => {
       const { posts = [] } = JSON.parse(rawIndex);
 
       return posts
-        .map(post => post.path || (post.id ? `/blog/${post.id}` : null))
+        .map(post => post.path || (post.id ? `/blog/${post.id}/` : null))
         .filter(Boolean);
     } catch (error) {
       console.error('Unable to parse blog index:', error);
@@ -25,19 +44,19 @@ const loadBlogPages = () => {
     return fs
       .readdirSync(blogDirectory)
       .filter(fileName => path.extname(fileName) === '.md')
-      .map(fileName => `/blog/${path.basename(fileName, '.md')}`);
+      .map(fileName => `/blog/${path.basename(fileName, '.md')}/`);
   }
 
   return [];
 };
 
-const blogPages = loadBlogPages();
+const blogPages = loadBlogPages().map(ensureCanonicalPath);
 const extraSpaRoutes = ['/blog/unsaturated_evals_before_gpt5'];
 
 const pages = Array.from(
   new Set([
-    '/',
-    '/blog',
+    ensureCanonicalPath('/'),
+    ensureCanonicalPath('/blog/'),
     ...blogPages,
   ])
 );
@@ -50,13 +69,7 @@ if (!fs.existsSync(buildPath)) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages
   .map(page => {
-    const looksLikeFile = /\.[a-zA-Z0-9]+$/.test(page);
-    let canonicalPath = page || '/';
-
-    if (!looksLikeFile) {
-      canonicalPath = canonicalPath.replace(/\/+$/, '') || '/';
-    }
-
+    const canonicalPath = ensureCanonicalPath(page);
     const canonicalUrl = canonicalPath === '/' ? `${domain}/` : `${domain}${canonicalPath}`;
 
     return `

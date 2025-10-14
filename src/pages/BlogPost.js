@@ -11,7 +11,7 @@ const BlogPost = () => {
         filePath={`${process.env.PUBLIC_URL}/data/blogs/${id}.md`} 
       />
       <div className="back-link">
-        <Link to="/blog">← Back to all posts</Link>
+        <Link to="/blog/">← Back to all posts</Link>
       </div>
     </div>
   );

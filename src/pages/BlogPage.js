@@ -68,7 +68,7 @@ const BlogPage = () => {
       <ul className="blog-list">
         {blogPosts.map(post => (
           <li key={post.id}>
-            <Link to={`/blog/${post.id}`}>
+            <Link to={`/blog/${post.id}/`}>
               <h2>{post.title}</h2>
               <p className="post-date">{post.dateDisplay || formatPacificDate(post.date)}</p>
             </Link>
