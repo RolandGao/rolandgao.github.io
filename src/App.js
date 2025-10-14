@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BlogPage from './pages/BlogPage';
 import BlogPost from './pages/BlogPost';
@@ -69,28 +69,6 @@ const TrailingSlashRedirector = () => {
   return null;
 };
 
-const BlogPostTrailingSlashRedirect = () => {
-  const { id } = useParams();
-  const location = useLocation();
-  if (!id) {
-    return null;
-  }
-
-  const search = location.search || '';
-  const hash = location.hash || '';
-
-  return (
-    <Navigate
-      to={{
-        pathname: `/blog/${id}/`,
-        search,
-        hash,
-      }}
-      replace
-    />
-  );
-};
-
 function App() {
   return (
     <Router basename="/">
@@ -110,9 +88,8 @@ function App() {
           <Route path="/blog/" element={<BlogPage />} />
           <Route
             path="/blog/unsaturated_evals_before_gpt5"
-            element={<Navigate to="/blog/finding_unsaturated_evals" replace />}
+            element={<Navigate to="/blog/finding_unsaturated_evals/" replace />}
           />
-          <Route path="/blog/:id" element={<BlogPostTrailingSlashRedirect />} />
           <Route path="/blog/:id/*" element={<BlogPost />} />
         </Routes>
       </div>
