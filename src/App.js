@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BlogPage from './pages/BlogPage';
 import BlogPost from './pages/BlogPost';
@@ -16,13 +16,13 @@ const CanonicalUpdater = () => {
     const { origin } = window.location;
     const { pathname } = location;
     const looksLikeFile = /\.[a-zA-Z0-9]+$/.test(pathname);
-    const normalizedPath =
-      !pathname || pathname === '/' || looksLikeFile
-        ? pathname || '/'
-        : pathname.endsWith('/')
-          ? pathname
-          : `${pathname}/`;
-    const canonicalUrl = `${origin}${normalizedPath}`;
+    let canonicalPath = pathname || '/';
+
+    if (!looksLikeFile) {
+      canonicalPath = canonicalPath.replace(/\/+$/, '') || '/';
+    }
+
+    const canonicalUrl = canonicalPath === '/' ? `${origin}/` : `${origin}${canonicalPath}`;
 
     let canonicalLink = document.querySelector("link[rel='canonical']");
     if (!canonicalLink) {
@@ -42,10 +42,36 @@ const CanonicalUpdater = () => {
   return null;
 };
 
+const TrailingSlashRedirector = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const { pathname, search, hash } = location;
+    if (!pathname || pathname === '/') {
+      return;
+    }
+
+    const looksLikeFile = /\.[a-zA-Z0-9]+$/.test(pathname);
+    if (looksLikeFile) {
+      return;
+    }
+
+    const trimmedPath = pathname.replace(/\/+$/, '');
+
+    if (trimmedPath !== pathname) {
+      navigate(`${trimmedPath || '/'}${search}${hash}`, { replace: true });
+    }
+  }, [location, navigate]);
+
+  return null;
+};
+
 function App() {
   return (
     <Router basename="/">
       <CanonicalUpdater />
+      <TrailingSlashRedirector />
       <div className="app">
         <nav>
           <ul className="navigation">

@@ -49,21 +49,23 @@ if (!fs.existsSync(buildPath)) {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages
-  .map(
-    page => {
-      const looksLikeFile = /\.[a-zA-Z0-9]+$/.test(page);
-      const canonicalPath =
-        page === '/' || looksLikeFile
-          ? page
-          : `${page.replace(/\/+$/, '')}/`;
-      return `
+  .map(page => {
+    const looksLikeFile = /\.[a-zA-Z0-9]+$/.test(page);
+    let canonicalPath = page || '/';
+
+    if (!looksLikeFile) {
+      canonicalPath = canonicalPath.replace(/\/+$/, '') || '/';
+    }
+
+    const canonicalUrl = canonicalPath === '/' ? `${domain}/` : `${domain}${canonicalPath}`;
+
+    return `
   <url>
-    <loc>${domain}${canonicalPath}</loc>
+    <loc>${canonicalUrl}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
-    }
-  )
+  })
   .join('\n')}
 </urlset>`;
 
