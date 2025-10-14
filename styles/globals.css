@@ -4,10 +4,14 @@ body {
   background-color: white;
   color: #333;
   line-height: 1.6;
-  overflow-y: scroll; /* reserve scrollbar width so layout doesn't shift between pages */
+  overflow-y: scroll;
 }
 
-.app {
+* {
+  box-sizing: border-box;
+}
+
+.layout {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -20,12 +24,17 @@ body {
   gap: 20px;
   border-bottom: 1px solid #eee;
   padding-bottom: 15px;
+  margin: 0;
 }
 
 .navigation a {
   text-decoration: none;
   color: #007bff;
   font-weight: 500;
+}
+
+nav {
+  margin-bottom: 24px;
 }
 
 .profile-header {
@@ -53,6 +62,7 @@ body {
 .blog-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .blog-list li {

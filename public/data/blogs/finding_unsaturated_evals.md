@@ -1,6 +1,3 @@
-# Finding Unsaturated Evals
-date: 2025-08-07
-
 I compiled a list of unsaturated evals, as shown below. I also discuss some ideas about new unsaturated evals after the table.
 
 | Category | Benchmark | Leaderboard | Latest Reported Score (Model) |

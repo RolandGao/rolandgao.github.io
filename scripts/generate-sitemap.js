@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const domain = 'https://rolandgao.github.io';
-const buildPath = path.join(__dirname, '../build');
+const outputPath = path.join(__dirname, '../out');
 const publicPath = path.join(__dirname, '../public');
 const blogDirectory = path.join(publicPath, 'data/blogs');
 const blogIndexPath = path.join(blogDirectory, 'index.json');
@@ -51,8 +51,6 @@ const loadBlogPages = () => {
 };
 
 const blogPages = loadBlogPages().map(ensureCanonicalPath);
-const extraSpaRoutes = ['/blog/unsaturated_evals_before_gpt5'];
-
 const pages = Array.from(
   new Set([
     ensureCanonicalPath('/'),
@@ -61,8 +59,8 @@ const pages = Array.from(
   ])
 );
 
-if (!fs.existsSync(buildPath)) {
-  console.warn('Skipping sitemap generation because build/ is missing.');
+if (!fs.existsSync(outputPath)) {
+  console.warn('Skipping sitemap generation because out/ is missing.');
   process.exitCode = 0;
 } else {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -82,32 +80,5 @@ ${pages
   .join('\n')}
 </urlset>`;
 
-  fs.writeFileSync(path.join(buildPath, 'sitemap.xml'), sitemap);
-
-  const ensureSpaFallbacks = routes => {
-    const indexHtmlPath = path.join(buildPath, 'index.html');
-
-    if (!fs.existsSync(indexHtmlPath)) {
-      console.warn('Skipping SPA fallback creation because build/index.html is missing.');
-      return;
-    }
-
-    Array.from(new Set(routes))
-      .filter(route => route !== '/')
-      .forEach(route => {
-        const trimmed = route.replace(/^\//, '');
-
-        if (!trimmed) {
-          return;
-        }
-
-        const targetDir = path.join(buildPath, trimmed);
-        const destination = path.join(targetDir, 'index.html');
-
-        fs.mkdirSync(targetDir, { recursive: true });
-        fs.copyFileSync(indexHtmlPath, destination);
-      });
-  };
-
-  ensureSpaFallbacks([...pages, ...extraSpaRoutes]);
+  fs.writeFileSync(path.join(outputPath, 'sitemap.xml'), sitemap);
 }

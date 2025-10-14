@@ -1,6 +1,3 @@
-# Path to AGI
-date: 2025-06-01
-
 1. An optimizer that always works
     1. Minimizes the loss function without any hyper parameters 
 2. Efficient video understanding

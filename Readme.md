@@ -7,10 +7,10 @@
 
 ```
 npm install
-npm start
+npm run dev
 ```
 
-The dev server runs on http://localhost:3000 and hot-reloads changes in `src/` and `public/`.
+The dev server runs on http://localhost:3000 and hot-reloads changes in `pages/`, `components/`, and `public/`.
 
 ## Content
 
@@ -24,6 +24,10 @@ The dev server runs on http://localhost:3000 and hot-reloads changes in `src/` a
 npm run build
 ```
 
-The build step emits to `build/` and automatically regenerates the sitemap. Deployments run via the GitHub Actions workflow in `.github/workflows/deploy.yml`.
+The build step runs `next build` (configured for static export) and writes the static site to `out/`, then regenerates the sitemap. Deployments run via the GitHub Actions workflow in `.github/workflows/deploy.yml`, or locally via:
+
+```
+npm run deploy
+```
 
 If the website is not updated in Google Search, request re-indexing from Google Search Console → URL Inspection.
