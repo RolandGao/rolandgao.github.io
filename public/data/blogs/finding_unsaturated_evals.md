@@ -34,6 +34,10 @@ It will be pretty cool to have an LLM that's good at math, Go, and video games. 
 We also need more synthetic evals, each of which focuses on only one problem and pushes that problem to the limit. For example, [MRCR](https://huggingface.co/datasets/openai/mrcr) reveals the shortcomings of current LLMs on long-context inputs. As another example, LLMs fail to multiply two integers with more than 20 digits, unless they use tools.
 
 Here's a genius idea: evaluate the LLM's ability to create an unsaturated eval. This eval will be unsaturated until there's no more unsaturated evals and AGI is achieved. In order for the model to create an unsaturated eval, it needs to be able to verify the results. There are still many tasks that are easy to verify but hard to do. For example, a task can be to create the code that has the specified UI interactions. The UI interactions are easy to verify but the code is hard to write. As another example, winning at a game is easy to verify but hard to do. This paradigm seems limitless and maybe working on this will help us achieve AGI.
+
+<!-- https://swe-rebench.com/  -->
+
+
 <!-- 
 
 ```

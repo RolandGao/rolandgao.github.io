@@ -50,12 +50,19 @@ if (!fs.existsSync(buildPath)) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages
   .map(
-    page => `
+    page => {
+      const looksLikeFile = /\.[a-zA-Z0-9]+$/.test(page);
+      const canonicalPath =
+        page === '/' || looksLikeFile
+          ? page
+          : `${page.replace(/\/+$/, '')}/`;
+      return `
   <url>
-    <loc>${domain}${page === '/' ? '/' : page}</loc>
+    <loc>${domain}${canonicalPath}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>`
+  </url>`;
+    }
   )
   .join('\n')}
 </urlset>`;
