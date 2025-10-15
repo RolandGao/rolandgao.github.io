@@ -2,6 +2,10 @@
 
 - Favicon source: https://favicon.io/favicon-generator/
 - Font: Assistant
+- Canonical URLs have trailing slashes to be most compatible with Github Pages
+- Uses Next.js for SSG (Server-side generation) to be SEO-friendly
+- Uses Chrome's Lighthouse to verify SEO friendliness
+- Uses Google Search Console and URL Inspection to request re-indexing
 
 ## Getting Started
 
