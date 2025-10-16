@@ -74,7 +74,11 @@ const BlogPostPage = ({
       <article className="blog-post">
         <header>
           <h1>{metadata.title}</h1>
-          {dateDisplay ? <p className="post-date">{dateDisplay}</p> : null}
+          {dateDisplay ? (
+            <p className="post-date">
+              Date: {dateDisplay} | Author: Roland Gao
+            </p>
+          ) : null}
         </header>
         <MarkdownRenderer content={content} />
       </article>

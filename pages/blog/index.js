@@ -30,7 +30,9 @@ const BlogIndexPage = ({ posts }) => {
             <Link href={post.path}>
               <h2>{post.title}</h2>
               {post.dateDisplay ? (
-                <p className="post-date">{post.dateDisplay}</p>
+                <p className="post-date">
+                  Date: {post.dateDisplay} | Author: Roland Gao
+                </p>
               ) : null}
             </Link>
           </li>
