@@ -1,25 +1,26 @@
 I compiled a list of unsaturated evals, as shown below. Afterward, I discuss some ideas for developing unsaturated evals.
 
-| Category                | Benchmark                                                                   | Leaderboard                                              | Latest Reported Score (Model)                                               |
-| ----------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------- |
-| **Math**                | [FrontierMath](https://epoch.ai/frontiermath)                               | Yes                                                      | 29 % (Gemini 2.5 Deep Think, tiers 1–3)                                     |
-|                         | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html)    | Yes                                                      | 462 / 657 (Hilbert)                                                         |
-|                         | [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures) | No                                                       | —                                                                           |
-| **Coding**              | [Terminal-Bench](https://www.tbench.ai/leaderboard)                         | Yes                                                      | 60 % (Ante, Claude Sonnet 4.5)                                              |
-|                         | [SWE-rebench](https://swe-rebench.com/)                                     | Yes                                                      | 44.5% (Claude Opus 4.5)                                                     |
-| **Puzzles**             | [ARC-AGI 2](https://arcprize.org/leaderboard)                               | Yes                                                      | 29 % (Grok 4 + scaffolding)                                                 |
-|                         | [EnigmaEval](https://scale.com/leaderboard/enigma_eval)                     | Yes                                                      | 13 % (o3)                                                                   |
-|                         | [SimpleBench](https://simple-bench.com/)                                    | Yes                                                      | 62.4 % (Gemini 2.5 Pro)                                                     |
-|                         | [TrackingAI offline IQ test](https://www.trackingai.org/home)               | Yes                                                      | 122 (Grok 4 Expert Mode)                                                    |
-| **GDP**                 | [GDPval](https://evals.openai.com/gdpval/leaderboard)                       | Yes                                                      | 44% (Claude Opus 4.1)                                                       |
-| **Knowledge**           | [HLE](https://scale.com/leaderboard/humanitys_last_exam)                    | Yes                                                      | 44.4 (Grok 4 Heavy)                                                         |
-| **Image Understanding** | [ZeroBench](https://zerobench.github.io/)                                   | Yes                                                      | 5 / 100 (Claude Opus 4.1)                                                   |
-| **Long Context**        | [MRCR](https://huggingface.co/datasets/openai/mrcr)                         | Yes ([contextarena](https://contextarena.ai/?needles=8)) | 8 needles at 1M: 27.5 % (Gemini 2.5 Flash), 8 needles at 128K: 40.0% (gpt5) |
-| **Safety**              | [FORTRESS](https://scale.com/leaderboard/fortress)                          | Yes                                                      | Risk 24.76 / Refusal 1.89 % (Claude Opus 4)                                 |
-| **Web Browsing**        | [BrowseComp](https://openai.com/index/browsecomp/)                          | No                                                       | 68.9 % (OpenAI Agent)                                                       |
-| **Multilingual**        | [MultiNRC](https://scale.com/leaderboard/multinrc)                          | Yes                                                      | 52% (gpt5)                                                                  |
-| **Video Games**         | [VideoGameBench](https://www.vgbench.com/)                                  | Yes                                                      | 0.48 % (Gemini 2.5 Pro)                                                     |
-| **Multi-turn Dialog**   | [MultiChallenge](https://scale.com/leaderboard/multichallenge)              | Yes                                                      | 63.77 % (o3-pro)                                                            |
+| Category            | Benchmark                                                                                               | Score                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| Math                | [FrontierMath](https://epoch.ai/frontiermath)                                                           | 29%                                         |
+| Math                | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html)                                | 462 / 657                                   |
+| Math                | [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures)                             | — (no leaderboard)                          |
+| Coding              | [Terminal-Bench](https://www.tbench.ai/leaderboard)                                                     | 60%                                         |
+| Coding              | [SWE-rebench](https://swe-rebench.com/)                                                                 | 44.5%                                       |
+| Puzzles             | [ARC-AGI 2](https://arcprize.org/leaderboard)                                                           | 29%                                         |
+| Puzzles             | [EnigmaEval](https://scale.com/leaderboard/enigma_eval)                                                 | 13%                                         |
+| Puzzles             | [SimpleBench](https://simple-bench.com/)                                                                | 62.4%                                       |
+| Puzzles             | [TrackingAI offline IQ test](https://www.trackingai.org/home)                                           | 122                                         |
+| GDP                 | [GDPval](https://evals.openai.com/gdpval/leaderboard)                                                   | 44%                                         |
+| Knowledge           | [HLE](https://scale.com/leaderboard/humanitys_last_exam)                                                | 44.4                                        |
+| Image Understanding | [ZeroBench](https://zerobench.github.io/)                                                               | 5 / 100                                     |
+| Long Context        | [MRCR](https://huggingface.co/datasets/openai/mrcr) · [Leaderboard](https://contextarena.ai/?needles=8) | 27.5% (1M, 8n) · 40.0% (128K, 8n)           |
+| Safety              | [FORTRESS](https://scale.com/leaderboard/fortress)                                                      | Risk 24.76 / Refusal 1.89%                  |
+| Web Browsing        | [BrowseComp](https://openai.com/index/browsecomp/)                                                      | 68.9% — best: OpenAI Agent (no leaderboard) |
+| Multilingual        | [MultiNRC](https://scale.com/leaderboard/multinrc)                                                      | 52%                                         |
+| Video Games         | [VideoGameBench](https://www.vgbench.com/)                                                              | 0.48%                                       |
+| Multi-turn Dialog   | [MultiChallenge](https://scale.com/leaderboard/multichallenge)                                          | 63.77%                                      |
+
 
 Improving LLM performance on video games is a great step toward achieving physical intelligence. Simulated environments can be made to mimic real environments, and an algorithm that outperforms other algorithms in the simulated environment is likely to outperform in the real environment as well. Video games challenge LLMs on many fronts, including image understanding, long context, and reasoning.
 
