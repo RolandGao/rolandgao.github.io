@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 const SITE_URL = 'https://rolandgao.github.io';
+const DEFAULT_DESCRIPTION =
+  'Research Engineer at Meta Superintelligence Labs focusing on Safety Alignment, adversarial training, long context, optimizers, and scalable RL.';
+const SOCIAL_IMAGE_URL = `${SITE_URL}/social-preview.png`;
 
 const ensureCanonicalPath = path => {
   if (!path) {
@@ -40,7 +43,7 @@ const composeCanonicalUrl = path => {
 
 const Layout = ({
   title = 'Roland Gao',
-  description = 'Personal site of Roland Gao',
+  description = DEFAULT_DESCRIPTION,
   canonicalPath,
   children,
 }) => {
@@ -63,6 +66,11 @@ const Layout = ({
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
+        <meta property="og:image" content={SOCIAL_IMAGE_URL} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={SOCIAL_IMAGE_URL} />
       </Head>
       <div className="layout">
         <nav>

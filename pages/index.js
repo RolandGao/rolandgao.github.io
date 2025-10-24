@@ -24,7 +24,7 @@ const HomePage = ({ content, posts }) => {
   return (
     <Layout
       title="Roland Gao"
-      description="Personal site of Roland Gao."
+      description="Research Engineer at Meta Superintelligence Labs focusing on Safety Alignment, adversarial training, long context, optimizers, and scalable RL."
       canonicalPath="/"
     >
       <div className="home-page">

@@ -81,4 +81,6 @@ ${pages
 </urlset>`;
 
   fs.writeFileSync(path.join(outputPath, 'sitemap.xml'), sitemap);
+  // Some consumers expect sitemap2.xml, so keep it in sync with sitemap.xml.
+  fs.writeFileSync(path.join(outputPath, 'sitemap2.xml'), sitemap);
 }
