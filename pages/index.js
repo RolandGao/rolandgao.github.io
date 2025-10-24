@@ -1,19 +1,26 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import Layout from '../components/Layout';
 import MarkdownRenderer from '../components/MarkdownRenderer';
-import { loadMarkdownPage } from '../lib/posts';
+import { formatPacificDate } from '../lib/dates';
+import { getAllPosts, loadMarkdownPage } from '../lib/posts';
 
 export const getStaticProps = () => {
   const content = loadMarkdownPage('home.md') || '';
+  const posts = getAllPosts().map(post => ({
+    ...post,
+    dateDisplay: post.dateDisplay || formatPacificDate(post.date),
+  }));
 
   return {
     props: {
       content,
+      posts,
     },
   };
 };
 
-const HomePage = ({ content }) => {
+const HomePage = ({ content, posts }) => {
   return (
     <Layout
       title="Roland Gao"
@@ -32,6 +39,25 @@ const HomePage = ({ content }) => {
           />
         </div>
         <MarkdownRenderer content={content} />
+        {posts.length ? (
+          <section className="home-blog-section">
+            <MarkdownRenderer content="# Latest Posts" />
+            <ul className="blog-list">
+              {posts.map(post => (
+                <li key={post.id}>
+                  <Link href={post.path}>
+                    <h3>{post.title}</h3>
+                    {post.dateDisplay ? (
+                      <p className="post-date">
+                        Date: {post.dateDisplay} | Author: Roland Gao
+                      </p>
+                    ) : null}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </div>
     </Layout>
   );

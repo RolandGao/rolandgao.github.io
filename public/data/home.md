@@ -1,5 +1,4 @@
 # Hi, I'm Roland Gao
-
 I am a Research Engineer at Meta Superintelligence Labs working on Safety Alignment. Previously, I studied Computer Science at the University of Toronto.
 
 I'm interested in alignment, adversarial training, long context, optimizer, and scalable RL algorithms. I'm always open to new research ideas and collaborations. Feel free to reach out!
