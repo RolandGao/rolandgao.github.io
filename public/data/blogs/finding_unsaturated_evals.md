@@ -1,25 +1,31 @@
 I compiled a list of unsaturated evals, as shown below. Afterward, I discuss some ideas for developing unsaturated evals.
 
-| Category            | Benchmark                                                                                               | Score                                     |
-| ------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| Math                | [FrontierMath](https://epoch.ai/frontiermath)                                                           | 29%                                       |
-| Math                | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html)                                | 462 / 657                                 |
-| Math                | [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures)                             | — (no leaderboard)                        |
-| Coding              | [Terminal-Bench](https://www.tbench.ai/leaderboard)                                                     | 60%                                       |
-| Coding              | [SWE-rebench](https://swe-rebench.com/)                                                                 | 45%                                       |
-| Puzzles             | [ARC-AGI 2](https://arcprize.org/leaderboard)                                                           | 29%                                       |
-| Puzzles             | [EnigmaEval](https://scale.com/leaderboard/enigma_eval)                                                 | 13%                                       |
-| Puzzles             | [SimpleBench](https://simple-bench.com/)                                                                | 62%                                       |
-| Puzzles             | [TrackingAI offline IQ test](https://www.trackingai.org/home)                                           | 122                                       |
-| GDP                 | [GDPval](https://evals.openai.com/gdpval/leaderboard)                                                   | 44%                                       |
-| Knowledge           | [HLE](https://scale.com/leaderboard/humanitys_last_exam)                                                | 44 — best: Grok 4 Heavy                   |
-| Image Understanding | [ZeroBench](https://zerobench.github.io/)                                                               | 5%                                 |
-| Long Context        | [MRCR](https://huggingface.co/datasets/openai/mrcr) · [Leaderboard](https://contextarena.ai/?needles=8) | 28% (1M, 8n) · 40% (128K, 8n)             |
-| Safety              | [FORTRESS](https://scale.com/leaderboard/fortress)                                                      | Risk 25 / Refusal 1.9%                    |
-| Web Browsing        | [BrowseComp](https://openai.com/index/browsecomp/)                                                      | 69% — best: OpenAI Agent (no leaderboard) |
-| Multilingual        | [MultiNRC](https://scale.com/leaderboard/multinrc)                                                      | 52%                                       |
-| Video Games         | [VideoGameBench](https://www.vgbench.com/)                                                              | 0.48%                                     |
-| Multi-turn Dialog   | [MultiChallenge](https://scale.com/leaderboard/multichallenge)                                          | 64%                                       |
+| Category            | Benchmark                                                                   | Score                                     |
+| ------------------- | --------------------------------------------------------------------------- | ----------------------------------------- |
+| Math                | [FrontierMath](https://epoch.ai/frontiermath)                               | 38%                                       |
+| Math                | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html)    | 462 / 657                                 |
+| Coding              | [Terminal-Bench 2](https://www.tbench.ai/leaderboard/terminal-bench/2.0)    | 59%                                       |
+| Coding              | [LiveCodeBench Pro](https://livecodebenchpro.com/)                          | 49%                                       |
+| Puzzles             | [ARC-AGI 2](https://arcprize.org/leaderboard)                               | 45%                                       |
+| Puzzles             | [EnigmaEval](https://scale.com/leaderboard/enigma_eval)                     | 19%                                       |
+| Puzzles             | [SimpleBench](https://simple-bench.com/)                                    | 76%                                       |
+| Puzzles             | [TrackingAI offline IQ test](https://www.trackingai.org/home)               | 130                                       |
+| Vision              | [ZeroBench](https://zerobench.github.io/)                                   | 19% (pass@5)                              |
+| Vision              | [VisualToolBench](https://scale.com/leaderboard/vtb)                        | 27%                                       |
+| Knowledge           | [HLE](https://scale.com/leaderboard/humanitys_last_exam)                    | 46% — best: gemini 3                      |
+| Long Context        | [MRCR](https://contextarena.ai/?needles=8)                                  | 35.3% (1M, 8n) · 54% (128K, 8n)           |
+| Web Browsing        | [BrowseComp](https://openai.com/index/browsecomp/)                          | 69% — best: OpenAI Agent (no leaderboard) |
+| Multilingual        | [MultiNRC](https://scale.com/leaderboard/multinrc)                          | 65%                                       |
+| Video Games         | [VideoGameBench](https://www.vgbench.com/)                                  | 0.48%                                     |
+| Multi-turn Dialog   | [MultiChallenge](https://scale.com/leaderboard/multichallenge)              | 64%                                       |
+
+
+<!-- honorable mentions
+vending bench: https://andonlabs.com/evals/vending-bench-2, no 
+Formal Conjectures: https://github.com/google-deepmind/formal-conjectures, no leaderboard
+GDPval: https://evals.openai.com/gdpval/leaderboard, no gemini 3
+SWE-rebench: https://swe-rebench.com/, no gemini 3
+lmarena: https://lmarena.ai/leaderboard -->
 
 
 Improving LLM performance on video games is a great step toward achieving physical intelligence. Simulated environments can be made to mimic real environments, and an algorithm that outperforms other algorithms in the simulated environment is likely to outperform in the real environment as well. Video games challenge LLMs on many fronts, including image understanding, long context, and reasoning.
@@ -48,6 +54,11 @@ Write the complete Python code for a new LLM eval, where model calls use the abo
 3. The human also has to comply with gpt-5's safety and content policies
 4. The inputs and outputs are text only; no images or audio
 ```
+
+<!-- ```
+9.11-9.8=
+do not use tools. 9.11-9.8=
+``` -->
 
 <!-- Whenever a new LLM drops, I test it out with the following prompt to understand its web browsing capabilities. Interestingly, about half of the models I try fail on this prompt.
 
@@ -83,13 +94,13 @@ FNU Aditi | Indian Institute of Technology Delhi
 Ahmed Ahmed | Stanford University
 Samuel Alber | University of California, Berkeley
 Ali Alkhatib | University of California, Irvine
-Daneshvar Amrollahi | unknown
+Daneshvar Amrollahi | University of Tehran
 Leni Aniva | University of Waterloo
 Aryaman Arora | Georgetown University
 Simran Arora | University of Pennsylvania
 Luke Bailey | Harvard University
-Neil Band | Harvard College
-Andy Bartolo | unknown
+Neil Band | Harvard University
+Andy Bartolo | Stanford University
 Michael Dawit Bereket | Stanford University
 Keller Blackwell | University of South Florida
 Guy Blanc | Stanford University
@@ -100,3 +111,7 @@ Keshigeyan Chandrasegaran | Singapore University of Technology and Design
 Francois Chaubard | University of Delaware
 Liangyu Chen | Nanyang Technological University
 ``` -->
+
+<!-- https://repoprompt.com/bench -->
+
+<!-- Solve the following math word problem. A landscaping company is delivering flagstones to a customer’s yard. Each flagstone weighs 75 pounds. If the delivery trucks can carry a total weight of 2000 pounds, how many trucks will be needed to transport 80 flagstones in one trip? Think step-by-step. Then, provide the final answer as a single integer in the format "Answer: XXX" with no extra formatting. -->
