@@ -7,6 +7,7 @@ I compiled a list of unsaturated evals, as shown below. Afterward, I discuss som
 | Coding              | [Terminal-Bench 2](https://www.tbench.ai/leaderboard/terminal-bench/2.0)    | 59%                                       |
 | Coding              | [LiveCodeBench Pro](https://livecodebenchpro.com/)                          | 49%                                       |
 | Coding              | [SWE-rebench](https://swe-rebench.com/)                                     | 44% (no gemini 3 yet)                     |
+| Coding              | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                 | 25%                                       |
 | Puzzles             | [ARC-AGI 2](https://arcprize.org/leaderboard)                               | 45%                                       |
 | Puzzles             | [EnigmaEval](https://scale.com/leaderboard/enigma_eval)                     | 19%                                       |
 | Puzzles             | [SimpleBench](https://simple-bench.com/)                                    | 76%                                       |
@@ -68,64 +69,64 @@ Write the complete Python code for a new LLM eval, where model calls use the abo
 ```
 
 ### prompt 2
-do not use tools. 9.11-9.8=
-
-### prompt 3
 
 ```
-The following is a list of current Stanford CS PhDs; find where they attended undergrad. Each line in the output should be in the format of "{name} | {school}". Avoid citations so that I can easily copy and paste later. If the school is not found, say "unknown" as the school.
+The following is a list of current Stanford CS PhDs; find where they attended undergrad. Each line in the output should be in the format of "{name} | {school}". Do not output any citations or annotations. Use the web browsing tool. Do not ask followup questions. If the school is not found, say "unknown" as the school.
 
-FNU Aditi
-Ahmed Ahmed
-Samuel Alber
-Ali Alkhatib
-Daneshvar Amrollahi
-Leni Aniva
-Aryaman Arora
-Simran Arora
-Luke Bailey
-Neil Band
 Andy Bartolo
-Michael Dawit Bereket
-Keller Blackwell
-Guy Blanc
-Beleicia Bullock
-Steven Cao
-Eric Chan
-Keshigeyan Chandrasegaran
-Francois Chaubard
-Liangyu Chen
+Tianlang Chen
+Jared Davis
+Boyang Deng
+Nate Diamant
+Perry Ang Dong
+Ben Driscoll
+Alireza Haqi
+Qiantan Hong
+Yunfan Jiang
+Evan Laufer
+Matthew Liu
+Katherine Mohr
+Michael Poli
+Diana Popescu
+Yicheng Qian
+Daniel Richman
+Yingxuan Tan
+Sierra Wang
+Haoran Xu
 ```
 
 The answer key is below.
 
 ```
-FNU Aditi | Indian Institute of Technology Delhi
-Ahmed Ahmed | Stanford University
-Samuel Alber | University of California, Berkeley
-Ali Alkhatib | University of California, Irvine
-Daneshvar Amrollahi | University of Tehran
-Leni Aniva | University of Waterloo
-Aryaman Arora | Georgetown University
-Simran Arora | University of Pennsylvania
-Luke Bailey | Harvard University
-Neil Band | Harvard University
 Andy Bartolo | Stanford University
-Michael Dawit Bereket | Stanford University
-Keller Blackwell | University of South Florida
-Guy Blanc | Stanford University
-Beleicia Bullock | Bowdoin College
-Steven Cao | University of California, Berkeley
-Eric Chan | Yale University
-Keshigeyan Chandrasegaran | Singapore University of Technology and Design
-Francois Chaubard | University of Delaware
-Liangyu Chen | Nanyang Technological University
+Tianlang Chen | Peking University
+Jared Davis | Washington University in St. Louis
+Boyang Deng | Beihang University
+Nate Diamant | Harvey Mudd College
+Perry Ang Dong | University of California, Berkeley
+Ben Driscoll | University of California, Berkeley
+Alireza Haqi | Sharif University of Technology
+Qiantan Hong | Massachusetts Institute of Technology
+Yunfan Jiang | University of Edinburgh
+Evan Laufer | University of California, San Diego
+Matthew Liu | University of California, Berkeley
+Katherine Mohr | Massachusetts Institute of Technology
+Michael Poli | Nanjing University, University of Bologna
+Diana Popescu | Georgia Institute of Technology
+Yicheng Qian | Peking University
+Daniel Richman | Massachusetts Institute of Technology
+Yingxuan Tan | Rice University
+Sierra Wang | University of Washington
+Haoran Xu | Massachusetts Institute of Technology
 ```
 
-
-#### prompt 4
-This question is from GSM8k. 
-A landscaping company is delivering flagstones to a customer’s yard. Each flagstone weighs 75 pounds. If the delivery trucks can carry a total weight of 2000 pounds, how many trucks will be needed to transport 80 flagstones in one trip?
+Kimi K2: 19/20
+GPT5 Thinking: 15/20
+Claude: 7/20
+Qwen3-Max: 6/20
+Gemini 3: 0/20
+Grok 4.1: 0/20
+Deepseek V3.2: 0/20
 
 
 #### Usability
