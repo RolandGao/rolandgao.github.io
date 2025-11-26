@@ -14,6 +14,13 @@
       "path": "/blog/path_to_agi/",
       "date": "2025-06-01",
       "dateDisplay": "June 1, 2025"
+    },
+    {
+      "id": "undergrads_of_top_cs_phds",
+      "title": "Undergrads of Top CS PhDs",
+      "path": "/blog/undergrads_of_top_cs_phds/",
+      "date": "2025-11-26",
+      "dateDisplay": "November 26, 2025"
     }
   ]
 }
