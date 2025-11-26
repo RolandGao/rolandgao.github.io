@@ -6,6 +6,8 @@ A lot has changed over the past five years. ChatGPT launched in 2022 and took th
 
 So in 2025, I collected the statistics again to see what’s changed. Unlike the Redditor five years ago, I used ChatGPT to collect and analyze the data rather than manually looking everything up.
 
+github repo: [here](https://github.com/RolandGao/stanford_cs_phds/tree/main)
+
 ## Stanford CS PhD
 
 There are 338 Stanford CS PhD students in total. ChatGPT found undergraduate institutions for 328 of them, and I manually found six more. Only four remain unknown.
