@@ -27,6 +27,7 @@ Formal Conjectures: https://github.com/google-deepmind/formal-conjectures, no le
 GDPval: https://evals.openai.com/gdpval/leaderboard, no gemini 3
 lmarena: https://lmarena.ai/leaderboard 
 https://www.vals.ai/benchmarks/vibe-code
+https://www.scbench.ai/
 -->
 
 ## Video games
@@ -40,8 +41,7 @@ A particular game that I care about is Go. How do we develop an LLM learning alg
 Web browsing is my main use case for LLMs. If one google search request can give me the answer, I will use google search. Otherwise, I will use ChatGPT. Many of my queries requires synthesizing information across 10+ articles, so ChatGPT can save me a lot of time. The problem with Web Browsing right now is there's not enough effort in frontier labs to improve the performance here. Web Browsing somehow doesn't get as much attention as math or coding. For one, there's only one browsing benchmark, BrowseComp, and there's no public leaderboard for this benchmark. Worse, I'm not sure whether all the APIs have support for web search. This is one case where the App experience might be more advanced than the API experience. 
 
 ## Usability
-when gemini 3 is still thinking and i refresh the web page, the entry is gone. web browsing is bad.
-
+For me, ChatGPT has the best user experience. If Gemini 3 is still thinking when I refresh the browser or close the app, the conversation is gone. I would have to stay on the page until it finishes thinking, which wastes time. ChatGPT does not have this problem, and I can have 10 different conversations in parallel. 
 
 ## Some prompts I use to evaluate models
 
@@ -127,11 +127,6 @@ Qwen3-Max: 6/20
 Gemini 3: 0/20
 Grok 4.1: 0/20
 Deepseek V3.2: 0/20
-
-
-#### Usability
-ChatGPT is still the most usable model. 
-
 
 <!-- what moves should i do for 2x a week full body strength training
 help edit my blog post for grammar and style. do not make unnecessary changes. i usually need to prompt it a few times to correct all the mistakes
