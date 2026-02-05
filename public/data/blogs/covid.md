@@ -80,3 +80,14 @@ On average, COVID is contagious from 2 days before symptoms appear to 7 days aft
 ## How to recover from COVID
 
 Rest as much as possible to reduce the probability of developing Long COVID. Avoid exercise for at least 3 weeks and avoid work until symptoms improve.
+
+## The future
+Whenever a host is infected, the virus mutates. As long as humans and animals continue to contract the virus, it will keep mutating to evade current immunity. With current knowledge, no cure exists, and no vaccine guarantees complete immunity.
+
+The long-term consequences of COVID will likely manifest as increased rates of heart disease and other chronic illnesses, potentially without people realizing that COVID is the root cause.
+
+Given the history of pandemics, we can anticipate future outbreaks that may kill millions of people and cause trillions of dollars in economic damage.
+
+However, there is hope. World leaders can learn from the COVID pandemic and better prepare for the next one. Technology is rapidly improving and will accelerate even further with the help of AI. For example, AlphaFold has transformed drug discovery, and a universal flu or COVID vaccine could become a reality within the next 5–10 years.
+
+As an AI researcher, I have the potential to create new knowledge that saves lives. The vision of a better future motivates me to work harder and make that future a reality.
