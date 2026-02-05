@@ -66,6 +66,9 @@ The mRNA vaccines carry a potential risk of myocarditis, particularly in young m
 
 <img src="/data/images/covid2.png" width="400" alt="image2">
 
+## Avoid the flu as well
+Even though the long-term consequences of the flu are much less than that of COVID, avoiding the flu is still worthwhile. It's possible to get the flu and COVID at the same time, potentially worsening the symptoms. The flu vaccine is much safer than the COVID vaccine. Serious side effects from the flu vaccine occur in less than 2 per million, and it does not cause myocarditis. According to [data from the CDC](https://www.cdc.gov/fluview/surveillance/2026-week-03.html), the flu is most prevalent from the last week of October to the end March. Thus, get the flu vaccine some time in October. 
+
 ## How to not pass COVID to others
 
 Know whether you are contagious. While contagious, you should self-isolate or wear a mask when meeting others. If you plan to hang out with friends, inform them that you have COVID and cannot attend.
