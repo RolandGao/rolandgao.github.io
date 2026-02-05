@@ -21,6 +21,13 @@
       "path": "/blog/undergrads_of_top_cs_phds/",
       "date": "2025-11-26",
       "dateDisplay": "November 26, 2025"
+    },
+    {
+      "id": "covid",
+      "title": "Avoiding COVID",
+      "path": "/blog/covid/",
+      "date": "2026-02-04",
+      "dateDisplay": "February 4, 2026"
     }
   ]
 }

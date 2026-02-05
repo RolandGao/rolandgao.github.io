@@ -28,6 +28,7 @@ GDPval: https://evals.openai.com/gdpval/leaderboard, no gemini 3
 lmarena: https://lmarena.ai/leaderboard 
 https://www.vals.ai/benchmarks/vibe-code
 https://www.scbench.ai/
+https://qwenlm.github.io/Qwen-Agent/en/benchmarks/deepplanning/
 -->
 
 ## Video games

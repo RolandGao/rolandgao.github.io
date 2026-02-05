@@ -9,6 +9,8 @@ But I argue that they all fall under the generalized learning paradigm of sequen
 we can define a tool call called sft that takes in three parameters. 
 sft(prompt, response, weight)
 
+TODO: revolutionizes reasoning. individual CoT is costly. what if the second CoT can see the first CoT? how about discrete vs continuous tokens?
+
 ## pretraining
 Input: data with no structure
 
