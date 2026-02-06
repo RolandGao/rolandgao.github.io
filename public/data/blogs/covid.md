@@ -26,8 +26,8 @@ Therefore, be extra careful during those periods.
 To contract COVID, one needs to inhale around [100 to 1,000 viral particles](https://www.google.com/search?q=https://pmc.ncbi.nlm.nih.gov/articles/PMC8082124/%23:~:text%3DAerosol%2520transmission%2520seemed%2520to%2520raise,small%252C%2520perhaps%2520about%2520100%2520particles.). If a contagious person is:
 
 1. Physically close to you,
-2. Coughing, shouting, or singing,
-3. In a poorly ventilated place,
+2. Coughing or shouting
+3. Indoors,
 4. Next to you for a long time,
 
 then there will be more viral particles in the air for you to inhale and potentially get sick.
@@ -47,9 +47,11 @@ As a heuristic: if you are within 6 feet of a contagious person for more than 15
 
 Wearing a mask, preferably an N95, is a highly effective way to prevent COVID.
 
-Be more careful during months of high prevalence. Wear a mask in public spaces. When hanging out with friends without a mask, ask everyone to take a test beforehand. If someone is coughing, they are likely contagious with some kind of respiratory disease.
+Be more careful during months of high prevalence. Wear a mask in public spaces. If someone is coughing, they are likely contagious with some kind of respiratory disease.
 
-Consider your network of friends and "friends of friends" (defining a "friend" here as someone you meet in person without a mask). If any one of them has COVID, you are at an increased risk of infection. Without knowing the details of everyone's habits, the most effective approach is to reduce the size of this network. A good strategy might be to prioritize friends who primarily hang out with you and no one else.
+When hanging out with friends without a mask, ask everyone to take a test beforehand.
+
+Consider your network of friends and "friends of friends" (defining a "friend" here as someone you meet in person without a mask). If any one of them has COVID, you are at an increased risk of infection. A good strategy might be to prioritize friends who primarily hang out with you and no one else.
 
 ## Vaccine
 
@@ -62,9 +64,7 @@ According to [this analysis](https://www.cidrap.umn.edu/covid-19/analysis-last-y
 
 Although protection against infection is limited, protection against hospitalization or death is significantly higher.
 
-The mRNA vaccines carry a potential risk of myocarditis, particularly in young men. However, the risk of myocarditis is higher from a natural infection, so vaccination may be worth it, especially if timed right before a two-month spike. Due to the risk of myocarditis, wait two weeks before resuming heavy exercise and start slowly. The flu vaccine does not cause myocarditis, so getting it is advisable, usually right before November. 
-
-<img src="/data/images/covid2.png" width="400" alt="image2">
+According to [this recent study by Stanford](https://med.stanford.edu/news/all-news/2025/12/myocarditis-vaccine-covid.html), young men have a 0.01% chance of developing myocarditis from the mRNA vaccine, but a 10x chance (0.1%) from an actual infection. Thus, vaccination right before the next wave might still be worth it. Due to the risk of myocarditis, wait two weeks before resuming heavy exercise and start slowly.
 
 ## Avoid the flu as well
 Even though the long-term consequences of the flu are much less than that of COVID, avoiding the flu is still worthwhile. It's possible to get the flu and COVID at the same time, potentially worsening the symptoms. The flu vaccine is much safer than the COVID vaccine. Serious side effects from the flu vaccine occur in less than 2 per million, and it does not cause myocarditis. According to [data from the CDC](https://www.cdc.gov/fluview/surveillance/2026-week-03.html), the flu is most prevalent from the last week of October to the end March. Thus, get the flu vaccine some time in October. 
@@ -75,7 +75,7 @@ Know whether you are contagious. While contagious, you should self-isolate or we
 
 Buy antigen test kits on Amazon. Since tests can yield false negatives, it is advisable to test repeatedly over several days; treat the result as positive if *any* single test comes back positive. Even if the line is very faint, the result is considered positive. If the test is positive, you are contagious.
 
-On average, COVID is contagious from 2 days before symptoms appear to 7 days after they appear.
+Even though symptoms take 3 days to appear, you can be contagious 1 day before symptoms appear. You are usually contagious for 10 days. 
 
 ## How to recover from COVID
 
