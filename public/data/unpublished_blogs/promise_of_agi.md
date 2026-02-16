@@ -12,3 +12,8 @@ Better transportation, faster and safer planes, no wait time at airport. Safer c
 
 rewrite the entire linux github repo in Rust.
 create a clone of Instagram that has the same UI interations.
+
+
+
+
+creating a new algorithm in AI is like sliding your hand and the earth is instantly cut in half. outsized return. 
