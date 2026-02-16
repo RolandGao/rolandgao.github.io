@@ -44,17 +44,21 @@ The results of my independent testing are shown below. Then, I describe each que
 Grok4.1 does surprisingly well, given its absence in many public benchmarks.
 
 
-| Model | Q1 (Web) | Q2 (Web) | Q3 (Usability) | Q4 (Health) | Q5 (Education) | Q6 (Intelligence) | Avg (excl. Q3) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Claude Opus 4.6 | 6/10 | 10/12 | 0/1 | 7.5/9 | 1/1 | 0/1 | 65.3% |
-| Grok4.1 | 8/10 | 9/12 | 1/1 | 4/9 | 1/1 | 0/1 | 59.9% |
-| Gemini 3 Pro | 7/10 | 8/12 | 0/1 | 5/9 | 1/1 | 0/1 | 58.4% |
-| Claude Sonnet 4.5 | 4/10 | 4/12 | 0/1 | 6.5/9 | 1/1 | 0/1 | 49.1% |
-| gpt5.2 | 9/10 | 8/12 | 1/1 | 7/9 | 0/1 | 0/1 | 46.9% |
-| Kimi k2.5 | 7/10 | 6/12 | 1/1 | 6/9 | 0/1 | 0/1 | 37.3% |
-| Qwen3-Max | 3/10 | 8/12 | 0/1 | 6/9 | 0/1 | 0/1 | 32.7% |
-| GLM-5 | 2/10 | 0/12 | 0/1 | 0/9 | 1/1 | 0/1 | 24.0% |
-| Deepseek V3.2 | 3/10 | 0/12 | 1/1 | 2/9 | 0/1 | 0/1 | 10.4% |
+| Model             |   Q1 |    Q2 |     Q3 |        Q4 |  Q5 |        Q6 |  Avg (excl. Q6) |
+| ----------------- | ---: | ----: | -----: | --------: | --: | --------: | -------: |
+|    Topic    |  Web |   Web | Health | Education |  IQ | Usability | --- |
+| Claude Opus 4.6   | 6/10 | 10/12 |  7.5/9 |       1/1 | 0/1 |       0/1 |      65% |
+| Grok 4.1          | 8/10 |  9/12 |    4/9 |       1/1 | 0/1 |       1/1 |      60% |
+| Gemini 3 Pro      | 7/10 |  8/12 |    5/9 |       1/1 | 0/1 |       0/1 |      58% |
+| Claude Sonnet 4.5 | 4/10 |  4/12 |  6.5/9 |       1/1 | 0/1 |       0/1 |      49% |
+| GPT-5.2           | 9/10 |  8/12 |    7/9 |       0/1 | 0/1 |       1/1 |      47% |
+| Kimi K2.5         | 7/10 |  6/12 |    6/9 |       0/1 | 0/1 |       1/1 |      37% |
+| Qwen3-Max         | 3/10 |  8/12 |    6/9 |       0/1 | 0/1 |       0/1 |      33% |
+| GLM-5             | 2/10 |  0/12 |    0/9 |       1/1 | 0/1 |       0/1 |      24% |
+| DeepSeek V3.2     | 3/10 |  0/12 |    2/9 |       0/1 | 0/1 |       1/1 |      10% |
+
+
+
 
 
 <!-- 
@@ -154,24 +158,14 @@ The answer to this question is also the first section of this blog.
 
 The challenge in this question is that some leaderboards are outdated and the AI has to read the recent blogs on Claude Opus 4.6, Gemini 3 Deep Think, and GPT Codex 5.3 to get the up-to-date numbers. 
 
-
 ### Q3
-```
-Not a prompt for the LLM.
-Check whether the conversation persist after a website refresh,
-and whether the website allows many sessions at once.
-```
-
-Sadly, Gemini and Claude have some restrictions here, perhaps to slow per-user usage.
-
-### Q4
 ```
 list all the factors for increasing or lowering the risk of heart disease in a table and provide the statistical risk impact of each
 ```
 
 I have a list of nine factors that I selected beforehand after doing extensive research. A few factors on my list are less well known, making this question challenging.
 
-### Q5
+### Q4
 ```
 design a self-study cs curriculum that can get you a job at google or meta. 
 ```
@@ -179,9 +173,7 @@ design a self-study cs curriculum that can get you a job at google or meta.
 This is subjective, but I'd say I have good taste on this topic. 
 
 
-### Q6
-I discovered a prompt that fails all current LLMs. The prompt basically asks the LLM to create an eval that it cannot solve itself. Prompts like this can potentially be used in an RL training algorithm where learning iterates between an attacker and a defender, with continuous self-improvement potential.
-
+### Q5
 ```
 from openai import OpenAI
 
@@ -201,6 +193,17 @@ Write the complete Python code for a new LLM eval, where model calls use the abo
 4. The inputs and outputs are text only; no images or audio
 
 ```
+
+I discovered a prompt that fails all current LLMs. The prompt basically asks the LLM to create an eval that it cannot solve itself. Prompts like this can potentially be used in an RL training algorithm where learning iterates between an attacker and a defender, with continuous self-improvement potential.
+
+### Q6
+```
+Not a prompt for the LLM.
+Check whether the conversation persist after a website refresh,
+and whether the website allows many sessions at once.
+```
+
+Sadly, Gemini and Claude have some restrictions here, perhaps to slow per-user usage.
 
 ## Video games
 Improving LLM performance on video games is a great step toward achieving physical intelligence. Simulated environments can be made to mimic real environments, and an algorithm that outperforms other algorithms in the simulated environment is likely to outperform in the real environment as well. Video games challenge LLMs on many fronts, including image understanding, long context, and reasoning.
