@@ -34,6 +34,7 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 Formal Conjectures: https://github.com/google-deepmind/formal-conjectures, no leaderboard
 iq test: https://www.trackingai.org/home
+https://livecodebench.github.io/gso.html
 -->
 
 
@@ -58,10 +59,31 @@ Grok4.1 does surprisingly well, given its absence in many public benchmarks.
 | DeepSeek V3.2     | 3/10 |  0/12 |    2/9 |       0/1 | 0/1 |       1/1 |      10% |
 
 
+## Additional testing of top models
+| Metric                       | Claude Opus 4.6 |  Grok 4.1 |   GPT-5.2 | Gemini 3.1 Pro |   GPT-5.4 | GPT-5.4 Extended Thinking |
+| ---------------------------- | --------------: | --------: | --------: | -------------: | --------: | ------------------------: |
+| Web (benchmarks)             |            6/10 |      8/10 |      9/10 |           8/10 |      9/10 |                      7/10 |
+| Web (benchmark numbers)      |           10/12 |      9/12 |      8/12 |         8.5/12 |      6/12 |                      9/12 |
+| Health                       |           7.5/9 |       4/9 |       7/9 |            4/9 |       4/9 |                     6.5/9 |
+| Education                    |             1/1 |       1/1 |       0/1 |            1/1 |     0.5/1 |                       0/1 |
+| IQ                           |             0/1 |       0/1 |       0/1 |            0/1 |       0/1 |                       0/1 |
+| Usability                    |             0/1 |       1/1 |       1/1 |            0/1 |       1/1 |                       1/1 |
+| Web (uoft cs phds)           |          86/200 |    58/200 |    29/200 |         18/200 |    25/200 |                    50/200 |
+| Web (frontier ai labs)       |          31/100 |    31/100 |    24/100 |         19/100 |    20/100 |                    50/100 |
+| Tax 1                        |           0.5/1 |       0/1 |    0.75/1 |            1/1 |       0/1 |                     0.5/1 |
+| Immigration 1                |             1/3 |       0/3 |       0/3 |            0/3 |       0/3 |                       0/3 |
+| Immigration 2                |             1/3 |       0/3 |       3/3 |            3/3 |       0/3 |                       1/3 |
+| **Avg (mean of row scores)** |       **47.0%** | **41.8%** | **49.8%** |      **47.6%** | **36.3%** |                 **43.2%** |
 
 
 
 <!-- 
+
+grok4.2: 
+q1: 7/10
+q2: 9/12
+q3: 6.5
+q4: 0.5/1
 
 claude opus 4.6: education 1/1, search 6/10, search 10/12, health 7.5, eval 0/1, usability 0/1
 
@@ -124,13 +146,72 @@ gpt5.2: 0/1
 Grok: 1/1
 Claude Sonnet 4.5: 1/1
 
+list all the profs at university of toronto that do research in machine learning and the number of phd students each has
+
+Colin Raffel
+
+gpt5.2: 0/4
+gemini 3: 2/4
+grok: 2/4
+claude: 1/4, no attempt on getting num students
+kimi: 2/4
+
+find as many current cs phds at university of toronto
+grok4.2: 201
+claude: 86
+gemini 3: 59
+grok4.1: 58
+gpt5.2: 29
+kimi: 39
+gemini 3.1 pro: 18
+
+
+
+find as many US-based frontier AI companies as possible
+claude: 31
+grok4.2: 31
+openai: 24
+gemini 3.1 pro: 19
+kii: 31. 
+
+
+all AIs said TML except gpt5.2. 
+grok is the only AI that said humans&. 
+
+what's the relationship between batch size, learning rate, and weight decay in a neural network
+
+given 50% employer match, 300K salary, age 25, how much money can i put into 401k in 2025?
+grok4.1: 0/1
+grok4.2: 0/1
+claude opus4.6: 0.5/1 mentioned mega backdoor, but no calculation
+gpt5.2: 0.75/1, mentioned mega backdoor, showed calc, but no sum
+gemini 3.1 pro: 1/1
+
+
+
+how long can i stay in the us as a tourist? Im canadian
+return ticket, lease. could deny entry
+gpt5.2: 0/3
+grok4.1: 0/3
+claude opus4.6: 1/3
+gemini 3.1 pro: 0/1
+
+after quitting my job on a TN visa and going back to canada, how long can i stay in the US on a tourist visa?
+return ticket, lease. could deny entry
+gpt5.2: 3/3, could deny entry, return ticket, job, lease, family
+grok4.1: 0/3, residence, employment prospects, or family
+claude opus4.6: 1/3, a home, a job, family. could be denied entry
+gemini3.1 pro: 3/3. lease or mortgage, utility bills, return ticket
+
+# https://techcrunch.com/2026/02/17/here-are-the-17-us-based-ai-companies-that-have-raised-100m-or-more-in-2026/
+
 -->
 
 
 
 ### Q1
 ```
-find 10 benchmarks with public leaderboards where gemini 3 pro and gpt5.2 cannot achieve a 50% accuracy. Provide a link to the leaderboard, and report the score of gemini 3 pro and gpt5.2
+find 10 benchmarks with public leaderboards where gemini 3 pro and gpt5.2 cannot achieve a 50% accuracy. Provide a link to the leaderboard, and report the score of gemini 3 pro and gpt5.2. two benchmarks are considered the same if they are just variants of the same thing.
 ```
 
 The answer to this question is basically the first section of this blog.

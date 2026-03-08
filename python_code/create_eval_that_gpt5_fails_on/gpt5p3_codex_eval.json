@@ -1,0 +1,103 @@
+{
+  "name": "gpt5p3_codex_text_only_calibrated_eval",
+  "created_at_utc": "2026-03-06T07:57:00.763216+00:00",
+  "model_under_test": "gpt-5 with code_interpreter(auto)",
+  "constraints": [
+    "gpt-5 with code_interpreter fails at least one kept item",
+    "text-only input/output",
+    "human-solvable with the same tool and constraints",
+    "no policy-violating content"
+  ],
+  "time_limit_minutes": 20,
+  "build": {
+    "seed": 7,
+    "num_candidates": 8,
+    "keep": 1,
+    "total_failures_found": 6
+  },
+  "items": [
+    {
+      "id": "cand_0000",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\nsV1\\tGK好Nx·HİdEM64JgM文5H５Re﻿﻿·H９·1GeF０To4U\n中R９q０ZP·９\\u200dayN文J５H‍cé好5rΩ·9xphZhL９p你éu\n8n​KRı4XuVß4F\\x41K０９ruv é·9JMkЖ\\x41JHq\\n９8\nn0\\x41vCΩwX‌QéHdnSh11éLX82文mT6文m4wzfVLYVf\\\nfBß—ZjnAU4好y‌５rSı‍\\t\\u03A9G9０1121Pλ\\u200d2\nHaJc7WQu GPA５V好Nx‌DKc‌zV\\u200div​xЖRQßΩλλq\nLUPujλWøCc你xU中D你p\\nMjøxXwe好中İt\\u200de‌ag2f\nbøéwDDmЖja​v8vxLePfЖbucλ‍‌Aλ\\tv\\nL\\\\R0bλY6\n\\u200dtM1Ω2LWXSDV—Ω\\tU‌ Ж\\\\vV文文SCB\\tP你T6ad\nDidoİg—sj中4SHw9\\\\·ø4İS好V你ıC7Z​AVYUЖ‍R０Hsø你\n０λP０HhamFNİ8０DJ7s‌İ​ıbm8ı好λİhøj０b8T4R17rK\\\ng5Kd\\x41pRV\\n\\\\xUiTΩeN1ßW\\x41eW6ı2u4bwrMxC\\nEND_DATA",
+      "expected_answer": "505e0190abfd55c114aa63f5a4abcf94",
+      "model_output": "7421c7af1db02d4525eef5a03b3fd431",
+      "model_extracted_answer": "7421c7af1db02d4525eef5a03b3fd431",
+      "model_passed": false,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    }
+  ],
+  "all_candidate_results": [
+    {
+      "id": "cand_0000",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\nsV1\\tGK好Nx·HİdEM64JgM文5H５Re﻿﻿·H９·1GeF０To4U\n中R９q０ZP·９\\u200dayN文J５H‍cé好5rΩ·9xphZhL９p你éu\n8n​KRı4XuVß4F\\x41K０９ruv é·9JMkЖ\\x41JHq\\n９8\nn0\\x41vCΩwX‌QéHdnSh11éLX82文mT6文m4wzfVLYVf\\\nfBß—ZjnAU4好y‌５rSı‍\\t\\u03A9G9０1121Pλ\\u200d2\nHaJc7WQu GPA５V好Nx‌DKc‌zV\\u200div​xЖRQßΩλλq\nLUPujλWøCc你xU中D你p\\nMjøxXwe好中İt\\u200de‌ag2f\nbøéwDDmЖja​v8vxLePfЖbucλ‍‌Aλ\\tv\\nL\\\\R0bλY6\n\\u200dtM1Ω2LWXSDV—Ω\\tU‌ Ж\\\\vV文文SCB\\tP你T6ad\nDidoİg—sj中4SHw9\\\\·ø4İS好V你ıC7Z​AVYUЖ‍R０Hsø你\n０λP０HhamFNİ8０DJ7s‌İ​ıbm8ı好λİhøj０b8T4R17rK\\\ng5Kd\\x41pRV\\n\\\\xUiTΩeN1ßW\\x41eW6ı2u4bwrMxC\\nEND_DATA",
+      "expected_answer": "505e0190abfd55c114aa63f5a4abcf94",
+      "model_output": "7421c7af1db02d4525eef5a03b3fd431",
+      "model_extracted_answer": "7421c7af1db02d4525eef5a03b3fd431",
+      "model_passed": false,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    },
+    {
+      "id": "cand_0001",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\nu文97C0tø‍oıJQfPLjkFZkS5\\u03A9j2V好ı９ésMmHZ5\nKkC\\u200dMjL​eJjR9Bu文4k‍SF你gQWjGZbq﻿q你co8İ\n\\u03A9YkvCiEBCİ文aıЖh8P\\\\\\t6\\\\é中1İqdfub\\u20\nT2vGSBK﻿i6WHL\\x41zİ\\x41n hoF9ZWk8Ajxt文shEq\ndwZAtzLЖmİ\\tbhİAMjMU2—F1Cpp﻿fL·你V\\\\ 0séVn‍\n\\nUFı﻿5İT你İ５C·\\nfLDFT\\u200dxPz8０G﻿C﻿好hßjA9\nJİ好M\\\\你JЖiKjgcf\\t9ézKλnF‌﻿\\nbK Uti\\tp‍５TBλ\nHßk\\u03A9Nd\\u03A9ßoønΩΩΩR文bqLЖCo9Kİ8k0ccK·\nMU你jxS​﻿ımQxféß1DWAß82pU4vzrRtAsu1RbBoiyJ1\n0—Kx5mGmPG\\\\n\\u200dVhk6ıray5D﻿2文文cLG38‌T\\n\nnßG文SXЖ4unpi\\tj2\\tgpλ０\\x411RX\\nWKcİé文e8t85\nT文ahMYu０Mrgyj５bC303你czkuHém９xSİ你﻿dMkh02\\n8\\nEND_DATA",
+      "expected_answer": "ed4ebaffb63294e9459216fc85981559",
+      "model_output": "ed4ebaffb63294e9459216fc85981559",
+      "model_extracted_answer": "ed4ebaffb63294e9459216fc85981559",
+      "model_passed": true,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    },
+    {
+      "id": "cand_0002",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\n6qCSE5Ж—ßAK1你Ω8hPeVVøP\\n9L文FASf５E\\npS﻿i你\\u\n6QNKp你·a0je AB好p9mr\\nhЖ你g文hD3\\tqHCaé\\u03A9\n\\n4Lif\\x415yféEu4x1bAoİJcébqafΩejoP‍é‌Zeß4\n\\x41H U1GdD U4GHZ18rQLXtaZ\\t你ΩEq\\x41zyt7XP\nALmLv4R０czwq6MGЖby中8asxЖD﻿3h﻿2FzEΩJHiaJ​ux\nkt‌FjrmpA \\u200dJDfPЖΩ0i6éSéZBpV​gsr9x Lıb\n1Wh3J\\tEλ文中sW5PKj‍LcN4é8YfT49‍\\u03A9g好\\x41\nRoom５kyijb7hZhgVn·asJ1ihİ你f\\tN\\tΩEPAЖf8yFo\nfRGa ·aKyıY8​j\\x41AP\\u200d ‍vdEyuUFciE \\tc\nBs3\\u03A9yZ‍qKcEé文λJ3N1\\\\文V\\u200d好M\\tW1k3n\n\\x41q4Gq５w44Cx\\nb12cA6W5QM2９x9WSBG文U\\n1M９‍\nyİXUvnWøXJP0ßbpSFλrG​\\u200d0M‍W\\u200de‍2‌b\\nEND_DATA",
+      "expected_answer": "61bf9de62d5e8e898917f430917790f1",
+      "model_output": "ef99c172d16690068d5282bfe6c63130",
+      "model_extracted_answer": "ef99c172d16690068d5282bfe6c63130",
+      "model_passed": false,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    },
+    {
+      "id": "cand_0003",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\nЖZ５dF2øW0wRVhaF０\\u03A9E\\x41sR0 9文﻿q\\t4q·h5\n0\\\\y8İ7YCA‍ßΩg8‍9YЖ2PJSw6xM7İı\\\\FF\\u200dSL\nrıLGİz\\tTDJ‌QaSßnXeJv‌iWs‌m9Uiİλc—j‌İgryEb\nZ2W\\u200dm\\u03A9szXjQ你G\\u200dx8０ø·Pi好﻿1yjz\ny９UxtL7fY‌Goøiq\\u200d·\\\\rAEeVo‌﻿64ıxGSßf‌\\\nFCGA５wpPøw好e3·p—Tcx‍ЖWTBhV8NJ\\u200dU\\x41k2\njBH\\n０v \\n·7​øéhXAFH好D2ZgWHPB‌文\\\\bU3bø​\\nİ\n\\n\\n4‌YıqJp﻿Gλ好Az6ΩL\\t8YePjf\\nERtjGk\\u200d\n文\\u03A96øjo\\ndLİBXjgbWsa0t gz﻿\\x41好ЖЖ你AD6f\n９qd1‍·K５XUEDQP‍WvUDDFT\\n\\u200dFJFJ—xb好\\x41\nJ0PhccQEE\\u200dM﻿﻿nλNSN\\ncoru5jCvinGys​İЖn\n‍D3D6øNvЖG好５dM９nX6A你bnGAvßNßZé—vıj９WndféXQ\\nEND_DATA",
+      "expected_answer": "dc3f85adb897a96ebc18cc854167ed04",
+      "model_output": "3b4d78787da0954911ca881fbca2421a",
+      "model_extracted_answer": "3b4d78787da0954911ca881fbca2421a",
+      "model_passed": false,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    },
+    {
+      "id": "cand_0004",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\n\\u200dLß０P﻿swN21M5\\nDycpj5中İXz﻿f9S好 ​\\nEv·\nsøV8\\\\文sXΩ7i·fStΩ\\ngİakp‍VVhs​øvWgsajPX\\\\P\nb0VUpp6mbP\\u200dPmc0ΩEB26eİ﻿oΩCUi​2Ah6９—\\n\n4f\\x41\\t\\n·f\\u03A9Z\\nR96rj﻿N4h2﻿Wi5λ9C‍3ø\\\n\\\\Z\\tsB0ßPEi中dWbøvN９9中cЖıC\\u200dyøu39cZ1ıR\n‌w\\u200dHimz2HBK44﻿\\u03A9w·jPep2你e1ΩdXSJ\\u\naЖ\\n０eUw\\x41\\u200d3Ωo文\\tSЖwfkzi5\\u03A9ZλAm\nwh\\tpsλß5‍\\u200dL\\\\xVp0HL５sT你v\\u200d·B\\\\Bc\nK\\toi​N·UfZ8vVc2好X‌​M\\x41文\\u200dpbéd你L7\\x4\nQ０Rj4fTЖé０HλΩUßhéX中 AWsΩ５é\\x41oΩy54\\u03A9K\nZ\\u200dx\\u200d\\nDC‌FtNıλßUEd4﻿SuN\\\\xuЖ你文cn\n6u5i文Goowé2tİkİvc\\téRtarpS—\\u200dMF2文2中９G2\\nEND_DATA",
+      "expected_answer": "83b496fb3f63f98a4e58c534db3a06db",
+      "model_output": "d8766813787815b4d638974933d4c544",
+      "model_extracted_answer": "d8766813787815b4d638974933d4c544",
+      "model_passed": false,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    },
+    {
+      "id": "cand_0005",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\npPAFaЖ​\\\\Hİ中‌z‌U﻿\\u03A9 LdF\\x41\\u200d9﻿YN\\\nZE4N\\tByTq０jpZ4ErC6５\\n·Gé５øFR4９28JB0 —\\\\VЖ\n3文PL\\nЖdV﻿B5AB\\x41RMdRSЖCm５h8ZGxULo﻿０é9\\x4\niGEBHB\\t‍L0qq Xß​Hry９7Ж\\u03A9XUQx\\nW﻿4λ08k\n５tomH‍\\t t​BV q·5hz0z​f8nAsjk5W—FnU９Um文év好\nL中文ßzbfq​H\\u03A91Ωci—B09中M好wJf1·øjøsλİ—bad\naMZox９５w2øVhFéyPy﻿ΩLVr Dvmø​CNEc５ß—５djm5N8\n—​SiEubZzLDGE０y9ßJ \\u200d1RMir５f\\nM\\x41İ1Z\n8WygeYEiwH文DGjı\\nλHNUrAb\\u03A9p——7\\tPЖsyi0\nRyλzX7gU\\u03A9BΩaEWeK‍yT8N0C﻿K8usfλQ﻿xUteH\nZ8文U7Vk43hVDk９otXjßPr9λQVıH﻿\\x41d０λnRibx6j\nggN0o4WHoU\\u200dC7İuıT7A你nZx6F3dm９ZTZøfYb \\nEND_DATA",
+      "expected_answer": "306ae18bd8e38ba400626825cf1149c4",
+      "model_output": "291b5303a036c3ccd500acce2bbea33d",
+      "model_extracted_answer": "291b5303a036c3ccd500acce2bbea33d",
+      "model_passed": false,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    },
+    {
+      "id": "cand_0006",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\nLM​émYcT‌\\x41﻿a·qbBJø3Høvtn\\u200déMB3λT\\x4\nkhZ５xEWy９ Awø8øKRwhsz９HoPé8ıD你好TChMe‍ZXPqi\n０DCNajC \\u200d９Ωøg7PvNYFkRΩé·İmQRR2T中—ffU\\\n９Ω1XC\\u200d04 ​你E1Gxu2gt6５s2０GsøUwh5\\\\﻿BxP\n你ZJs6bİ\\x41CeT419\\u200dFFE\\n‍k\\u03A9‍k﻿中E‍\nNiRøB6gFnQqv\\nXRH ıkLΩ—好U7RıSo3９nmhM中n9‌５e\n\\t0b文x9文p‌λЖqDhteaı中0·1BwWgs０sßkndoHCW文J​v\n7\\\\Hø07wPøe\\u03A9V4u\\x41wT\\u03A9b‌‌møNЖk﻿﻿\nS3PA3文·Ré1９V4m‍​Qz89nwow1你０ 0\\nsAéz7pZ好pU6\n９z·fMts​hsc5BDGi５ép好q好‍6øø60ΩwF \\u03A9v8B\\\nJ你fN3yİ2\\t０９Va4ß27‍—u你MXxrxKqıYQ\\touı4﻿W你o\nıcİa3ZH﻿５​Pw５﻿\\u200dF3BAq文Ap1N—B\\x41DbYé文５\\nEND_DATA",
+      "expected_answer": "187728bcbf5afce204ca9a136f8d94e7",
+      "model_output": "187728bcbf5afce204ca9a136f8d94e7",
+      "model_extracted_answer": "187728bcbf5afce204ca9a136f8d94e7",
+      "model_passed": true,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    },
+    {
+      "id": "cand_0007",
+      "prompt": "Use Python in the code interpreter.\\n\\nCompute the answer exactly from this DATA block.\\n\\nRules (must be followed exactly):\\n1) DATA is the exact text between BEGIN_DATA and END_DATA, including newline characters between lines.\\n2) Do not unicode-normalize anything.\\n3) Treat backslash sequences literally (example: \\\\u200d is six characters).\\n4) Build list C of every character in DATA except newline.\\n5) Keep c in C iff ord(c) is prime OR ord(c) has exactly 3 distinct prime factors.\\n6) Convert each kept ord(c) to base-36 uppercase (digits 0-9 then A-Z).\\n7) Join these tokens using ':' to form string T.\\n8) Compute blake2s hex digest of UTF-8 bytes of T.\\n9) Output only digest[8:40] reversed, lowercase hex, exactly 32 chars.\\n\\nReturn only the 32-character answer.\\nBEGIN_DATA\\nk\\n好ıU９b3​RUWøıPDNKXøßΩ‌6H\\tB·sUgwmXEk﻿N·J\nva8‍0CGe1·F7G‍gheFW—YrA9p4​iéJh\\u03A90\\u03\n·e3q2ßChMYXwzZAo1０xQt好0t2\\tJR5v文h0aΩnvg6Em\n\\x41DuVgSMbk中S０7ΩgWywd2z﻿·cpЖİcf8\\u03A9Sj \n7—y好h2​ıdSR\\u03A9ıM中k0D\\\\５UqB0MYfsa\\\\PJ０xİ\npaJqMenS2nw2Ω﻿﻿SmYDx\\u03A9\\\\v3D\\\\Ωh2w﻿NZoQ\nk​e\\u03A9F2F​W6bpVzF文q﻿\\u200dY５f５éøi6\\x41９\nvAQ\\tnF·​GhQErcvM41‌em你Mv57uİ﻿﻿8ıG\\u03A9c5\n\\u03A9ıSßaF０jY中W\\u200dg中jhHXwv3Mb\\u200dqTT\nß\\x41λggAı7T\\nvpTU—５gt﻿R文5X\\u03A9\\x41V Ω2c\nQoBxßcFHmpbQq8QWs7Ω５xoX０KFBΩßLt５jP\\nß6ßa中s\nBwM\\nn﻿‌\\ti\\thLTDD1UoyZ\\u200d你XPq‌szZ\\nwrf\\nEND_DATA",
+      "expected_answer": "6283ab690cd2fb44c81bd27531cc62db",
+      "model_output": "0bb3226573d7d0ddf65341299441d438",
+      "model_extracted_answer": "0bb3226573d7d0ddf65341299441d438",
+      "model_passed": false,
+      "human_feasibility_note": "A human can solve this within the time limit by copying DATA into Python, implementing the rules directly, and printing the 32-char result."
+    }
+  ]
+}

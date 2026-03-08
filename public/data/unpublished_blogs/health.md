@@ -129,7 +129,7 @@ While standard LDL (Low-Density Lipoprotein) measures the *amount of cholesterol
 
 ---
 
-# LDL/apoB, lp(a), flu infection, smoking, alcohol, water, sleep, stress/loneliness
+# LDL/apoB, lp(a), flu infection, smoking, alcohol, water, sleep, stress/loneliness, exercise
 
 ### Table 2: Non-Modifiable, Biological & Medical Markers
 

@@ -25,3 +25,14 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 .venv
+.openai_api_key
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Long-context eval artifacts
+python_code/long_context/results/
+python_code/long_context/agent_memory/
+python_code/long_context/logs/
+python_code/long_context/**/*.log

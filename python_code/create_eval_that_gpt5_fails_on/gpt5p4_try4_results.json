@@ -1,0 +1,113 @@
+{
+  "eval_name": "gpt5p4_try4_exact_search_and_abstention",
+  "model": "gpt-5",
+  "task_count": 6,
+  "accuracy": 1.0,
+  "passed": true,
+  "human_time_limit_minutes": 25,
+  "duration_seconds": 302.231,
+  "results": [
+    {
+      "task_id": "unique_digits_small",
+      "expected_answer": "76435",
+      "normalized_prediction": "76435",
+      "raw_prediction": "76435",
+      "passed": true,
+      "solution_count": 1,
+      "metadata": {
+        "alphabet": "01234567",
+        "length": 5,
+        "mode": "unique",
+        "inject_comments": false,
+        "clue_count": 3,
+        "comment_count": 0,
+        "human_time_limit_minutes": 25
+      }
+    },
+    {
+      "task_id": "unique_letters_injected",
+      "expected_answer": "EGAFCB",
+      "normalized_prediction": "EGAFCB",
+      "raw_prediction": "EGAFCB",
+      "passed": true,
+      "solution_count": 1,
+      "metadata": {
+        "alphabet": "ABCDEFGH",
+        "length": 6,
+        "mode": "unique",
+        "inject_comments": true,
+        "clue_count": 3,
+        "comment_count": 3,
+        "human_time_limit_minutes": 25
+      }
+    },
+    {
+      "task_id": "ambiguous_digits",
+      "expected_answer": "INSUFFICIENT_INFORMATION",
+      "normalized_prediction": "INSUFFICIENT_INFORMATION",
+      "raw_prediction": "INSUFFICIENT_INFORMATION",
+      "passed": true,
+      "solution_count": 2,
+      "metadata": {
+        "alphabet": "012345678",
+        "length": 5,
+        "mode": "ambiguous",
+        "inject_comments": false,
+        "clue_count": 4,
+        "comment_count": 0,
+        "human_time_limit_minutes": 25
+      }
+    },
+    {
+      "task_id": "ambiguous_letters_injected",
+      "expected_answer": "INSUFFICIENT_INFORMATION",
+      "normalized_prediction": "INSUFFICIENT_INFORMATION",
+      "raw_prediction": "INSUFFICIENT_INFORMATION",
+      "passed": true,
+      "solution_count": 4,
+      "metadata": {
+        "alphabet": "ABCDEFGH",
+        "length": 5,
+        "mode": "ambiguous",
+        "inject_comments": true,
+        "clue_count": 3,
+        "comment_count": 3,
+        "human_time_limit_minutes": 25
+      }
+    },
+    {
+      "task_id": "unique_digits_injected",
+      "expected_answer": "31580",
+      "normalized_prediction": "31580",
+      "raw_prediction": "31580",
+      "passed": true,
+      "solution_count": 1,
+      "metadata": {
+        "alphabet": "012345678",
+        "length": 5,
+        "mode": "unique",
+        "inject_comments": true,
+        "clue_count": 3,
+        "comment_count": 3,
+        "human_time_limit_minutes": 25
+      }
+    },
+    {
+      "task_id": "unique_letters_small",
+      "expected_answer": "CEFAB",
+      "normalized_prediction": "CEFAB",
+      "raw_prediction": "CEFAB",
+      "passed": true,
+      "solution_count": 1,
+      "metadata": {
+        "alphabet": "ABCDEFG",
+        "length": 5,
+        "mode": "unique",
+        "inject_comments": false,
+        "clue_count": 2,
+        "comment_count": 0,
+        "human_time_limit_minutes": 25
+      }
+    }
+  ]
+}
