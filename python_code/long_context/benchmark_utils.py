@@ -7,7 +7,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from difflib import SequenceMatcher
-from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterator, List, Optional, Sequence, Set, Tuple
 from urllib.error import HTTPError
 
 try:
@@ -97,6 +97,60 @@ def _iter_dataset_rows(dataset: str, *, offset: int = 0, batch_size: int = 10, m
         cursor += len(rows)
 
 
+def _row_to_sample(
+    *,
+    row_idx: int,
+    row: Dict[str, Any],
+    allowed_needles: Optional[Set[int]],
+    max_prompt_chars: Optional[int],
+    max_n_chars: Optional[int],
+    min_total_tokens: Optional[int],
+    max_total_tokens: Optional[int],
+    tokenizer_name: str,
+) -> Optional[MRCRSample]:
+    n_needles = int(row["n_needles"])
+    if allowed_needles is not None and n_needles not in allowed_needles:
+        return None
+    if max_prompt_chars is not None and len(row["prompt"]) > max_prompt_chars:
+        return None
+    if max_n_chars is not None and int(row["n_chars"]) > max_n_chars:
+        return None
+
+    try:
+        messages = json.loads(row["prompt"])
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(messages, list):
+        return None
+
+    prompt_tokens: Optional[int] = None
+    answer_tokens: Optional[int] = None
+    total_tokens: Optional[int] = None
+    if min_total_tokens is not None or max_total_tokens is not None:
+        prompt_tokens = _count_message_tokens(messages, encoding_name=tokenizer_name)
+        answer_tokens = _count_text_tokens(str(row["answer"]), encoding_name=tokenizer_name)
+        total_tokens = prompt_tokens + answer_tokens
+        if min_total_tokens is not None and total_tokens < min_total_tokens:
+            return None
+        if max_total_tokens is not None and total_tokens > max_total_tokens:
+            return None
+
+    return MRCRSample(
+        sample_id=row_idx,
+        messages=messages,
+        answer=str(row["answer"]),
+        random_string_to_prepend=str(row["random_string_to_prepend"]),
+        n_needles=n_needles,
+        desired_msg_index=int(row["desired_msg_index"]),
+        total_messages=int(row["total_messages"]),
+        n_chars=int(row["n_chars"]),
+        date_added=str(row.get("date_added", "")),
+        prompt_tokens=prompt_tokens,
+        answer_tokens=answer_tokens,
+        total_tokens=total_tokens,
+    )
+
+
 def _get_encoder(encoding_name: str = DEFAULT_TOKENIZER_NAME):
     if tiktoken is None:
         raise RuntimeError("tiktoken is required for token filters. Install with: pip install tiktoken")
@@ -145,50 +199,92 @@ def iter_mrcr_samples(
     yielded = 0
 
     for row_idx, row in _iter_dataset_rows(MRCR_DATASET_ID, offset=offset, batch_size=batch_size, max_rows=max_rows):
-        n_needles = int(row["n_needles"])
-        if allowed_needles is not None and n_needles not in allowed_needles:
-            continue
-        if max_prompt_chars is not None and len(row["prompt"]) > max_prompt_chars:
-            continue
-        if max_n_chars is not None and int(row["n_chars"]) > max_n_chars:
-            continue
-
-        try:
-            messages = json.loads(row["prompt"])
-        except json.JSONDecodeError:
-            continue
-        if not isinstance(messages, list):
-            continue
-
-        prompt_tokens: Optional[int] = None
-        answer_tokens: Optional[int] = None
-        total_tokens: Optional[int] = None
-        if min_total_tokens is not None or max_total_tokens is not None:
-            prompt_tokens = _count_message_tokens(messages, encoding_name=tokenizer_name)
-            answer_tokens = _count_text_tokens(str(row["answer"]), encoding_name=tokenizer_name)
-            total_tokens = prompt_tokens + answer_tokens
-            if min_total_tokens is not None and total_tokens < min_total_tokens:
-                continue
-            if max_total_tokens is not None and total_tokens > max_total_tokens:
-                continue
-
-        yield MRCRSample(
-            sample_id=row_idx,
-            messages=messages,
-            answer=str(row["answer"]),
-            random_string_to_prepend=str(row["random_string_to_prepend"]),
-            n_needles=n_needles,
-            desired_msg_index=int(row["desired_msg_index"]),
-            total_messages=int(row["total_messages"]),
-            n_chars=int(row["n_chars"]),
-            date_added=str(row.get("date_added", "")),
-            prompt_tokens=prompt_tokens,
-            answer_tokens=answer_tokens,
-            total_tokens=total_tokens,
+        sample = _row_to_sample(
+            row_idx=row_idx,
+            row=row,
+            allowed_needles=allowed_needles,
+            max_prompt_chars=max_prompt_chars,
+            max_n_chars=max_n_chars,
+            min_total_tokens=min_total_tokens,
+            max_total_tokens=max_total_tokens,
+            tokenizer_name=tokenizer_name,
         )
+        if sample is None:
+            continue
+
+        yield sample
         yielded += 1
         if limit is not None and yielded >= limit:
             break
+
+
+def iter_mrcr_samples_by_ids(
+    sample_ids: Sequence[int],
+    *,
+    n_needles_filter: Optional[Sequence[int]] = None,
+    max_prompt_chars: Optional[int] = None,
+    max_n_chars: Optional[int] = None,
+    min_total_tokens: Optional[int] = None,
+    max_total_tokens: Optional[int] = None,
+    tokenizer_name: str = DEFAULT_TOKENIZER_NAME,
+    batch_size: int = MAX_DATASET_ROWS_PER_REQUEST,
+) -> Iterator[MRCRSample]:
+    if not sample_ids:
+        return
+
+    ordered_ids: List[int] = []
+    seen_ids: Set[int] = set()
+    for raw in sample_ids:
+        sid = int(raw)
+        if sid in seen_ids:
+            continue
+        ordered_ids.append(sid)
+        seen_ids.add(sid)
+
+    if not ordered_ids:
+        return
+
+    allowed_needles = set(int(x) for x in n_needles_filter) if n_needles_filter else None
+    sorted_ids = sorted(ordered_ids)
+    safe_batch = max(1, min(int(batch_size), MAX_DATASET_ROWS_PER_REQUEST))
+
+    ranges: List[Tuple[int, int]] = []
+    start = sorted_ids[0]
+    prev = sorted_ids[0]
+    for sid in sorted_ids[1:]:
+        contiguous = sid == prev + 1
+        within_cap = (sid - start + 1) <= safe_batch
+        if contiguous and within_cap:
+            prev = sid
+            continue
+        ranges.append((start, prev - start + 1))
+        start = sid
+        prev = sid
+    ranges.append((start, prev - start + 1))
+
+    found: Dict[int, MRCRSample] = {}
+    wanted = set(ordered_ids)
+    for offset, length in ranges:
+        for row_idx, row in _iter_dataset_rows(MRCR_DATASET_ID, offset=offset, batch_size=length, max_rows=length):
+            if row_idx not in wanted:
+                continue
+            sample = _row_to_sample(
+                row_idx=row_idx,
+                row=row,
+                allowed_needles=allowed_needles,
+                max_prompt_chars=max_prompt_chars,
+                max_n_chars=max_n_chars,
+                min_total_tokens=min_total_tokens,
+                max_total_tokens=max_total_tokens,
+                tokenizer_name=tokenizer_name,
+            )
+            if sample is not None:
+                found[row_idx] = sample
+
+    for sid in ordered_ids:
+        sample = found.get(sid)
+        if sample is not None:
+            yield sample
 
 
 def grade_mrcr(response: str, answer: str, random_string_to_prepend: str) -> Dict[str, Any]:
