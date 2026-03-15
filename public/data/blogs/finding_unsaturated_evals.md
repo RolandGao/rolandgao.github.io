@@ -4,18 +4,17 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 | Category     | Benchmark                                                                                      |        Score | Best model                         |
 | ------------ | ---------------------------------------------------------------------------------------------- | -----------: | ---------------------------------- |
-| Coding       | [Terminal-Bench 2.0](https://www.tbench.ai/leaderboard/terminal-bench/2.0)                     |          75% | GPT-5.3-Codex  |
-| Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |          57% | GPT-5.3-Codex                     |
-| Coding       | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                    |          41% | GPT-5.2                            |
-| Puzzles      | [SimpleBench](https://simple-bench.com/)                                                       |          76% | Gemini 3 Pro                       |
-| Mathematics  | [FrontierMath](https://epoch.ai/frontiermath)                                                  |          41% | GPT-5.2 & Claude Opus 4.6              |
+| Coding       | [Terminal-Bench 2.0](https://www.tbench.ai/leaderboard/terminal-bench/2.0)                     |          82% | GPT-5.4  |
+| Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |          58% | GPT-5.4                     |
+| Coding       | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                    |          67% | GPT-5.4                            |
+| Puzzles      | [SimpleBench](https://simple-bench.com/)                                                       |          80% | Gemini 3.1 Pro                       |
+| Mathematics  | [FrontierMath](https://epoch.ai/frontiermath)                                                  |          50% | GPT-5.4 Pro              |
 | General      | [Arena.ai Leaderboard](https://arena.ai/leaderboard)                                           |     1.5k Elo | Claude Opus 4.6         |
-| Vision       | [ZeroBench](https://zerobench.github.io/)                                                      | 19%          | Gemini 3 Pro                       |
+| Vision       | [ZeroBench](https://zerobench.github.io/)                                                      | 23%          | GPT-5.4                       |
 | Knowledge    | [Humanity's Last Exam](https://scale.com/leaderboard/humanitys_last_exam)                      |          53% | Gemini 3 Deep Think                |
-| Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         3.8% | Claude Opus 4.5         |
+| Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         4.2% | Claude Opus 4.6         |
 | Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                 |   8.0k / 63k | Claude Opus 4.6                    |
-| Agentic | [GDPval](https://evals.openai.com/gdpval/leaderboard) | 50% | GPT-5.2 |
-| Long context | [MRCR (1M, 8 needles)](https://contextarena.ai/?needles=8) | 76% | Claude Opus 4.6 |
+| Agentic | [GDPval](https://evals.openai.com/gdpval/leaderboard) | 83% | GPT-5.4 |
 
 ## Recently saturated evals
 
@@ -24,6 +23,8 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 | Mathematics | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html) | 668 / 672 | Aleph Prover (Logical Intelligence) |
 | Web Browsing | [BrowseComp](https://openai.com/index/browsecomp/) | 84% | Claude Opus 4.6 |
 | Puzzles | [ARC-AGI 2](https://arcprize.org/leaderboard) | 85% | Gemini 3 Deep Think |
+| Long context | [MRCR (1M, 8 needles)](https://contextarena.ai/?needles=8) | 76% | Claude Opus 4.6 |
+
 
 <!-- honorable mentions
 
@@ -60,22 +61,28 @@ Grok4.1 does surprisingly well, given its absence in many public benchmarks.
 
 
 ## Additional testing of top models
-| Metric                       | Claude Opus 4.6 |  Grok 4.1 |   GPT-5.2 | Gemini 3.1 Pro |   GPT-5.4 | GPT-5.4 Extended Thinking |
-| ---------------------------- | --------------: | --------: | --------: | -------------: | --------: | ------------------------: |
-| Web (benchmarks)             |            6/10 |      8/10 |      9/10 |           8/10 |      9/10 |                      7/10 |
-| Web (benchmark numbers)      |           10/12 |      9/12 |      8/12 |         8.5/12 |      6/12 |                      9/12 |
-| Health                       |           7.5/9 |       4/9 |       7/9 |            4/9 |       4/9 |                     6.5/9 |
-| Education                    |             1/1 |       1/1 |       0/1 |            1/1 |     0.5/1 |                       0/1 |
-| IQ                           |             0/1 |       0/1 |       0/1 |            0/1 |       0/1 |                       0/1 |
-| Usability                    |             0/1 |       1/1 |       1/1 |            0/1 |       1/1 |                       1/1 |
-| Web (uoft cs phds)           |          86/200 |    58/200 |    29/200 |         18/200 |    25/200 |                    50/200 |
-| Web (frontier ai labs)       |          31/100 |    31/100 |    24/100 |         19/100 |    20/100 |                    50/100 |
-| Tax 1                        |           0.5/1 |       0/1 |    0.75/1 |            1/1 |       0/1 |                     0.5/1 |
-| Immigration 1                |             1/3 |       0/3 |       0/3 |            0/3 |       0/3 |                       0/3 |
-| Immigration 2                |             1/3 |       0/3 |       3/3 |            3/3 |       0/3 |                       1/3 |
-| **Avg (mean of row scores)** |       **47.0%** | **41.8%** | **49.8%** |      **47.6%** | **36.3%** |                 **43.2%** |
+| Metric                              | Claude Opus 4.6 Extended Thinking |  Grok 4.1 | Gemini 3.1 Pro | GPT-5.4 Extended Thinking |
+| ----------------------------------- | --------------------------------: | --------: | -------------: | ------------------------: |
+| find AI benchmarks                  |                              6/10 |      8/10 |           8/10 |                      7/10 |
+| find benchmark numbers              |                             10/12 |      9/12 |         8.5/12 |                      9/12 |
+| Health                              |                             7.5/9 |       4/9 |            4/9 |                     6.5/9 |
+| Education                           |                               1/1 |       1/1 |            1/1 |                       0/1 |
+| IQ                                  |                               0/1 |       0/1 |            0/1 |                       0/1 |
+| find uoft cs phds                   |                            86/200 |    58/200 |         18/200 |                    50/200 |
+| find frontier ai labs               |                            31/100 |    31/100 |         19/100 |                    50/100 |
+| Tax 1                               |                             0.5/1 |       0/1 |            1/1 |                     0.5/1 |
+| Immigration 1                       |                               1/3 |       0/3 |            0/3 |                       0/3 |
+| Immigration 2                       |                               1/3 |       0/3 |            3/3 |                       1/3 |
+| find companies with hard interviews |                               0/1 |       1/1 |            0/1 |                       1/1 |
+| **Avg (mean of row scores)**        |                         **47.0%** | **41.8%** |      **47.6%** |                 **43.2%** |
 
 
+
+<!-- 
+which companies hiring computer science students have the hardest interviews? 
+answer: openai, anthropic, jane street
+
+-->
 
 <!-- 
 
