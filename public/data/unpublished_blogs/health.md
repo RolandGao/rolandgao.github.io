@@ -1,25 +1,29 @@
-Sleep
+## Sleep
 sleeo helps maintain balance: physical repair, immune function, emotional regulation, metabolism, heart health, learning, reaction time, fine motor control. chronic short sleep increases risks for depression, accidents, metabolic disease, and heart problems.
 
 7-9 hours. 6 is not enough. 
 how to have good sleep. 
 1. stable temperature
-2. no light during sleep
-3. consistent sleep and wake time
-4. no caffeine or alcohol. matcha, tea, cola, and chocolate have caffeine. 
-5. no food a few hours before bed
-6. exercise
-7. wind down routine
+2. bedroom ventilation
+3. low noise
+4. no light during sleep. light exposure immediately after waking up
+5. consistent sleep and wake time
+6. no caffeine or alcohol. matcha, tea, cola, and chocolate have caffeine
+7. no food 4 hours before bed
+8. exercise
+9. wind down routine. no mental or physical stress before sleep
 
-# TODO: One cycle is 90 minutes, but one dream is 30 min and i woke up after the dream, so how does that work. 
+<!-- limit screen time before bed?? -->
 
 ## Exercise
-80% Zone 2 exercise. 20% higher zone exercise
-VO2 max
+150 minutes a week of cardio. 
+80% zone 2 (can still talk but just barely). 20% higher zones
 
+strength training twice a week.
+the most basic is squat, push up, and pull up. 
 
 ## Diet
-protein
+Try to eat 1.6 kg of protein per kg of body weight. Eat more if you are doing more strength training. 
 
 ### alcohol
 if possible, don’t ever drink alcohol. if someone asks you to drink, you can refuse. practice refusing so that you can comfortably refuse when they actually ask. 
@@ -27,12 +31,10 @@ alcohol harms the brain, heart, and stomach. it is especially harmful when you a
 alcohol takes up to 3 days to recover. when still recovering, do not exercise. 
 
 ### coffee
-adenosine builds up during the day to make you feel sleepy. caffeine blocks the adenosine receptors from connecting with the adenosine. 
-with regular use, tolerance develops. when you stop, withdrawal can bring sleepiness and headaches. 
-the theory of shifting baseline. 
-causes heart problems, irritability, and anxiety. similar effect to stress, boosts adrenaline and noradrenaline. 
+Adenosine builds up during the day to make you feel sleepy. caffeine blocks the adenosine receptors from connecting with the adenosine. With regular use, tolerance develops. when you stop, withdrawal can bring sleepiness and headaches. 
 
-No caffeine
+Caffeine may cause heart problems, irritability, and anxiety. It has a similar effect to stress, which boosts adrenaline and noradrenaline. 
+
 Caffeine is in coffee, tea, oolong tea, iced tea, matcha, chocolate, energy drink, coca cola.
 
 ## Friends
@@ -43,28 +45,25 @@ Spend quality time with loved ones and friends.
 ## Productivity
 nap 20 min in the afternoon. Avoid napping after 5pm cuz it might disrupt sleep
 
-
-Use time-blocking: Dedicate specific hours or days for your research project, ensuring you protect your time for work and rest.
-
 Schedule your most demanding tasks during your peak productivity hours.
 
-baseline sympathetic tone. aka baseline stress level. the lower the better. if baseline stress level is already high, then when you actually need to lock in, you can’t. 
+schedule time-blocks of hours or days for deep focus.
 
 
+## Avoid ionizing radiation
+Ionizing radiation increases the chances of getting cancer. The two main sources of ionizing radiation are medical CT scans and radon gas.
 
-## Avoid radiation
-CT scan’s effect on the thyroid
-CT scans for the chest, head, and neck expose thyroid to radiation, increasing the risk of thyroid cancer. 
-if contrast dye is iodinated contrast, then you’re extra fucked. 
+A CT scan has the dose of 100 X-rays. Avoid unnecessary CT scans if possible. MRI and Ultrasound do not have ionizing radiation. 
 
-pet scan??
+Radon gas can accumulate indoor if there's no ventilation or air filtering. A Radon gas detector can be bought on Amazon. 
+
 
 # health system
 ## health insurance
-company insurance > covered california > medi-cal
-company insurance is Group insurance while the other ones are Individual insurance.
+company insurance > affordable care act (ACA)
+company insurance is Group insurance while ACA is Individual insurance.
 Without company insurance, you get a narrower network. the most prestigious hospitals usually get dropped to save cost. 
-the way to have company-grade insurance after retiring is to found a startup and hire at least one employee who’s not your spouse. then get the insurance through your startup. Use PEO Justworks for Large Group, or Blue Shield Small Group. 
+the way to have company-grade insurance after retiring early is to found a startup and hire at least one employee who’s not your spouse. then get the insurance through your startup. Use PEO Justworks for Large Group, or Blue Shield Small Group. 
 
 PPO: highest cost, PCP not required, partial coverage for out of network
 HMO: lowest cost, PCP required, zero coverage out of network

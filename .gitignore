@@ -36,3 +36,4 @@ python_code/long_context/results/
 python_code/long_context/agent_memory/
 python_code/long_context/logs/
 python_code/long_context/**/*.log
+scratch.md

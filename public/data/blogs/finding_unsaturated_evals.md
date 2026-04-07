@@ -4,17 +4,18 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 | Category     | Benchmark                                                                                      |        Score | Best model                         |
 | ------------ | ---------------------------------------------------------------------------------------------- | -----------: | ---------------------------------- |
-| Coding       | [Terminal-Bench 2.0](https://www.tbench.ai/leaderboard/terminal-bench/2.0)                     |          82% | GPT-5.4  |
 | Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |          58% | GPT-5.4                     |
 | Coding       | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                    |          67% | GPT-5.4                            |
+| Coding        | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                     |          17% | Claude Opus 4.6                      |
+| Coding        | [Codebase QnA](https://labs.scale.com/leaderboard/sweatlas-qna)                                     |          41% | GPT-5.4                      |
 | Puzzles      | [SimpleBench](https://simple-bench.com/)                                                       |          80% | Gemini 3.1 Pro                       |
+| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)                                     |          1834 Elo | Gemini 3.0 Pro                       |
 | Mathematics  | [FrontierMath](https://epoch.ai/frontiermath)                                                  |          50% | GPT-5.4 Pro              |
 | General      | [Arena.ai Leaderboard](https://arena.ai/leaderboard)                                           |     1.5k Elo | Claude Opus 4.6         |
 | Vision       | [ZeroBench](https://zerobench.github.io/)                                                      | 23%          | GPT-5.4                       |
 | Knowledge    | [Humanity's Last Exam](https://scale.com/leaderboard/humanitys_last_exam)                      |          53% | Gemini 3 Deep Think                |
 | Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         4.2% | Claude Opus 4.6         |
 | Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                 |   8.0k / 63k | Claude Opus 4.6                    |
-| Agentic | [GDPval](https://evals.openai.com/gdpval/leaderboard) | 83% | GPT-5.4 |
 
 ## Recently saturated evals
 
@@ -24,6 +25,8 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 | Web Browsing | [BrowseComp](https://openai.com/index/browsecomp/) | 84% | Claude Opus 4.6 |
 | Puzzles | [ARC-AGI 2](https://arcprize.org/leaderboard) | 85% | Gemini 3 Deep Think |
 | Long context | [MRCR (1M, 8 needles)](https://contextarena.ai/?needles=8) | 76% | Claude Opus 4.6 |
+| Coding       | [Terminal-Bench 2.0](https://www.tbench.ai/leaderboard/terminal-bench/2.0)                     |          82% | GPT-5.4  |
+| Agentic | [GDPval](https://evals.openai.com/gdpval/leaderboard) | 83% | GPT-5.4 |
 
 
 <!-- honorable mentions
@@ -35,7 +38,6 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 Formal Conjectures: https://github.com/google-deepmind/formal-conjectures, no leaderboard
 iq test: https://www.trackingai.org/home
-https://livecodebench.github.io/gso.html
 -->
 
 
@@ -82,9 +84,35 @@ Grok4.1 does surprisingly well, given its absence in many public benchmarks.
 which companies hiring computer science students have the hardest interviews? 
 answer: openai, anthropic, jane street
 
+For each of the following authors, find their current affiliation. output should be one name per row, and each row is "{name} | {affiliations comma separated}". if it's unknown, put unknown in the affiliations
+gemini: 0/1
+grok 0.6/1
+chatgpt: 1/1
+
+
+how to ace the meta swe interview?
+two leetcode mediums in 45 minutes. bug free.
+communicate: reasoning, trade-offs, edge cases
+
+They test edge cases without being asked.
+They name tradeoffs clearly instead of pretending there’s one perfect solution.
+They keep talking while debugging.
+
+clarify the problem, state assumptions, give a brute-force approach, improve it, code cleanly, then test edge cases out loud
+
+mock interviews
+biggest project
+
+chatgpt gave the best answer
+https://www.metacareers.com/swe-prep-onsite 
 -->
 
 <!-- 
+
+what optimizer should i use to train LLMs
+gemini: 0/1
+chatgpt: 1/1
+grok: 0.5/1
 
 grok4.2: 
 q1: 7/10
