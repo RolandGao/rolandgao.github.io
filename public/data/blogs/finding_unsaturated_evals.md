@@ -243,54 +243,12 @@ gemini3.1 pro: 3/3. lease or mortgage, utility bills, return ticket
 
 -->
 
+Whenever a frontier model fails a prompt I asked, I add it into my independent testing suite. Out of my prompts, this following one is the only one that withstood all the frontier LLMs, with no exceptions. I name this prompt "Make LLM Eval".
 
+The prompt basically asks the LLM to create an eval that it cannot solve itself. Prompts like this can potentially be used in an RL training algorithm where learning iterates between an attacker and a defender, with continuous self-improvement potential.
 
-### Q1
-```
-find 10 benchmarks with public leaderboards where gemini 3 pro and gpt5.2 cannot achieve a 50% accuracy. Provide a link to the leaderboard, and report the score of gemini 3 pro and gpt5.2. two benchmarks are considered the same if they are just variants of the same thing.
-```
+Recently, I tried codex 5.4 with almost 1 hour of thinking time, and it still could not solve this question reliably. 
 
-The answer to this question is basically the first section of this blog.
-
-### Q2
-```
-Add two columns called "score" and "best model" at the end and fill them in. the score entries should be rounded to 2 sig figs. 
-| Category     | Benchmark                                                                                      |
-| ------------ | ---------------------------------------------------------------------------------------------- |
-| Coding       | [Terminal-Bench 2.0](https://www.tbench.ai/leaderboard/terminal-bench/2.0)                     |
-| Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |      
-| Coding       | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                    |    
-| Puzzles      | [SimpleBench](https://simple-bench.com/)                                                       |
-| Mathematics  | [FrontierMath](https://epoch.ai/frontiermath)                                                  | 
-| General      | [Arena.ai Leaderboard](https://arena.ai/leaderboard)                                           | 
-| Vision       | [ZeroBench](https://zerobench.github.io/)                                                      | 
-| Knowledge    | [Humanity's Last Exam](https://scale.com/leaderboard/humanitys_last_exam)                      | 
-| Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |
-| Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                 |
-| Agentic | [GDPval](https://evals.openai.com/gdpval/leaderboard) |
-| Long context | [MRCR (1M, 8 needles)](https://contextarena.ai/?needles=8) |
-```
-
-The answer to this question is also the first section of this blog.
-
-The challenge in this question is that some leaderboards are outdated and the AI has to read the recent blogs on Claude Opus 4.6, Gemini 3 Deep Think, and GPT Codex 5.3 to get the up-to-date numbers. 
-
-### Q3
-```
-list all the factors for increasing or lowering the risk of heart disease in a table and provide the statistical risk impact of each
-```
-
-I have a list of nine factors that I selected beforehand after doing extensive research. A few factors on my list are less well known, making this question challenging.
-
-### Q4
-```
-design a self-study cs curriculum that can get you a job at google or meta. 
-```
-
-This is subjective, but I'd say I have good taste on this topic. 
-
-
-### Q5
 ```
 from openai import OpenAI
 
@@ -313,8 +271,6 @@ Write the complete Python code for a new LLM eval, where model calls use the abo
 5. The eval cannot exploit the fact that the AI does not have human's identify or physical attributes. 
 6. The eval has to be about showing gaps between human intelligence and machine intelligence
 ```
-
-I discovered a prompt that fails all current LLMs. The prompt basically asks the LLM to create an eval that it cannot solve itself. Prompts like this can potentially be used in an RL training algorithm where learning iterates between an attacker and a defender, with continuous self-improvement potential.
 
 ### Q6
 ```
