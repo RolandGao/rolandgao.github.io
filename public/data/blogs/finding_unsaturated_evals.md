@@ -38,45 +38,29 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 Formal Conjectures: https://github.com/google-deepmind/formal-conjectures, no leaderboard
 iq test: https://www.trackingai.org/home
+https://toolathlon.xyz/docs/leaderboard
 -->
 
 
 ## Independent testing
 
-The results of my independent testing are shown below. Then, I describe each question in more detail.
+| Metric                              | Claude Opus 4.6 Extended Thinking |  Grok 4.1 | Gemini 3.1 Pro | GPT-5.4 Extended Thinking | Meta Muse |
+| ----------------------------------- | --------------------------------: | --------: | -------------: | ------------------------: | --------: |
+| find AI benchmarks                  |                              6/10 |      8/10 |           8/10 |                      7/10 |      8/10 |
+| find benchmark numbers              |                             10/12 |      9/12 |         8.5/12 |                      9/12 |      8/12 |
+| Health                              |                             7.5/9 |       4/9 |            4/9 |                     6.5/9 |       6/9 |
+| Education                           |                               1/1 |       1/1 |            1/1 |                       0/1 |       1/1 |
+| Make LLM Eval                       |                               0/1 |       0/1 |            0/1 |                       0/1 |       0/1 |
+| find uoft cs phds                   |                            86/200 |    58/200 |         18/200 |                    50/200 |    23/200 |
+| find frontier ai labs               |                            31/100 |    31/100 |         19/100 |                    50/100 |    28/100 |
+| Tax 1                               |                             0.5/1 |       0/1 |            1/1 |                     0.5/1 |     0.5/1 |
+| Immigration 1                       |                               1/3 |       0/3 |            0/3 |                       0/3 |       3/3 |
+| Immigration 2                       |                               1/3 |       0/3 |            3/3 |                       1/3 |       3/3 |
+| find companies with hard interviews |                               0/1 |       1/1 |            0/1 |                       1/1 |       0/1 |
+| optimizer                           |                                 — |     0.5/1 |            0/1 |                       1/1 |       1/1 |
+| affiliation                         |                                 — |     0.6/1 |            0/1 |                       1/1 |     0.6/1 |
+| **Avg**                             |                         **47.0%** | **43.8%** |      **40.3%** |                 **52.0%** | **58.7%** |
 
-Grok4.1 does surprisingly well, given its absence in many public benchmarks.
-
-
-| Model             |   Q1 |    Q2 |     Q3 |        Q4 |  Q5 |        Q6 |  Avg (excl. Q6) |
-| ----------------- | ---: | ----: | -----: | --------: | --: | --------: | -------: |
-|    Topic    |  Web |   Web | Health | Education |  IQ | Usability | --- |
-| Claude Opus 4.6   | 6/10 | 10/12 |  7.5/9 |       1/1 | 0/1 |       0/1 |      65% |
-| Grok 4.1          | 8/10 |  9/12 |    4/9 |       1/1 | 0/1 |       1/1 |      60% |
-| Gemini 3 Pro      | 7/10 |  8/12 |    5/9 |       1/1 | 0/1 |       0/1 |      58% |
-| Claude Sonnet 4.5 | 4/10 |  4/12 |  6.5/9 |       1/1 | 0/1 |       0/1 |      49% |
-| GPT-5.2           | 9/10 |  8/12 |    7/9 |       0/1 | 0/1 |       1/1 |      47% |
-| Kimi K2.5         | 7/10 |  6/12 |    6/9 |       0/1 | 0/1 |       1/1 |      37% |
-| Qwen3-Max         | 3/10 |  8/12 |    6/9 |       0/1 | 0/1 |       0/1 |      33% |
-| GLM-5             | 2/10 |  0/12 |    0/9 |       1/1 | 0/1 |       0/1 |      24% |
-| DeepSeek V3.2     | 3/10 |  0/12 |    2/9 |       0/1 | 0/1 |       1/1 |      10% |
-
-
-## Additional testing of top models
-| Metric                              | Claude Opus 4.6 Extended Thinking |  Grok 4.1 | Gemini 3.1 Pro | GPT-5.4 Extended Thinking |
-| ----------------------------------- | --------------------------------: | --------: | -------------: | ------------------------: |
-| find AI benchmarks                  |                              6/10 |      8/10 |           8/10 |                      7/10 |
-| find benchmark numbers              |                             10/12 |      9/12 |         8.5/12 |                      9/12 |
-| Health                              |                             7.5/9 |       4/9 |            4/9 |                     6.5/9 |
-| Education                           |                               1/1 |       1/1 |            1/1 |                       0/1 |
-| IQ                                  |                               0/1 |       0/1 |            0/1 |                       0/1 |
-| find uoft cs phds                   |                            86/200 |    58/200 |         18/200 |                    50/200 |
-| find frontier ai labs               |                            31/100 |    31/100 |         19/100 |                    50/100 |
-| Tax 1                               |                             0.5/1 |       0/1 |            1/1 |                     0.5/1 |
-| Immigration 1                       |                               1/3 |       0/3 |            0/3 |                       0/3 |
-| Immigration 2                       |                               1/3 |       0/3 |            3/3 |                       1/3 |
-| find companies with hard interviews |                               0/1 |       1/1 |            0/1 |                       1/1 |
-| **Avg (mean of row scores)**        |                         **47.0%** | **41.8%** |      **47.6%** |                 **43.2%** |
 
 
 
@@ -108,6 +92,23 @@ https://www.metacareers.com/swe-prep-onsite
 -->
 
 <!-- 
+
+
+meta muse
+health: 6/9
+cs education: 1/1
+find 10 benchmarks: 8/10
+benchmark numbers: 8/12
+usability: 1/1
+optimizer: 1/1
+uoft cs phd: 23
+frontier companies: 28
+401k: 0.5/1
+immigration 1: 3/3
+immigration 2: 3/3
+affiliation: 0.6/1
+
+
 
 what optimizer should i use to train LLMs
 gemini: 0/1
@@ -297,17 +298,20 @@ def call_model(input):
     client = OpenAI()
     response = client.responses.create(
         model="gpt-5",
-        tools=[{"type": "code_interpreter", "container": {"type": "auto"}}],
+        tools=[
+            {"type": "code_interpreter", "container": {"type": "auto"}}
+        ],
         input=input,
     )
     return response.output_text
 
 Write the complete Python code for a new LLM eval, where model calls use the above code. The eval has to satisfy the below constraints 
 1. gpt-5 with code_interpreter fails the eval 
-2. At least one human can succeed on the eval, given the same inputs, time constraint, and tool (code_interpreter)
+2. Many human experts can succeed on the eval, given the same inputs, time constraint, and tool (code_interpreter)
 3. The human also has to comply with gpt-5's safety and content policies
 4. The inputs and outputs are text only; no images or audio
-
+5. The eval cannot exploit the fact that the AI does not have human's identify or physical attributes. 
+6. The eval has to be about showing gaps between human intelligence and machine intelligence
 ```
 
 I discovered a prompt that fails all current LLMs. The prompt basically asks the LLM to create an eval that it cannot solve itself. Prompts like this can potentially be used in an RL training algorithm where learning iterates between an attacker and a defender, with continuous self-improvement potential.

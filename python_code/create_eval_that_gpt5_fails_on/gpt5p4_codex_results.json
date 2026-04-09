@@ -1,0 +1,48 @@
+{
+  "name": "gpt5p4_codex_exact_byte_hash_eval",
+  "model_under_test": "gpt-5 with code_interpreter(auto)",
+  "constraints_satisfied": [
+    "text-only input and output",
+    "safe and policy-compliant",
+    "human-solvable with the same time limit and tool",
+    "does not rely on identity or physical attributes",
+    "shows a gap in exact text grounding under tool use"
+  ],
+  "results": [
+    {
+      "seed": 101,
+      "expected": "d1a32d1ed45791c81ff205bad5c5f1f7d66e8366d777a43e404e71a8963b1910",
+      "model_output": "efa2764b13dd4c2d5e0c69c4406e0721f4116618516f5b2193637f0bab5e61ba",
+      "candidate": "efa2764b13dd4c2d5e0c69c4406e0721f4116618516f5b2193637f0bab5e61ba",
+      "passed": false,
+      "prompt": "Use Python in the code interpreter.\n\nThis is a safe text-only exact-byte task.\n\nCompute the lowercase hex BLAKE2s digest of the exact UTF-8 bytes of the DATA block below.\n\nRules:\n1. Do not unicode-normalize anything.\n2. Treat backslash sequences literally.\n3. Hash the exact text between BEGIN_DATA and END_DATA, including the newline characters between lines.\n4. Return only the 64-character lowercase hex digest.\n\nBEGIN_DATA\n\\tЖ ⁠０o·你\\u200d好​９你﻿️uéЖ3A️ ‎Ж５‍é‪︎你u\n︎０‌你C﻿ä‪‏好︎u‪‬a０你 B⁠e‎‎aé\\n2i︎Ωäu2‪\n‎\\n５3９·‌Ω—aAui\\n⁠ ️C\\u200d０1ΩЖ\\️1A2‌﻿‏\nuo\\\\⁠０oЖä‍Aä2é０你︎C—‍éBäΩaa‪０\\ni﻿éa\n５Ж\\\\t ‍﻿e1​⁠‎‪‪o好—u你2C2﻿C‎e️Ж‎·\\你1０ \\‍\n‌‌éé︎你０‌iéo\\t﻿️️oä\\你i０oa‬️ä2９oiä\\u\nCA️﻿—u2５‬Béaé⁠你 B好Ж3Ω\\tЖ️1iЖ—·好B\\t—a﻿\n·1\\n５1CCi️\\n\\u200dAä‪1oC​—oB‌​é3‏\\‏2﻿\nié‌‏é５éЖ‬2\\u200d3９️９ЖäeЖ﻿i好‌—éi‏1é\\\n‎０éo０‌AΩe‎５i‏i⁠o好a‏1９‪BΩ‬️ä‎你\\u200d​\nEND_DATA",
+      "human_feasibility_note": "A human expert can solve this with the same code_interpreter tool by copy/pasting the DATA block into Python and running `hashlib.blake2s(data.encode(\"utf-8\")).hexdigest()`.",
+      "why_this_targets_a_gap": "The task stresses exact text grounding. Humans can explicitly operate on the copied raw string, while models may silently alter invisible characters, combining characters, bidi marks, or literal backslash escapes before or during tool use.",
+      "scratch": "935ea40f7277d30efd6691916a7645f97466cf50dd99e25ba296b593e379cd3c"
+    },
+    {
+      "seed": 102,
+      "expected": "d5e2732a4a58f7b77ca7c72db812d4ea1a97b2697a801695fe0bdf622acafcb3",
+      "model_output": "d5e2732a4a58f7b77ca7c72db812d4ea1a97b2697a801695fe0bdf622acafcb3",
+      "candidate": "d5e2732a4a58f7b77ca7c72db812d4ea1a97b2697a801695fe0bdf622acafcb3",
+      "passed": true,
+      "prompt": "Use Python in the code interpreter.\n\nThis is a safe text-only exact-byte task.\n\nCompute the lowercase hex BLAKE2s digest of the exact UTF-8 bytes of the DATA block below.\n\nRules:\n1. Do not unicode-normalize anything.\n2. Treat backslash sequences literally.\n3. Hash the exact text between BEGIN_DATA and END_DATA, including the newline characters between lines.\n4. Return only the 64-character lowercase hex digest.\n\nBEGIN_DATA\n2⁠3\\\\u200dΩ‏​︎\\n\\ti— —Ω‏️好·1AoΩ\\u200d\\\n️·好——2９‬５uéA﻿‏Ж·︎\\u200d︎‪13‎你u\\té​︎1\\️\nä‍５ ️·你‪é你\\u200d\\t 3 ‎—o‪C５Ω‌u—‏é‬Ω你\n‍️Ж3好—‬12\\u200d５ 好aAé‏ä2CC2a‬ä‍ä️‬é\n︎Ж‌Жe０Ж０\\n你好éA3‏５1aéä‬好Ω︎é3uC５C3ä3\nΩoЖ21️\\u200d‪５u﻿ 1００é1aé\\tä\\2５ЖuA\\Ж️\neé·５\\\\t\\u200d3５éäBΩé\\ABC你2uΩ‪好‬1﻿５\nä⁠é️é你５你‪Bi﻿⁠９ A\\u200do０你e️eC‌—eo５‪o\n️Ж️‏好é‍ΩäЖCЖ​AC\\é​·Ж你AeΩ 好é\\u200dä\na你️\\u200d‪é\\u200d\\t3‪９·a e︎​·u—é﻿‬B‪A︎\nEND_DATA",
+      "human_feasibility_note": "A human expert can solve this with the same code_interpreter tool by copy/pasting the DATA block into Python and running `hashlib.blake2s(data.encode(\"utf-8\")).hexdigest()`.",
+      "why_this_targets_a_gap": "The task stresses exact text grounding. Humans can explicitly operate on the copied raw string, while models may silently alter invisible characters, combining characters, bidi marks, or literal backslash escapes before or during tool use.",
+      "scratch": "f44bd10dcff7b83e4c63f331ec70b9c1550511c80a3e442724c80aa151a493b9"
+    },
+    {
+      "seed": 103,
+      "expected": "586261f8957fe576f2696ff5d2ba0d613e0755eada28971440de795d9694cd0f",
+      "model_output": "586261f8957fe576f2696ff5d2ba0d613e0755eada28971440de795d9694cd0f",
+      "candidate": "586261f8957fe576f2696ff5d2ba0d613e0755eada28971440de795d9694cd0f",
+      "passed": true,
+      "prompt": "Use Python in the code interpreter.\n\nThis is a safe text-only exact-byte task.\n\nCompute the lowercase hex BLAKE2s digest of the exact UTF-8 bytes of the DATA block below.\n\nRules:\n1. Do not unicode-normalize anything.\n2. Treat backslash sequences literally.\n3. Hash the exact text between BEGIN_DATA and END_DATA, including the newline characters between lines.\n4. Return only the 64-character lowercase hex digest.\n\nBEGIN_DATA\n０你u\\u200dC‏０﻿C９A1好\\tei好B1\\u200d—​Ω‬\\t‬\n好\\néA‎Ж\\t你·５é​你—０—Ж—​i５21‬·éB５⁠BA‌９C\n\\nB‏​e\\５\\u200d‪‏️éuΩ️i‍​a é\\né好好‏2\\tA\n‏e５０﻿A\\2i‍ä好 B０‌‪ΩΩä‎—\\u200di９⁠1﻿ue‏\n3‬︎​​\\u200d ‍‬éä—i‪\\u200d️﻿‬21０️\\n \\\naC９e﻿2é\\u200d０‏Céa\\u200d\\ Co12—⁠o\\éé\né︎A​‏\\t５‌Ж‬\\n·０\\t好﻿B⁠​·​A５０‪oä９e1Ω—B\n\\u200dé‍​⁠‏﻿ЖCBu‍０ä2️‍‍äB\\‪C‌‌3５﻿—‍️\n\\äi2９3‬aä⁠︎Bä⁠Cé\\ie０ Ж‎​e﻿éB‎aä⁠\n2Ж０‌‬你你​\\t你\\t０‍A3‌︎é﻿ Ω️‌\\u200dé3ä好\\\nEND_DATA",
+      "human_feasibility_note": "A human expert can solve this with the same code_interpreter tool by copy/pasting the DATA block into Python and running `hashlib.blake2s(data.encode(\"utf-8\")).hexdigest()`.",
+      "why_this_targets_a_gap": "The task stresses exact text grounding. Humans can explicitly operate on the copied raw string, while models may silently alter invisible characters, combining characters, bidi marks, or literal backslash escapes before or during tool use.",
+      "scratch": "8a4a09c81fa4d9fd964ef234f9fb6513de61c80a01d8f6e280082edc7417e166"
+    }
+  ],
+  "pass_count": 2,
+  "fail_count": 1
+}
