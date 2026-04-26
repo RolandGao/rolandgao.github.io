@@ -2,20 +2,16 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 ## Unsaturated evals
 
-| Category     | Benchmark                                                                                      |        Score | Best model                         |
-| ------------ | ---------------------------------------------------------------------------------------------- | -----------: | ---------------------------------- |
-| Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |          58% | GPT-5.4                     |
-| Coding       | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                    |          67% | GPT-5.4                            |
-| Coding        | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                     |          17% | Claude Opus 4.6                      |
-| Coding        | [Codebase QnA](https://labs.scale.com/leaderboard/sweatlas-qna)                                     |          41% | GPT-5.4                      |
-| Puzzles      | [SimpleBench](https://simple-bench.com/)                                                       |          80% | Gemini 3.1 Pro                       |
-| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)                                     |          1834 Elo | Gemini 3.0 Pro                       |
-| Mathematics  | [FrontierMath](https://epoch.ai/frontiermath)                                                  |          50% | GPT-5.4 Pro              |
-| General      | [Arena.ai Leaderboard](https://arena.ai/leaderboard)                                           |     1.5k Elo | Claude Opus 4.6         |
-| Vision       | [ZeroBench](https://zerobench.github.io/)                                                      | 23%          | GPT-5.4                       |
-| Knowledge    | [Humanity's Last Exam](https://scale.com/leaderboard/humanitys_last_exam)                      |          53% | Gemini 3 Deep Think                |
-| Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         4.2% | Claude Opus 4.6         |
-| Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                 |   8.0k / 63k | Claude Opus 4.6                    |
+| Category    | Benchmark                                                                                                    |            Score | Best model                        |
+| ----------- | ------------------------------------------------------------------------------------------------------------ | ---------------: | --------------------------------- |
+| Coding      | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                                  |              71% | Claude Opus 4.7                   |
+| Coding      | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                                          | 14% | GPT 5.5               |
+| Puzzles     | [SimpleBench](https://simple-bench.com/)                                                                     |              80% | Gemini 3.1 Pro            |
+| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)                                     |          1.8k Elo | Gemini 3.0 Pro                       |
+| Mathematics | [FrontierMath](https://epoch.ai/frontiermath/tiers-1-4?view=graph&tab=leaderboard&tier=Core+%28Tiers+1-3%29) |        52% | GPT-5.5 Pro                 |
+| Vision      | [ZeroBench](https://zerobench.github.io/)                                                                    |       23% | GPT-5.4                     |
+| Agentic     | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                               |     $11k / $63k | Claude Opus 4.7                   |
+
 
 ## Recently saturated evals
 
@@ -39,6 +35,17 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 Formal Conjectures: https://github.com/google-deepmind/formal-conjectures, no leaderboard
 iq test: https://www.trackingai.org/home
 https://toolathlon.xyz/docs/leaderboard
+https://benchmark.gtowizard.com/
+
+
+to slow to update
+| Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |          58% | GPT-5.4                     |
+| Coding        | [Codebase QnA](https://labs.scale.com/leaderboard/sweatlas-qna)                                     |          41% | GPT-5.4                      |
+| General      | [Arena.ai Leaderboard](https://arena.ai/leaderboard)                                           |     1.5k Elo | Claude Opus 4.6         |
+| Knowledge    | [Humanity's Last Exam](https://scale.com/leaderboard/humanitys_last_exam)                      |          53% | Gemini 3 Deep Think                |
+https://artificialanalysis.ai/evaluations/humanitys-last-exam 
+| Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         4.2% | Claude Opus 4.6         |
+https://zapier.com/benchmarks 
 -->
 
 
@@ -65,6 +72,24 @@ https://toolathlon.xyz/docs/leaderboard
 
 
 <!-- 
+
+gpt5.5 extended thinking
+hardest interviews: 1/1
+optimizer: 1/1
+401k: 0.5/1
+immigration1: 0/3
+immigration2: 1/3
+cs phd: 85
+frontier ai: 54
+education: 0.5/1
+health: 6/9
+
+list all the factors for increasing or lowering the risk of heart disease in a table and provide the statistical risk impact of each
+# LDL/apoB, lp(a), flu infection, smoking, alcohol, water, sleep, stress/loneliness, exercise
+
+design a self-study cs curriculum that can get you a job at google or meta. 
+
+
 which companies hiring computer science students have the hardest interviews? 
 answer: openai, anthropic, jane street
 
