@@ -37,6 +37,11 @@ iq test: https://www.trackingai.org/home
 https://toolathlon.xyz/docs/leaderboard
 https://benchmark.gtowizard.com/
 
+sycophancy eval
+https://github.com/timfduffy/syco-bench
+https://github.com/lechmazur/sycophancy
+https://trysansa.com/benchmark 
+
 
 to slow to update
 | Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |          58% | GPT-5.4                     |
@@ -46,6 +51,8 @@ to slow to update
 https://artificialanalysis.ai/evaluations/humanitys-last-exam 
 | Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         4.2% | Claude Opus 4.6         |
 https://zapier.com/benchmarks 
+https://voxelbench.ai/leaderboard 
+https://programbench.com/
 -->
 
 
