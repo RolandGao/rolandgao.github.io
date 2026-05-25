@@ -6,6 +6,7 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 | ----------- | ------------------------------------------------------------------------------------------------------------ | ---------------: | --------------------------------- |
 | Coding      | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                                  |              71% | Claude Opus 4.7                   |
 | Coding      | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                                          | 14% | GPT 5.5               |
+| Coding      | [ProgramBench](https://programbench.com/)                                                          | 0.5% | GPT 5.5               |
 | Puzzles     | [SimpleBench](https://simple-bench.com/)                                                                     |              80% | Gemini 3.1 Pro            |
 | Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)                                     |          1.8k Elo | Gemini 3.0 Pro                       |
 | Mathematics | [FrontierMath](https://epoch.ai/frontiermath/tiers-1-4?view=graph&tab=leaderboard&tier=Core+%28Tiers+1-3%29) |        52% | GPT-5.5 Pro                 |
@@ -38,8 +39,10 @@ https://toolathlon.xyz/docs/leaderboard
 https://benchmark.gtowizard.com/
 
 sycophancy eval
-https://github.com/timfduffy/syco-bench
 https://github.com/lechmazur/sycophancy
+
+
+https://github.com/timfduffy/syco-bench
 https://trysansa.com/benchmark 
 
 
@@ -52,7 +55,6 @@ https://artificialanalysis.ai/evaluations/humanitys-last-exam
 | Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         4.2% | Claude Opus 4.6         |
 https://zapier.com/benchmarks 
 https://voxelbench.ai/leaderboard 
-https://programbench.com/
 -->
 
 
