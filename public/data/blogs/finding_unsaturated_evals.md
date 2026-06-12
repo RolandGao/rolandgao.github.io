@@ -4,20 +4,20 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 | Category    | Benchmark                                                                                                    |            Score | Best model                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------ | ---------------: | --------------------------------- |
-| Coding      | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                                  |              71% | Claude Opus 4.7                   |
-| Coding      | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                                          | 14% | GPT 5.5               |
-| Coding      | [ProgramBench](https://programbench.com/)                                                          | 0.5% | GPT 5.5               |
-| Puzzles     | [SimpleBench](https://simple-bench.com/)                                                                     |              80% | Gemini 3.1 Pro            |
+| Agentic     | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)                                               |     24% | gpt5.5 with Codex                  |
+| Puzzles     | [SimpleBench](https://simple-bench.com/)                                                                     |              82% | Fable 5           |
 | Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)                                     |          1.8k Elo | Gemini 3.0 Pro                       |
-| Mathematics | [FrontierMath](https://epoch.ai/frontiermath/tiers-1-4?view=graph&tab=leaderboard&tier=Core+%28Tiers+1-3%29) |        52% | GPT-5.5 Pro                 |
 | Vision      | [ZeroBench](https://zerobench.github.io/)                                                                    |       23% | GPT-5.4                     |
 | Agentic     | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                               |     $11k / $63k | Claude Opus 4.7                   |
-
+| Coding      | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                                          | 14% | GPT 5.5               |
+| Coding      | [ProgramBench](https://programbench.com/)                                                          | 0.5% | GPT 5.5               |
 
 ## Recently saturated evals
 
 | Category     | Benchmark                                                                                      |        Score | Best model                         |
 | ------------ | ---------------------------------------------------------------------------------------------- | -----------: | ---------------------------------- |
+| Coding      | [Vibe Code Bench](https://www.vals.ai/benchmarks/vibe-code)                                                  |              90% | Fable 5                  |
+| Mathematics | [FrontierMath](https://epoch.ai/frontiermath/tiers-1-4?view=graph&tab=release-date&tier=Tier+4+%28v2%29) |        87% | Fable 5                |
 | Mathematics | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html) | 668 / 672 | Aleph Prover (Logical Intelligence) |
 | Web Browsing | [BrowseComp](https://openai.com/index/browsecomp/) | 84% | Claude Opus 4.6 |
 | Puzzles | [ARC-AGI 2](https://arcprize.org/leaderboard) | 85% | Gemini 3 Deep Think |
@@ -27,34 +27,17 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 
 <!-- honorable mentions
-
-| Science      | [SciPredict](https://scale.com/leaderboard/scipredict)                                         |          25% | Gemini 3 Pro Preview               |
-| Puzzles      | [EnigmaEval](https://scale.com/leaderboard/enigma_eval)                                        |          19% | GPT-5 Pro (2025-10-06)             |
-| Vision       | [VisualToolBench](https://scale.com/leaderboard/vtb)                                           |          27% | Gemini 3 Pro               |
-| Coding        | [Roblox Open Game Eval](https://github.com/Roblox/open-game-eval/blob/main/LLM_LEADERBOARD.md) | 55% (pass@1) | Gemini 3 Flash                     |
-
 Formal Conjectures: https://github.com/google-deepmind/formal-conjectures, no leaderboard
 iq test: https://www.trackingai.org/home
-https://toolathlon.xyz/docs/leaderboard
 https://benchmark.gtowizard.com/
 
 sycophancy eval
 https://github.com/lechmazur/sycophancy
 
 
-https://github.com/timfduffy/syco-bench
-https://trysansa.com/benchmark 
-
-
 to slow to update
-| Coding       | [SWE-Bench Pro (Public)](https://scale.com/leaderboard/swe_bench_pro_public)           |          58% | GPT-5.4                     |
-| Coding        | [Codebase QnA](https://labs.scale.com/leaderboard/sweatlas-qna)                                     |          41% | GPT-5.4                      |
 | General      | [Arena.ai Leaderboard](https://arena.ai/leaderboard)                                           |     1.5k Elo | Claude Opus 4.6         |
-| Knowledge    | [Humanity's Last Exam](https://scale.com/leaderboard/humanitys_last_exam)                      |          53% | Gemini 3 Deep Think                |
 https://artificialanalysis.ai/evaluations/humanitys-last-exam 
-| Agentic      | [Remote Labor Index](https://scale.com/leaderboard/rli)                                        |         4.2% | Claude Opus 4.6         |
-https://zapier.com/benchmarks 
-https://voxelbench.ai/leaderboard 
 -->
 
 
