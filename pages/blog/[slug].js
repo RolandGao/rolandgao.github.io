@@ -27,6 +27,7 @@ export const getStaticProps = ({ params }) => {
 
   const { metadata, content, canonicalPath, isLegacySlug } = post;
   const dateDisplay = metadata.dateDisplay || formatPacificDate(metadata.date);
+  const updatedDisplay = formatPacificDate(metadata.updated);
 
   return {
     props: {
@@ -35,6 +36,7 @@ export const getStaticProps = ({ params }) => {
       canonicalPath,
       isLegacySlug,
       dateDisplay,
+      updatedDisplay,
     },
   };
 };
@@ -45,6 +47,7 @@ const BlogPostPage = ({
   canonicalPath,
   isLegacySlug,
   dateDisplay,
+  updatedDisplay,
 }) => {
   const router = useRouter();
 
@@ -74,9 +77,11 @@ const BlogPostPage = ({
       <article className="blog-post">
         <header>
           <h1>{metadata.title}</h1>
-          {dateDisplay ? (
+          {dateDisplay || updatedDisplay ? (
             <p className="post-date">
-              Date: {dateDisplay} | Author: Roland Gao
+              {updatedDisplay ? `Updated: ${updatedDisplay} | ` : ''}
+              {dateDisplay ? `Original: ${dateDisplay} | ` : ''}
+              Author: Roland Gao
             </p>
           ) : null}
         </header>

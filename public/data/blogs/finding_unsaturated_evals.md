@@ -2,17 +2,22 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 ## Unsaturated evals
 
-| Category    | Benchmark                                                                                                    |            Score | Best model                        |
-| ----------- | ------------------------------------------------------------------------------------------------------------ | ---------------: | --------------------------------- |
-| Agentic     | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)                                               |     24% | gpt5.5 with Codex                  |
-| Puzzles     | [SimpleBench](https://simple-bench.com/)                                                                     |              82% | Fable 5           |
-| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)                                     |          1.8k Elo | Gemini 3.0 Pro                       |
-| Vision      | [ZeroBench](https://zerobench.github.io/)                                                                    |       23% | GPT-5.4                     |
-| Agentic     | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                               |     $11k / $63k | Claude Opus 4.7                   |
-| Coding      | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                                          | 14% | GPT 5.5               |
-| Coding      | [ProgramBench](https://programbench.com/)                                                          | 0.5% | GPT 5.5               |
 
-## Recently saturated evals
+| Category     | Benchmark                                                      |      Score | Best model                       |
+| ------------ | -------------------------------------------------------------- | ---------: | -------------------------------- |
+| Agentic      | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)  |        31% | GPT-5.6                         |
+| Puzzles      | [SimpleBench](https://simple-bench.com/)                       |        82% | Fable 5                          |
+| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)            |   1.8k Elo | Gemini 3.0 Pro                   |
+| Vision       | [ZeroBench](https://zerobench.github.io/)                      |        23% | GPT-5.4 (no GPT-5.6)             |
+| Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) | 11k / $63k | Claude Opus 4.7                  |
+| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |        58% | GPT-5.5 (no GPT-5.6)             |
+| Coding       | [SlopCodeBench](https://www.scbench.ai/leaderboard)            |        14% | GPT 5.5 (no GPT-5.6) |
+| Coding       | [ProgramBench](https://programbench.com/)                      |       0.5% | GPT 5.5 (no GPT-5.6) |
+
+
+<!-- ## Recently saturated evals
+
+
 
 | Category     | Benchmark                                                                                      |        Score | Best model                         |
 | ------------ | ---------------------------------------------------------------------------------------------- | -----------: | ---------------------------------- |
@@ -21,9 +26,8 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 | Mathematics | [PutnamBench](https://trishullab.github.io/PutnamBench/leaderboard.html) | 668 / 672 | Aleph Prover (Logical Intelligence) |
 | Web Browsing | [BrowseComp](https://openai.com/index/browsecomp/) | 84% | Claude Opus 4.6 |
 | Puzzles | [ARC-AGI 2](https://arcprize.org/leaderboard) | 85% | Gemini 3 Deep Think |
-| Long context | [MRCR (1M, 8 needles)](https://contextarena.ai/?needles=8) | 76% | Claude Opus 4.6 |
 | Coding       | [Terminal-Bench 2.0](https://www.tbench.ai/leaderboard/terminal-bench/2.0)                     |          82% | GPT-5.4  |
-| Agentic | [GDPval](https://evals.openai.com/gdpval/leaderboard) | 83% | GPT-5.4 |
+| Agentic | [GDPval](https://evals.openai.com/gdpval/leaderboard) | 83% | GPT-5.4 | -->
 
 
 <!-- honorable mentions
@@ -43,52 +47,147 @@ https://artificialanalysis.ai/evaluations/humanitys-last-exam
 
 ## Independent testing
 
-| Metric                              | Claude Opus 4.6 Extended Thinking |  Grok 4.1 | Gemini 3.1 Pro | GPT-5.4 Extended Thinking | Meta Muse |
-| ----------------------------------- | --------------------------------: | --------: | -------------: | ------------------------: | --------: |
-| find AI benchmarks                  |                              6/10 |      8/10 |           8/10 |                      7/10 |      8/10 |
-| find benchmark numbers              |                             10/12 |      9/12 |         8.5/12 |                      9/12 |      8/12 |
-| Health                              |                             7.5/9 |       4/9 |            4/9 |                     6.5/9 |       6/9 |
-| Education                           |                               1/1 |       1/1 |            1/1 |                       0/1 |       1/1 |
-| Make LLM Eval                       |                               0/1 |       0/1 |            0/1 |                       0/1 |       0/1 |
-| find uoft cs phds                   |                            86/200 |    58/200 |         18/200 |                    50/200 |    23/200 |
-| find frontier ai labs               |                            31/100 |    31/100 |         19/100 |                    50/100 |    28/100 |
-| Tax 1                               |                             0.5/1 |       0/1 |            1/1 |                     0.5/1 |     0.5/1 |
-| Immigration 1                       |                               1/3 |       0/3 |            0/3 |                       0/3 |       3/3 |
-| Immigration 2                       |                               1/3 |       0/3 |            3/3 |                       1/3 |       3/3 |
-| find companies with hard interviews |                               0/1 |       1/1 |            0/1 |                       1/1 |       0/1 |
-| optimizer                           |                                 — |     0.5/1 |            0/1 |                       1/1 |       1/1 |
-| affiliation                         |                                 — |     0.6/1 |            0/1 |                       1/1 |     0.6/1 |
-| **Avg**                             |                         **47.0%** | **43.8%** |      **40.3%** |                 **52.0%** | **58.7%** |
+
+| Metric                              | Claude Opus 4.8 Max | Grok 4.5 | Gemini 3.1 Pro | GPT-5.6 xhigh | Meta Muse 1.1 |
+| ----------------------------------- | ------------------: | -------: | -------------: | ------------: | ------------: |
+| health                              |                 4/9 |      6/9 |            4/9 |           7/9 |           6/9 |
+| optimizer                           |                 1/1 |      1/1 |            0/1 |           1/1 |           1/1 |
+| days to learn ap calc               |                 0/1 |      0/1 |            1/1 |           0/1 |         0.5/1 |
+| days to learn multi calc            |                 0/1 |      1/1 |            1/1 |         0.5/1 |           1/1 |
+| interview prep                      |                 1/1 |      1/1 |            1/1 |         0.5/1 |           1/1 |
+| iOS battery icon while charging     |                 0/1 |      0/1 |            0/1 |           0/1 |           0/1 |
+| make LLM Eval                       |                 0/1 |      0/1 |            0/1 |           0/1 |           0/1 |
+| tax 1                               |                 0/1 |      0/1 |            1/1 |           1/1 |         0.5/1 |
+| immigration 1                       |                 0/3 |      1/3 |            0/3 |           0/3 |           2/3 |
+| immigration 2                       |                 1/3 |      1/3 |            3/3 |         1.5/3 |           2/3 |
+| find uoft cs phds                   |              93/200 |   78/200 |         18/200 |       116/200 |        35/200 |
+| find good companies                 |                 1/1 |      1/1 |            0/1 |           0/1 |           1/1 |
+| find where people work              |               0.5/1 |    0.5/1 |            0/1 |         0.9/1 |         0.7/1 |
+| parallel sessions in UI             |                 0/1 |      1/1 |            0/1 |           1/1 |           1/1 |
+| **Average**                         |            **0.34** | **0.52** |       **0.40** |      **0.55** |      **0.63** |
 
 
 
 
 <!-- 
 
-gpt5.5 extended thinking
-hardest interviews: 1/1
-optimizer: 1/1
-401k: 0.5/1
-immigration1: 0/3
-immigration2: 1/3
-cs phd: 85
-frontier ai: 54
-education: 0.5/1
-health: 6/9
+im eating amox clav antibiotics and have some stomach issues, what probiotic should i buy from amazon.ca 
+
+how to make adamw rotationally invariant?
+
+what's the best way to tune the learning rate and momentum, both the initial value and the scheduler?
+
+add two columns at the end: score, and best model. score is 2 sig figs. score is the score of the best model
+
+meta ai: 6/7
+gemini 6/7
+grok: 6/7
+
+| Category     | Benchmark                                                      |
+
+| ------------ | -------------------------------------------------------------- |
+
+| Agentic      | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)  |
+
+| Puzzles      | [SimpleBench](https://simple-bench.com/)                       |
+
+| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)            |
+
+| Vision       | [ZeroBench](https://zerobench.github.io/)                      |
+
+| Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) |
+
+| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |
+
+| Coding       | [SlopCodeBench](https://www.scbench.ai/leaderboard)            |
+
+| Coding       | [ProgramBench](https://programbench.com/)                      |
+
+
+output this table twice, once with the last two columns removed
+
+| Category    | Benchmark                                                                                                    |            Score | Best model                        |
+| ----------- | ------------------------------------------------------------------------------------------------------------ | ---------------: | --------------------------------- |
+| Agentic     | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)                                               |     27% | Opus 4.8                  |
+| Puzzles     | [SimpleBench](https://simple-bench.com/)                                                                     |              82% | Fable 5           |
+| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)                                     |          1.8k Elo | Gemini 3.0 Pro                       |
+| Vision      | [ZeroBench](https://zerobench.github.io/)                                                                    |       23% | GPT-5.4                     |
+| Agentic     | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2)                                               |     11k / $63k | Claude Opus 4.7                   |
+| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8) | 58% | GPT-5.5 (no Fable 5) |
+| Coding      | [SlopCodeBench](https://www.scbench.ai/leaderboard)                                                          | 14% | GPT 5.5 (no Fable 5 or Opus 4.8)               |
+| Coding      | [ProgramBench](https://programbench.com/)                                                          | 0.5% | GPT 5.5 (no Fable 5 or Opus 4.8)               |
+
+
+over the summer break, how long does it take to read multivariable calculus by James Stewart if i already finished calculus by spivak. i won't do any problems or exercises.
+24 hours max.
+
+how many days does it take to learn ap calculus during the summer break if i can get into aime
+2 weeks max.
+eval: anything more than 4 weeks is wrong
+
+on ios 18 with battery percentage on, if my phone is below 20% battery and i start charging the phone. what color is the battery icon?
+
+
+For each of the following authors, find their current affiliation. output should be one name per row, and each row is "{name} | {affiliations comma separated}". if it's unknown, put unknown in the affiliations
+
+Diederik P. Kingma
+Jimmy Ba
+Ilija Radosavovic
+Raj Prateek Kosaraju
+Ross Girshick
+Kaiming He
+Piotr Dollár
+Ilya Loshchilov
+Frank Hutter
+Ashish Vaswani
+Noam Shazeer
+Niki Parmar
+Jakob Uszkoreit
+Llion Jones
+Aidan N. Gomez
+Lukasz Kaiser
+Illia Polosukhin
+Xiaohan Ding
+Xiangyu Zhang
+Ningning Ma
+Jungong Han
+Guiguang Ding
+Jian Sun
+Priya Goyal
+Pieter Noordhuis
+Lukasz Wesolowski
+Aapo Kyrola
+Andrew Tulloch
+Yangqing Jia
+Siyuan Qiao
+Huiyu Wang
+Chenxi Liu
+Wei Shen
+Alan Yuille
+Ron Banner
+Itay Hubara
+Elad Hoffer
+Daniel Soudry
+Pierre Foret
+Ariel Kleiner
+Hossein Mobahi
+Behnam Neyshabur
+Shaoqing Ren
+Alec Radford
+Karthik Narasimhan
+Tim Salimans
+Ilya Sutskever
+Jeffrey Wu
+Rewon Child
+David Luan
 
 list all the factors for increasing or lowering the risk of heart disease in a table and provide the statistical risk impact of each
 # LDL/apoB, lp(a), flu infection, smoking, alcohol, water, sleep, stress/loneliness, exercise
 
 design a self-study cs curriculum that can get you a job at google or meta. 
 
-
 which companies hiring computer science students have the hardest interviews? 
 answer: openai, anthropic, jane street
-
-For each of the following authors, find their current affiliation. output should be one name per row, and each row is "{name} | {affiliations comma separated}". if it's unknown, put unknown in the affiliations
-gemini: 0/1
-grok 0.6/1
-chatgpt: 1/1
 
 
 how to ace the meta swe interview?
@@ -106,140 +205,13 @@ biggest project
 
 chatgpt gave the best answer
 https://www.metacareers.com/swe-prep-onsite 
--->
-
-<!-- 
-
-
-meta muse
-health: 6/9
-cs education: 1/1
-find 10 benchmarks: 8/10
-benchmark numbers: 8/12
-usability: 1/1
-optimizer: 1/1
-uoft cs phd: 23
-frontier companies: 28
-401k: 0.5/1
-immigration 1: 3/3
-immigration 2: 3/3
-affiliation: 0.6/1
-
-
 
 what optimizer should i use to train LLMs
-gemini: 0/1
-chatgpt: 1/1
-grok: 0.5/1
 
-grok4.2: 
-q1: 7/10
-q2: 9/12
-q3: 6.5
-q4: 0.5/1
-
-claude opus 4.6: education 1/1, search 6/10, search 10/12, health 7.5, eval 0/1, usability 0/1
-
-
-Qwen3-Max: 3/10
-Deepseek V3.2: 3/10
-GLM: 2/10
-Kimi k2.5: 7/10
-Gemini 3 pro: 7/10
-gpt5.2: 9/10
-Grok: 8/10
-Claude Sonnet 4.5: 4/10 
-
-if i ask for 20 benchmarks
-
-grok4.1 expert: 4/20
-gpt5.2: 6/20
-kimi k2.5: 6/20
-gemini 3 pro: 3/20, hallucinates like crazy
-
-
-q2
-Qwen3-Max: 8/12
-Deepseek V3.2: 0/12
-GLM: 0/12
-Kimi k2.5: 6/12
-Gemini 3 pro: 8/12
-gpt5.2:8/12
-Grok: 9/12
-Claude Sonnet 4.5: 4/12
-
-q3
-Qwen3-Max: 0/1
-Deepseek V3.2: 1/1
-GLM: 0/1
-Kimi k2.5: 1/1
-Gemini 3 pro: 0/1
-gpt5.2: 1/1
-Grok: 1/1
-Claude Sonnet 4.5: 0/1
-
-q4
-Qwen3-Max: 6/9
-Deepseek V3.2: 2/9
-GLM: 0/9
-Kimi k2.5: 6/9
-Gemini 3 pro: 5/9
-gpt5.2: 7/9
-Grok: 4/9
-Claude Sonnet 4.5: 6.5/9
-
-
-q5
-Qwen3-Max: 0/1
-Deepseek V3.2: 0/1
-GLM: 1/1
-Kimi k2.5: 0/1
-Gemini 3 pro: 1/1
-gpt5.2: 0/1
-Grok: 1/1
-Claude Sonnet 4.5: 1/1
-
-list all the profs at university of toronto that do research in machine learning and the number of phd students each has
-
-Colin Raffel
-
-gpt5.2: 0/4
-gemini 3: 2/4
-grok: 2/4
-claude: 1/4, no attempt on getting num students
-kimi: 2/4
 
 find as many current cs phds at university of toronto
-grok4.2: 201
-claude: 86
-gemini 3: 59
-grok4.1: 58
-gpt5.2: 29
-kimi: 39
-gemini 3.1 pro: 18
-
-
-
-find as many US-based frontier AI companies as possible
-claude: 31
-grok4.2: 31
-openai: 24
-gemini 3.1 pro: 19
-kii: 31. 
-
-
-all AIs said TML except gpt5.2. 
-grok is the only AI that said humans&. 
-
-what's the relationship between batch size, learning rate, and weight decay in a neural network
 
 given 50% employer match, 300K salary, age 25, how much money can i put into 401k in 2025?
-grok4.1: 0/1
-grok4.2: 0/1
-claude opus4.6: 0.5/1 mentioned mega backdoor, but no calculation
-gpt5.2: 0.75/1, mentioned mega backdoor, showed calc, but no sum
-gemini 3.1 pro: 1/1
-
 
 
 how long can i stay in the us as a tourist? Im canadian
@@ -289,15 +261,6 @@ Write the complete Python code for a new LLM eval, where model calls use the abo
 6. The eval has to be about showing gaps between human intelligence and machine intelligence
 ```
 
-### Q6
-```
-Not a prompt for the LLM.
-Check whether the conversation persist after a website refresh,
-and whether the website allows many sessions at once.
-```
-
-Sadly, Gemini and Claude have some restrictions here, perhaps to slow per-user usage.
-
 ## Video games
 Improving LLM performance on video games is a great step toward achieving physical intelligence. Simulated environments can be made to mimic real environments, and an algorithm that outperforms other algorithms in the simulated environment is likely to outperform in the real environment as well. Video games challenge LLMs on many fronts, including image understanding, long context, and reasoning.
 
@@ -309,7 +272,3 @@ A particular game that I care about is Go. How do we develop an LLM learning alg
 Web browsing is my main use case for LLMs. If one Google search request can give me the answer, I will use Google Search. Otherwise, I will use an LLM. Many of my queries require synthesizing information across 10+ articles, so an LLM can save me a lot of time. 
 
 The problem with web browsing is that the only popular benchmark, BrowseComp, is getting saturated by Claude Opus 4.6, and that most other web browsing benchmarks have no up-to-date leaderboards. Worse, I'm not sure whether all APIs support web search. This is one case where the app experience might be more advanced than the API experience.
-
-<!-- what moves should i do for 2x a week full body strength training
-help edit my blog post for grammar and style. do not make unnecessary changes. i usually need to prompt it a few times to correct all the mistakes
--->

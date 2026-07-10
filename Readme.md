@@ -19,7 +19,7 @@ The dev server runs on http://localhost:3000 and hot-reloads changes in `pages/`
 ## Content
 
 - Home page content lives in `public/data/home.md`.
-- Published posts live in `public/data/blogs/*.md`; update `public/data/blogs/index.json` to adjust the list page metadata.
+- Published posts live in `public/data/blogs/*.md`; update `public/data/blogs/index.json` to adjust the list page metadata. Set `updated` in `YYYY-MM-DD` format whenever a post changes; blog lists are sorted by this field.
 - Draft or private pieces are under `public/data/unpublished_blogs/`.
 
 ## Build & Deploy

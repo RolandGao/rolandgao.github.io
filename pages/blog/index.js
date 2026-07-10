@@ -6,7 +6,7 @@ import { getAllPosts } from '../../lib/posts';
 export const getStaticProps = () => {
   const posts = getAllPosts().map(post => ({
     ...post,
-    dateDisplay: post.dateDisplay || formatPacificDate(post.date),
+    updatedDisplay: formatPacificDate(post.updated),
   }));
 
   return {
@@ -29,10 +29,8 @@ const BlogIndexPage = ({ posts }) => {
           <li key={post.id}>
             <Link href={post.path}>
               <h2>{post.title}</h2>
-              {post.dateDisplay ? (
-                <p className="post-date">
-                  Date: {post.dateDisplay} | Author: Roland Gao
-                </p>
+              {post.updatedDisplay ? (
+                <p className="post-date">Updated: {post.updatedDisplay}</p>
               ) : null}
             </Link>
           </li>

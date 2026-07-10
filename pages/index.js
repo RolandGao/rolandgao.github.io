@@ -9,7 +9,7 @@ export const getStaticProps = () => {
   const content = loadMarkdownPage('home.md') || '';
   const posts = getAllPosts().map(post => ({
     ...post,
-    dateDisplay: post.dateDisplay || formatPacificDate(post.date),
+    updatedDisplay: formatPacificDate(post.updated),
   }));
 
   return {
@@ -47,9 +47,9 @@ const HomePage = ({ content, posts }) => {
                 <li key={post.id}>
                   <Link href={post.path}>
                     <h3>{post.title}</h3>
-                    {post.dateDisplay ? (
+                    {post.updatedDisplay ? (
                       <p className="post-date">
-                        Date: {post.dateDisplay} | Author: Roland Gao
+                        Updated: {post.updatedDisplay}
                       </p>
                     ) : null}
                   </Link>
