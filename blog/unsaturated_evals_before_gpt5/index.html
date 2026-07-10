@@ -1,30 +1,228 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Roland Gao</title><meta name="description" content="Research Engineer at Meta specializing in Llama Safety Alignment. Computer Science graduate from University of Toronto. AI safety researcher and developer."><meta name="author" content="Roland Gao"><meta name="keywords" content="Roland Gao, Meta Research Engineer, Llama Safety Alignment, AI Safety, Machine Learning, University of Toronto, Computer Science, AI Alignment, Large Language Models"><meta property="og:type" content="website"><meta property="og:url" content="https://rolandgao.github.io/"><meta property="og:title" content="Roland Gao"><meta property="og:description" content="Research Engineer at Meta specializing in Llama Safety Alignment. Computer Science graduate from University of Toronto."><meta property="og:image" content="/social-preview.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@Roland65821498"><meta name="twitter:creator" content="@Roland65821498"><meta name="twitter:title" content="Roland Gao"><meta name="twitter:description" content="Specializing in Llama Safety Alignment. UofT CS graduate. AI safety researcher and developer."><meta name="twitter:image" content="/social-preview.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://rolandgao.github.io/"/><meta name="google-site-verification" content="google0ccf7212e9c814a7"/><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><script type="application/ld+json">{
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Roland Gao",
-      "url": "https://rolandgao.github.io",
-      "sameAs": [
-        "https://www.linkedin.com/in/roland-gao/",
-        "https://x.com/Roland65821498",
-        "https://github.com/RolandGao",
-        "https://scholar.google.ca/citations?user=gZWmCKYAAAAJ&hl=en"
-      ],
-      "jobTitle": "Research Engineer",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Meta",
-        "department": "Llama Safety Alignment"
-      },
-      "alumniOf": {
-        "@type": "EducationalOrganization",
-        "name": "University of Toronto",
-        "sameAs": "https://www.utoronto.ca/"
-      },
-      "email": "mailto:gaoroland@gmail.com",
-      "knowsAbout": [
-        "Artificial Intelligence Safety",
-        "Large Language Models",
-        "Machine Learning",
-        "Computer Science"
-      ]
-    }</script><script defer="defer" src="/static/js/main.e5c7fec4.js"></script><link href="/static/css/main.de84ce15.css" rel="stylesheet"></head><body><noscript><div style="max-width:800px;margin:2rem auto;padding:2rem;font-family:sans-serif;background:#f8f9fa;border-radius:8px"><h1 style="color:#20232a">Roland Gao - Research Engineer</h1><p style="font-size:1.1rem;line-height:1.6">I'm a Research Engineer at Meta working on Llama Safety Alignment. Previously, I studied Computer Science at the University of Toronto.</p><h2 style="margin-top:2rem">Contact Information</h2><p>Email: <a href="mailto:gaoroland@gmail.com">gaoroland@gmail.com</a></p><h2 style="margin-top:2rem">Profiles</h2><ul style="list-style:none;padding:0"><li style="margin-bottom:.5rem"><a href="https://www.linkedin.com/in/roland-gao/" style="color:#0a66c2;text-decoration:none">LinkedIn → /in/roland-gao</a></li><li style="margin-bottom:.5rem"><a href="https://x.com/Roland65821498" style="color:#000;text-decoration:none">Twitter → @Roland65821498</a></li><li style="margin-bottom:.5rem"><a href="https://github.com/RolandGao" style="color:#24292e;text-decoration:none">GitHub → /RolandGao</a></li><li><a href="https://scholar.google.ca/citations?user=gZWmCKYAAAAJ&hl=en" style="color:#4285f4;text-decoration:none">Google Scholar → Roland Gao</a></li></ul><p style="margin-top:2rem;color:#6c757d">This website requires JavaScript to function properly. Please enable JavaScript to view the full content.</p></div></noscript><div id="root"></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-8M0XC4PL2J"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-8M0XC4PL2J")</script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><title>Finding Unsaturated Evals | Roland Gao</title><meta name="description" content="Read &quot;Finding Unsaturated Evals&quot; by Roland Gao."/><link rel="canonical" href="https://rolandgao.github.io/blog/finding_unsaturated_evals/"/><meta property="og:url" content="https://rolandgao.github.io/blog/finding_unsaturated_evals/"/><meta property="og:title" content="Finding Unsaturated Evals | Roland Gao"/><meta property="og:description" content="Read &quot;Finding Unsaturated Evals&quot; by Roland Gao."/><meta property="og:image" content="https://rolandgao.github.io/social-preview.png"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Finding Unsaturated Evals | Roland Gao"/><meta name="twitter:description" content="Read &quot;Finding Unsaturated Evals&quot; by Roland Gao."/><meta name="twitter:image" content="https://rolandgao.github.io/social-preview.png"/><meta http-equiv="refresh" content="0; url=/blog/finding_unsaturated_evals/"/><meta name="next-head-count" content="14"/><meta name="color-scheme" content="light"/><meta name="supported-color-schemes" content="light"/><link rel="preload" href="/_next/static/css/bdf17caf657dbc4e.css" as="style"/><link rel="stylesheet" href="/_next/static/css/bdf17caf657dbc4e.css" data-n-g=""/><link rel="preload" href="/_next/static/css/214fafb2f518805b.css" as="style"/><link rel="stylesheet" href="/_next/static/css/214fafb2f518805b.css" data-n-p=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-42372ed130431b0a.js"></script><script src="/_next/static/chunks/webpack-b8f8d6679aaa5f42.js" defer=""></script><script src="/_next/static/chunks/framework-64ad27b21261a9ce.js" defer=""></script><script src="/_next/static/chunks/main-bec63c43e6b8f591.js" defer=""></script><script src="/_next/static/chunks/pages/_app-b875a65eacc5d767.js" defer=""></script><script src="/_next/static/chunks/175675d1-3d0be9fd12f6d03c.js" defer=""></script><script src="/_next/static/chunks/814-fc9c11725911ddf5.js" defer=""></script><script src="/_next/static/chunks/56-329cc2a2ee2f1bdd.js" defer=""></script><script src="/_next/static/chunks/pages/blog/%5Bslug%5D-70ae8fd4dc7aae87.js" defer=""></script><script src="/_next/static/-Udm_5r0cg-ABGdvt9ULK/_buildManifest.js" defer=""></script><script src="/_next/static/-Udm_5r0cg-ABGdvt9ULK/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="layout"><nav><ul class="navigation"><li><a href="/">Home</a></li><li><a href="/blog/">Blog</a></li></ul></nav><main><article class="blog-post"><header><h1>Finding Unsaturated Evals</h1><p class="post-date">Updated: <!-- -->July 10, 2026<!-- --> | Author: Roland Gao</p></header><div class="markdown-body"><p>I have compiled a list of unsaturated evals, most of which have up-to-date public leaderboards. Then I created some hard prompts for independent testing. Finally, I discuss the need for more video game and web browsing evals.</p>
+<h2>Unsaturated evals</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Category</th><th>Benchmark</th><th style="text-align:right">Score</th><th>Best model</th></tr></thead><tbody><tr><td>Agentic</td><td><a href="https://agents-last-exam.org/leaderboard" target="_blank" rel="noopener noreferrer">Agent&#x27;s Last Exam</a></td><td style="text-align:right">27%</td><td>Opus 4.8</td></tr><tr><td>Puzzles</td><td><a href="https://simple-bench.com/" target="_blank" rel="noopener noreferrer">SimpleBench</a></td><td style="text-align:right">82%</td><td>Fable 5</td></tr><tr><td>Chess</td><td><a href="https://dubesor.de/chess/chess-leaderboard" target="_blank" rel="noopener noreferrer">Chess</a></td><td style="text-align:right">1.8k Elo</td><td>Gemini 3.0 Pro</td></tr><tr><td>Vision</td><td><a href="https://zerobench.github.io/" target="_blank" rel="noopener noreferrer">ZeroBench</a></td><td style="text-align:right">23%</td><td>GPT-5.4</td></tr><tr><td>Agentic</td><td><a href="https://andonlabs.com/evals/vending-bench-2" target="_blank" rel="noopener noreferrer">Vending-Bench 2</a></td><td style="text-align:right">11k / $63k</td><td>Claude Opus 4.7</td></tr><tr><td>Long context</td><td><a href="https://contextarena.ai/?needles=8" target="_blank" rel="noopener noreferrer">MRCR (512k, 8 needles)</a></td><td style="text-align:right">58%</td><td>GPT-5.5 (no Fable 5)</td></tr><tr><td>Coding</td><td><a href="https://www.scbench.ai/leaderboard" target="_blank" rel="noopener noreferrer">SlopCodeBench</a></td><td style="text-align:right">14%</td><td>GPT 5.5 (no Fable 5 or Opus 4.8)</td></tr><tr><td>Coding</td><td><a href="https://programbench.com/" target="_blank" rel="noopener noreferrer">ProgramBench</a></td><td style="text-align:right">0.5%</td><td>GPT 5.5 (no Fable 5 or Opus 4.8)</td></tr></tbody></table>
+<h2>Independent testing</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Metric</th><th style="text-align:right">Claude Opus 4.8 Max</th><th style="text-align:right">Grok 4.5</th><th style="text-align:right">Gemini 3.1 Pro</th><th style="text-align:right">GPT-5.6 xhigh</th><th style="text-align:right">Meta Muse 1.1</th></tr></thead><tbody><tr><td>Health</td><td style="text-align:right">4/9</td><td style="text-align:right">6/9</td><td style="text-align:right">4/9</td><td style="text-align:right">7/9</td><td style="text-align:right">6/9</td></tr><tr><td>Optimizer</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td><td style="text-align:right">0/1</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td></tr><tr><td>days to learn ap calc</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">1/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0.5/1</td></tr><tr><td>days to learn multivariable calc</td><td style="text-align:right">0/1</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td><td style="text-align:right">0.5/1</td><td style="text-align:right">1/1</td></tr><tr><td>Interview prep</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td><td style="text-align:right">0.5/1</td><td style="text-align:right">1/1</td></tr><tr><td>iOS battery icon while charging</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td></tr><tr><td>Make LLM Eval</td><td style="text-align:right">-/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td></tr><tr><td>Tax 1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td><td style="text-align:right">0.5/1</td></tr><tr><td>Immigration 1</td><td style="text-align:right">0/3</td><td style="text-align:right">1/3</td><td style="text-align:right">0/3</td><td style="text-align:right">0/3</td><td style="text-align:right">2/3</td></tr><tr><td>Immigration 2</td><td style="text-align:right">1/3</td><td style="text-align:right">1/3</td><td style="text-align:right">3/3</td><td style="text-align:right">1.5/3</td><td style="text-align:right">2/3</td></tr><tr><td>find uoft cs phds</td><td style="text-align:right">93/200</td><td style="text-align:right">78/200</td><td style="text-align:right">18/200</td><td style="text-align:right">116/200</td><td style="text-align:right">35/200</td></tr><tr><td>find companies with hard interviews</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0/1</td><td style="text-align:right">1/1</td></tr><tr><td>find where people work</td><td style="text-align:right">0.5/1</td><td style="text-align:right">0.5/1</td><td style="text-align:right">0/1</td><td style="text-align:right">0.9/1</td><td style="text-align:right">0.7/1</td></tr><tr><td>many sessions at once in UI</td><td style="text-align:right">0/1</td><td style="text-align:right">1/1</td><td style="text-align:right">0/1</td><td style="text-align:right">1/1</td><td style="text-align:right">1/1</td></tr><tr><td><strong>Average</strong></td><td style="text-align:right"><strong>0.43</strong></td><td style="text-align:right"><strong>0.57</strong></td><td style="text-align:right"><strong>0.32</strong></td><td style="text-align:right"><strong>0.57</strong></td><td style="text-align:right"><strong>0.67</strong></td></tr></tbody></table>
+<p>Whenever a frontier model fails a prompt I asked, I add it into my independent testing suite. Out of my prompts, this following one is the only one that withstood all the frontier LLMs, with no exceptions. I name this prompt &quot;Make LLM Eval&quot;.</p>
+<p>The prompt basically asks the LLM to create an eval that it cannot solve itself. Prompts like this can potentially be used in an RL training algorithm where learning iterates between an attacker and a defender, with continuous self-improvement potential.</p>
+<p>Recently, I tried codex 5.4 with almost 1 hour of thinking time, and it still could not solve this question reliably.</p>
+<pre><code>from openai import OpenAI
+
+def call_model(input):
+    client = OpenAI()
+    response = client.responses.create(
+        model=&quot;gpt-5&quot;,
+        tools=[
+            {&quot;type&quot;: &quot;code_interpreter&quot;, &quot;container&quot;: {&quot;type&quot;: &quot;auto&quot;}}
+        ],
+        input=input,
+    )
+    return response.output_text
+
+Write the complete Python code for a new LLM eval, where model calls use the above code. The eval has to satisfy the below constraints 
+1. gpt-5 with code_interpreter fails the eval 
+2. Many human experts can succeed on the eval, given the same inputs, time constraint, and tool (code_interpreter)
+3. The human also has to comply with gpt-5&#x27;s safety and content policies
+4. The inputs and outputs are text only; no images or audio
+5. The eval cannot exploit the fact that the AI does not have human&#x27;s identify or physical attributes. 
+6. The eval has to be about showing gaps between human intelligence and machine intelligence
+</code></pre>
+<h2>Video games</h2>
+<p>Improving LLM performance on video games is a great step toward achieving physical intelligence. Simulated environments can be made to mimic real environments, and an algorithm that outperforms other algorithms in the simulated environment is likely to outperform in the real environment as well. Video games challenge LLMs on many fronts, including image understanding, long context, and reasoning.</p>
+<p>There are many games in the browser and in mobile app stores, so how do we turn all those games into RL environments? I&#x27;m not sure and would be happy for someone to teach me. One thing I&#x27;m not a big fan of is developing games just for evaluating AIs because it is time-consuming and the additional value over existing games might be minimal.</p>
+<p>A particular game that I care about is Go. How do we develop an LLM learning algorithm that can simultaneously teach the model Go, coding, and math? AlphaZero hard-coded the Monte Carlo tree search algorithm. To make the algorithm more general, the model should decide, through reasoning, which nodes to explore further and what data to learn from. We know it&#x27;s possible to achieve superhuman-level strength in Go. Now we just have to do it one more time, with a more general algorithm that also works for coding and math. The impact of developing such an algorithm will extend far beyond just Go.</p>
+<h2>Web browsing</h2>
+<p>Web browsing is my main use case for LLMs. If one Google search request can give me the answer, I will use Google Search. Otherwise, I will use an LLM. Many of my queries require synthesizing information across 10+ articles, so an LLM can save me a lot of time.</p>
+<p>The problem with web browsing is that the only popular benchmark, BrowseComp, is getting saturated by Claude Opus 4.6, and that most other web browsing benchmarks have no up-to-date leaderboards. Worse, I&#x27;m not sure whether all APIs support web search. This is one case where the app experience might be more advanced than the API experience.</p></div></article><div class="back-link"><a href="/blog/">← Back to all posts</a></div></main></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"metadata":{"id":"finding_unsaturated_evals","title":"Finding Unsaturated Evals","path":"/blog/finding_unsaturated_evals/","date":"2026-02-15","dateDisplay":"February 15, 2026","updated":"2026-07-10"},"content":"I have compiled a list of unsaturated evals, most of which have up-to-date public leaderboards. Then I created some hard prompts for independent testing. Finally, I discuss the need for more video game and web browsing evals.\n\n## Unsaturated evals\n\n\n| Category     | Benchmark                                                      |      Score | Best model                       |\n| ------------ | -------------------------------------------------------------- | ---------: | -------------------------------- |\n| Agentic      | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)  |        27% | Opus 4.8                         |\n| Puzzles      | [SimpleBench](https://simple-bench.com/)                       |        82% | Fable 5                          |\n| Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)            |   1.8k Elo | Gemini 3.0 Pro                   |\n| Vision       | [ZeroBench](https://zerobench.github.io/)                      |        23% | GPT-5.4                          |\n| Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) | 11k / $63k | Claude Opus 4.7                  |\n| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |        58% | GPT-5.5 (no Fable 5)             |\n| Coding       | [SlopCodeBench](https://www.scbench.ai/leaderboard)            |        14% | GPT 5.5 (no Fable 5 or Opus 4.8) |\n| Coding       | [ProgramBench](https://programbench.com/)                      |       0.5% | GPT 5.5 (no Fable 5 or Opus 4.8) |\n\n\n\n\n\n\n\n\n## Independent testing\n\n| Metric                              | Claude Opus 4.8 Max | Grok 4.5 | Gemini 3.1 Pro | GPT-5.6 xhigh | Meta Muse 1.1 |\n| ----------------------------------- | ------------------: | -------: | -------------: | ------------: | ------------: |\n| Health                              |                 4/9 |      6/9 |            4/9 |           7/9 |           6/9 |\n| Optimizer                           |                 1/1 |      1/1 |            0/1 |           1/1 |           1/1 |\n| days to learn ap calc               |                 0/1 |      0/1 |            1/1 |           0/1 |         0.5/1 | \n| days to learn multivariable calc    |                 0/1 |      1/1 |            1/1 |         0.5/1 |           1/1 | \n| Interview prep                      |                 1/1 |      1/1 |            1/1 |         0.5/1 |           1/1 |\n| iOS battery icon while charging     |                 0/1 |      0/1 |            0/1 |           0/1 |           0/1 |\n| Make LLM Eval                       |                 -/1 |      0/1 |            0/1 |           0/1 |           0/1 |\n| Tax 1                               |                 0/1 |      0/1 |            1/1 |           1/1 |         0.5/1 |\n| Immigration 1                       |                 0/3 |      1/3 |            0/3 |           0/3 |           2/3 |\n| Immigration 2                       |                 1/3 |      1/3 |            3/3 |         1.5/3 |           2/3 |\n| find uoft cs phds                   |              93/200 |   78/200 |         18/200 |       116/200 |        35/200 |\n| find companies with hard interviews |                 1/1 |      1/1 |            0/1 |           0/1 |           1/1 |\n| find where people work              |               0.5/1 |    0.5/1 |            0/1 |         0.9/1 |         0.7/1 |\n| many sessions at once in UI         |                 0/1 |      1/1 |            0/1 |           1/1 |           1/1 |\n| **Average**                         |            **0.43** | **0.57** |       **0.32** |      **0.57** |      **0.67** |\n\n\n\n\n\n\nWhenever a frontier model fails a prompt I asked, I add it into my independent testing suite. Out of my prompts, this following one is the only one that withstood all the frontier LLMs, with no exceptions. I name this prompt \"Make LLM Eval\".\n\nThe prompt basically asks the LLM to create an eval that it cannot solve itself. Prompts like this can potentially be used in an RL training algorithm where learning iterates between an attacker and a defender, with continuous self-improvement potential.\n\nRecently, I tried codex 5.4 with almost 1 hour of thinking time, and it still could not solve this question reliably. \n\n```\nfrom openai import OpenAI\n\ndef call_model(input):\n    client = OpenAI()\n    response = client.responses.create(\n        model=\"gpt-5\",\n        tools=[\n            {\"type\": \"code_interpreter\", \"container\": {\"type\": \"auto\"}}\n        ],\n        input=input,\n    )\n    return response.output_text\n\nWrite the complete Python code for a new LLM eval, where model calls use the above code. The eval has to satisfy the below constraints \n1. gpt-5 with code_interpreter fails the eval \n2. Many human experts can succeed on the eval, given the same inputs, time constraint, and tool (code_interpreter)\n3. The human also has to comply with gpt-5's safety and content policies\n4. The inputs and outputs are text only; no images or audio\n5. The eval cannot exploit the fact that the AI does not have human's identify or physical attributes. \n6. The eval has to be about showing gaps between human intelligence and machine intelligence\n```\n\n## Video games\nImproving LLM performance on video games is a great step toward achieving physical intelligence. Simulated environments can be made to mimic real environments, and an algorithm that outperforms other algorithms in the simulated environment is likely to outperform in the real environment as well. Video games challenge LLMs on many fronts, including image understanding, long context, and reasoning.\n\nThere are many games in the browser and in mobile app stores, so how do we turn all those games into RL environments? I'm not sure and would be happy for someone to teach me. One thing I'm not a big fan of is developing games just for evaluating AIs because it is time-consuming and the additional value over existing games might be minimal.\n\nA particular game that I care about is Go. How do we develop an LLM learning algorithm that can simultaneously teach the model Go, coding, and math? AlphaZero hard-coded the Monte Carlo tree search algorithm. To make the algorithm more general, the model should decide, through reasoning, which nodes to explore further and what data to learn from. We know it's possible to achieve superhuman-level strength in Go. Now we just have to do it one more time, with a more general algorithm that also works for coding and math. The impact of developing such an algorithm will extend far beyond just Go.\n\n## Web browsing\nWeb browsing is my main use case for LLMs. If one Google search request can give me the answer, I will use Google Search. Otherwise, I will use an LLM. Many of my queries require synthesizing information across 10+ articles, so an LLM can save me a lot of time. \n\nThe problem with web browsing is that the only popular benchmark, BrowseComp, is getting saturated by Claude Opus 4.6, and that most other web browsing benchmarks have no up-to-date leaderboards. Worse, I'm not sure whether all APIs support web search. This is one case where the app experience might be more advanced than the API experience.","canonicalPath":"/blog/finding_unsaturated_evals/","isLegacySlug":true,"updatedDisplay":"July 10, 2026"},"__N_SSG":true},"page":"/blog/[slug]","query":{"slug":"unsaturated_evals_before_gpt5"},"buildId":"-Udm_5r0cg-ABGdvt9ULK","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

@@ -1,19 +1,45 @@
 {
-  "generatedAt": "2025-09-28T04:54:16.198Z",
+  "generatedAt": "2026-07-10T17:37:52Z",
   "posts": [
+    {
+      "id": "relu_networks",
+      "title": "ReLU Networks",
+      "path": "/blog/relu_networks/",
+      "date": "2026-03-13",
+      "dateDisplay": "March 13, 2026",
+      "updated": "2026-03-13"
+    },
     {
       "id": "finding_unsaturated_evals",
       "title": "Finding Unsaturated Evals",
-      "path": "/blog/finding_unsaturated_evals",
-      "date": "2025-08-07",
-      "dateDisplay": "August 7, 2025"
+      "path": "/blog/finding_unsaturated_evals/",
+      "date": "2026-02-15",
+      "dateDisplay": "February 15, 2026",
+      "updated": "2026-07-10"
     },
     {
       "id": "path_to_agi",
       "title": "Path to AGI",
-      "path": "/blog/path_to_agi",
+      "path": "/blog/path_to_agi/",
       "date": "2025-06-01",
-      "dateDisplay": "June 1, 2025"
+      "dateDisplay": "June 1, 2025",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "undergrads_of_top_cs_phds",
+      "title": "Undergrads of Top CS PhDs",
+      "path": "/blog/undergrads_of_top_cs_phds/",
+      "date": "2025-11-26",
+      "dateDisplay": "November 26, 2025",
+      "updated": "2025-11-26"
+    },
+    {
+      "id": "covid",
+      "title": "Avoiding COVID",
+      "path": "/blog/covid/",
+      "date": "2026-02-04",
+      "dateDisplay": "February 4, 2026",
+      "updated": "2026-02-04"
     }
   ]
 }

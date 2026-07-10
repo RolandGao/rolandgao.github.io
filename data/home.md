@@ -1,8 +1,7 @@
 # Hi, I'm Roland Gao
+I'm an independent AI researcher. Previously, I was a Research Engineer at Meta Superintelligence Labs working on Safety Alignment. I studied Computer Science at the University of Toronto.
 
-Welcome to my personal website! I am a Research Engineer at Meta working on Llama Safety Alignment. Previously, I studied Computer Science at the University of Toronto.
-
-I'm interested in alignment, adversarial training, long context, optimizer, and scalable RL algorithms.
+I'm interested in alignment, adversarial training, long context, optimizer, and scalable RL algorithms. I'm always open to new research ideas and collaborations. Feel free to reach out!
 
 Email: gaoroland [at] gmail.com
 
