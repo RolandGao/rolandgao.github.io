@@ -2,17 +2,21 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 ## Unsaturated evals
 
-
 | Category     | Benchmark                                                      |      Score | Best model                       |
 | ------------ | -------------------------------------------------------------- | ---------: | -------------------------------- |
-| Agentic      | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)  |        31% | GPT-5.6                         |
 | Puzzles      | [SimpleBench](https://simple-bench.com/)                       |        82% | Fable 5                          |
+| Coding       | [ProgramBench](https://www.vals.ai/benchmarks/programbench)    |         3% | Opus 5 |
+| Agentic      | [Agent's Last Exam](https://agents-last-exam.org/leaderboard)  |        31% | GPT-5.6                         |
+| Agentic      | [TERMINAL-BENCH 3.0](https://www.frontierbench.ai/)  |        44% | Opus 5                         |
+| Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) | 11k / $63k | Opus 5                  |
 | Chess        | [Chess](https://dubesor.de/chess/chess-leaderboard)            |   1.8k Elo | Gemini 3.0 Pro                   |
 | Vision       | [ZeroBench](https://zerobench.github.io/)                      |        23% | GPT-5.4 (no GPT-5.6)             |
-| Agentic      | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) | 11k / $63k | Claude Opus 4.7                  |
-| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |        58% | GPT-5.5 (no GPT-5.6)             |
-| Coding       | [SlopCodeBench](https://www.scbench.ai/leaderboard)            |        14% | GPT 5.5 (no GPT-5.6) |
-| Coding       | [ProgramBench](https://programbench.com/)                      |       0.5% | GPT 5.5 (no GPT-5.6) |
+| Vision       | [PerceptionBench](https://www.kimi.com/blog/perception-bench)  |        60% | GPT-5.6                   |
+| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |        63% | GPT-5.6             |
+| Law       | [Harvey's Legal Agent Benchmark](https://www.vals.ai/benchmarks/hlab)    |         20% | Muse Spark 1.1|
+
+
+<!-- | Coding       | [SlopCodeBench](https://www.scbench.ai/leaderboard)            |        14% | GPT 5.5 (no GPT-5.6) | -->
 
 
 <!-- ## Recently saturated evals
