@@ -75,6 +75,19 @@ https://artificialanalysis.ai/evaluations/humanitys-last-exam
 
 <!-- 
 
+come up with some math puzzles that use at most knowledge about addition and multiplication. they don't have to include addition or multiplication. give puzzles of varying difficulty
+
+meta: 1/1
+gpt5.6: 1/1
+gemini: 0.5/1
+grok: 0/1
+
+opus 5:
+health: 7/9
+water maybe not a risk
+
+
+
 im eating amox clav antibiotics and have some stomach issues, what probiotic should i buy from amazon.ca 
 
 how to make adamw rotationally invariant?

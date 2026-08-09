@@ -6,7 +6,7 @@ It is plausible that repeated COVID infections can reduce one's lifespan and hea
 
 ## Prevalence of COVID
 
-We can track the prevalence of COVID by [measuring wastewater data](https://www.cdc.gov/nwss/rv/COVID19-national-data.html?1%20Year=All%20Results).
+We can track the prevalence of COVID by [measuring wastewater data](https://www.cdc.gov/wastewater/respiratory-viruses/national.html?cove-tab=1).
 
 
 <img src="/data/images/covid3.png" width="400" alt="image3">
