@@ -168,8 +168,6 @@ const getTableRows = data => {
 const Leaderboard = ({ data }) => {
   const rows = useMemo(() => getTableRows(data), [data]);
   const [sort, setSort] = useState(null);
-  const llmCount = data.datasets.llm_players.length;
-  const referenceCount = data.table_2.katago_reference_players.length;
 
   const displayedRows = useMemo(() => {
     if (!sort) {
@@ -222,27 +220,11 @@ const Leaderboard = ({ data }) => {
     <section className="gobench-section" aria-labelledby="gobench-leaderboard-title">
       <div className="gobench-section-header">
         <div>
-          <p className="gobench-eyebrow">Leaderboard</p>
           <h2 id="gobench-leaderboard-title">GoBench results</h2>
         </div>
-        <p className="gobench-section-note">
-          Compare playing strength, inference price, and latency. Select any heading to sort the results.
-        </p>
       </div>
 
       <div className="gobench-table-shell">
-        <div className="gobench-table-toolbar">
-          <p>
-            <span className="gobench-status-dot" aria-hidden="true" />
-            <strong>{llmCount}</strong> language models
-            <span className="gobench-reference-count">
-              <span className="gobench-toolbar-divider" aria-hidden="true">·</span>
-              {referenceCount} KataGo references
-            </span>
-          </p>
-          <p className="gobench-table-instructions">Values rounded to two significant figures</p>
-          <span className="gobench-scroll-hint" aria-hidden="true">Swipe for all metrics →</span>
-        </div>
         <div className="gobench-table-scroll">
           <table className="gobench-table">
             <colgroup>
@@ -268,7 +250,10 @@ const Leaderboard = ({ data }) => {
                       key={column.key}
                       scope="col"
                       aria-sort={ariaSort}
-                      className={column.align === 'left' ? 'is-left' : undefined}
+                      className={
+                        (column.align === 'left' ? 'is-left ' : '') +
+                        'is-' + column.key
+                      }
                     >
                       <button type="button" onClick={() => sortBy(column.key)}>
                         <span>{column.label}</span>
@@ -325,7 +310,6 @@ const Leaderboard = ({ data }) => {
           </table>
         </div>
       </div>
-      <p className="gobench-caption">{data.table_2.caption}</p>
     </section>
   );
 };
@@ -381,7 +365,7 @@ const ChartPanel = ({
 }) => {
   const width = 560;
   const height = 390;
-  const margin = { top: 45, right: 22, bottom: 60, left: 62 };
+  const margin = { top: 45, right: 22, bottom: 60, left: 96 };
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
   const yTicks = [0, 1000, 2000, 3000, 4000];
@@ -532,7 +516,7 @@ const ChartPanel = ({
           </text>
           <text
             className="gobench-chart-axis-label"
-            transform={'translate(16 ' + (margin.top + plotHeight / 2) + ') rotate(-90)'}
+            transform={'translate(18 ' + (margin.top + plotHeight / 2) + ') rotate(-90)'}
             textAnchor="middle"
           >
             Elo
@@ -577,10 +561,8 @@ const CostChart = ({ data }) => {
     <section className="gobench-section" aria-labelledby="gobench-chart-heading">
       <div className="gobench-section-header">
         <div>
-          <p className="gobench-eyebrow">Cost efficiency</p>
           <h2 id="gobench-chart-heading">Cost per move vs. Elo</h2>
         </div>
-        <p className="gobench-section-note">Hover or focus a point to see its model and Elo rating.</p>
       </div>
 
       <div className="gobench-chart-grid">
@@ -628,9 +610,6 @@ const CostChart = ({ data }) => {
           </div>
         ))}
       </div>
-      <p className="gobench-caption">
-        {data.figure_2.caption} Error bars show the 95% Elo confidence interval; the dashed line marks the strongest KataGo reference player.
-      </p>
     </section>
   );
 };
@@ -833,6 +812,8 @@ const getOutcome = game => {
   return game.winner === game.llm_player ? 'Win' : 'Loss';
 };
 
+const formatGameResult = result => String(result || '').replace(/\.0+$/, '');
+
 const getOpponentRating = (player, katagoPlayers) => {
   if (player === 'kata1-random') {
     return { elo: 0, eloCi95: 0 };
@@ -962,6 +943,7 @@ const GameReplayer = ({ data }) => {
   }
 
   const currentMove = moveCount > 0 ? selectedGame.moves[moveCount - 1] : null;
+  const isAtEnd = moveCount >= selectedGame.moves.length;
   const visibleMoves = selectedGame.moves.slice(Math.max(0, moveCount - 8), moveCount);
   const blackPlayerName = compactGamePlayerName(
     selectedGame.black,
@@ -981,12 +963,8 @@ const GameReplayer = ({ data }) => {
     <section className="gobench-section" aria-labelledby="gobench-replayer-heading">
       <div className="gobench-section-header">
         <div>
-          <p className="gobench-eyebrow">Game explorer</p>
           <h2 id="gobench-replayer-heading">Replay every match</h2>
         </div>
-        <p className="gobench-section-note">
-          Choose an LLM, its KataGo opponent, and a game. Records are shown from the LLM’s perspective.
-        </p>
       </div>
 
       <div className="gobench-picker-grid">
@@ -1024,11 +1002,11 @@ const GameReplayer = ({ data }) => {
         </label>
 
         <label>
-          <span><b>3</b> Game · LLM result</span>
+          <span><b>3</b> Game · Result</span>
           <select value={selectedGame.id} onChange={event => setGameId(event.target.value)}>
             {filteredGames.map((game, index) => (
               <option key={game.id} value={game.id}>
-                Game {index + 1} · {getOutcome(game)} · {game.llm_color === 'B' ? 'Black' : 'White'} · {game.result}
+                Game {index + 1} · {getOutcome(game)}
               </option>
             ))}
           </select>
@@ -1105,9 +1083,11 @@ const GameReplayer = ({ data }) => {
           </dl>
 
           <div className="gobench-now-playing" aria-live="polite">
-            <span>Current move</span>
+            <span>{isAtEnd ? 'Game result' : 'Current move'}</span>
             <strong>
-              {currentMove
+              {isAtEnd
+                ? formatGameResult(selectedGame.result)
+                : currentMove
                 ? currentMove.number + '. ' + (currentMove.color === 'B' ? 'Black' : 'White') + ' · ' + currentMove.move
                 : 'Start position'}
             </strong>

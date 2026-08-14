@@ -23,7 +23,6 @@
   box-sizing: border-box;
 }
 
-.gobench-eyebrow,
 .gobench-picker-grid label > span,
 .gobench-now-playing > span,
 .gobench-game-meta dt {
@@ -57,26 +56,7 @@
 }
 
 .gobench-section-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
-  align-items: end;
-  gap: 40px;
   margin-bottom: 20px;
-}
-
-.markdown-body .gobench-eyebrow,
-.gobench-eyebrow {
-  margin: 0;
-  color: var(--gobench-accent);
-}
-
-.markdown-body .gobench-section-note,
-.gobench-section-note {
-  margin: 0 0 2px;
-  color: var(--gobench-muted);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 16px;
-  line-height: 1.5;
 }
 
 .gobench-table-shell {
@@ -109,62 +89,6 @@
 
 .gobench-table-scroll::-webkit-scrollbar-track {
   background: var(--gobench-bg);
-}
-
-.gobench-table-toolbar {
-  display: flex;
-  width: 100%;
-  min-height: 48px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--gobench-line);
-  background: #fbfbf9;
-  color: var(--gobench-muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 16px;
-  line-height: 1.35;
-  letter-spacing: 0.035em;
-  text-transform: uppercase;
-}
-
-.markdown-body .gobench-table-toolbar p,
-.gobench-table-toolbar p {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.gobench-table-toolbar strong {
-  color: var(--gobench-ink);
-  font-weight: 600;
-}
-
-.gobench-status-dot {
-  width: 6px;
-  height: 6px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--gobench-accent);
-  box-shadow: 0 0 0 3px var(--gobench-accent-soft);
-}
-
-.gobench-toolbar-divider {
-  margin: 0 3px;
-  color: var(--gobench-faint);
-}
-
-.gobench-reference-count {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.gobench-scroll-hint {
-  display: none;
 }
 
 .markdown-body .gobench-table,
@@ -1012,22 +936,62 @@
   to { transform: rotate(360deg); }
 }
 
-@media (max-width: 880px) {
-  .gobench-section-header {
-    grid-template-columns: 1fr;
-    gap: 10px;
+@media (max-width: 1080px) {
+  .markdown-body .gobench-table,
+  .gobench-table {
+    width: 100%;
+    min-width: 100%;
+    table-layout: fixed;
   }
 
-  .markdown-body .gobench-table-toolbar .gobench-table-instructions,
-  .gobench-table-toolbar .gobench-table-instructions {
-    display: none;
+  .gobench-col-rank {
+    width: 70px;
   }
 
-  .markdown-body .gobench-table-toolbar .gobench-scroll-hint,
-  .gobench-table-toolbar .gobench-scroll-hint {
-    display: flex;
-    color: var(--gobench-accent);
-    text-align: right;
+  .gobench-col-elo {
+    width: 130px;
+  }
+
+  .gobench-col-cost {
+    width: 120px;
+  }
+
+  .gobench-col-seconds {
+    width: 125px;
+  }
+
+  .markdown-body .gobench-table th,
+  .gobench-table th {
+    height: 70px;
+    white-space: normal;
+  }
+
+  .gobench-table th button {
+    padding: 8px;
+    line-height: 1.25;
+  }
+
+  .markdown-body .gobench-table td,
+  .gobench-table td {
+    height: auto;
+    min-height: 60px;
+    padding: 10px 8px;
+  }
+
+  .gobench-player-details {
+    flex-wrap: wrap;
+  }
+
+  .gobench-player-details > span:first-child {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .gobench-table td.is-cost,
+  .gobench-table td.is-seconds,
+  .gobench-reference-heading th.is-player {
+    white-space: normal;
   }
 
   .gobench-chart-grid,
@@ -1058,117 +1022,139 @@
     margin-top: 56px;
   }
 
-  .gobench-table-toolbar {
-    min-height: 0;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    padding: 12px;
-  }
-
-  .gobench-table-toolbar > * {
-    min-width: 0;
-  }
-
-  .markdown-body .gobench-table-toolbar .gobench-scroll-hint,
-  .gobench-table-toolbar .gobench-scroll-hint {
-    width: 100%;
-    flex: 0 0 100%;
-    justify-content: flex-start;
-    white-space: normal;
-  }
-
-  .gobench-reference-count {
-    display: none;
+  .gobench-table-scroll {
+    overflow-x: hidden;
   }
 
   .markdown-body .gobench-table,
   .gobench-table {
-    width: 760px;
-    min-width: 760px;
+    display: table;
+    width: 100%;
+    min-width: 0;
     table-layout: fixed;
   }
 
   .gobench-col-rank {
-    width: 56px;
+    width: 15%;
   }
 
   .gobench-col-player {
-    width: 230px;
+    width: 25%;
   }
 
   .gobench-col-elo {
-    width: 150px;
+    width: 19%;
   }
 
   .gobench-col-cost {
-    width: 150px;
+    width: 22%;
   }
 
   .gobench-col-seconds {
-    width: 174px;
+    width: 19%;
+  }
+
+  .markdown-body .gobench-table tbody tr,
+  .gobench-table tbody tr {
+    display: table-row;
+  }
+
+  .markdown-body .gobench-table th,
+  .gobench-table th,
+  .markdown-body .gobench-table td,
+  .gobench-table td {
+    display: table-cell;
+    min-width: 0;
+    height: auto;
+    padding: 10px 1px;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    vertical-align: middle;
+  }
+
+  .markdown-body .gobench-table th,
+  .gobench-table th {
+    padding: 0;
   }
 
   .gobench-table th button {
-    gap: 5px;
-    padding: 0 8px;
-  }
-
-  .markdown-body .gobench-table td,
-  .gobench-table td {
-    padding: 0 8px;
-  }
-
-  .gobench-table td.is-player {
-    font-size: 16px;
-  }
-
-  .gobench-player-cell {
-    gap: 8px;
-  }
-
-  .gobench-player-details {
-    gap: 5px;
-  }
-
-  .gobench-player-tier {
-    padding-right: 5px;
-    padding-left: 5px;
-    font-size: 16px;
-  }
-
-  .gobench-player-tier::after {
-    content: none;
-  }
-
-  .gobench-table td.is-cost {
-    font-size: 16px;
-  }
-
-  .gobench-table th:first-child button,
-  .gobench-table td:first-child {
-    padding-right: 8px;
-    padding-left: 8px;
-  }
-
-  .gobench-table th:first-child button {
+    min-height: 72px;
     gap: 2px;
-    font-size: 16px;
+    padding: 8px 3px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
   }
 
   .gobench-table .sort-indicator:not(.is-active) {
     display: none;
   }
 
+  .gobench-table th:first-child,
+  .gobench-table td:first-child {
+    border-right: 1px solid var(--gobench-line);
+  }
+
+  .markdown-body .gobench-table td.is-player,
+  .gobench-table td.is-player {
+    padding-right: 2px;
+    padding-left: 4px;
+  }
+
+  .gobench-table th.is-cost,
+  .gobench-table td.is-cost {
+    padding-left: 2px;
+    border-left: 1px solid var(--gobench-line);
+  }
+
+  .gobench-player-cell {
+    display: block;
+  }
+
+  .gobench-player-details {
+    display: inline;
+  }
+
+  .gobench-player-details > span:first-child {
+    display: inline;
+    overflow-wrap: anywhere;
+  }
+
+  .gobench-player-tier {
+    display: inline-block;
+    margin-left: 4px;
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+
+  .gobench-table .gobench-reference-heading th {
+    height: auto;
+    padding: 12px 5px;
+    white-space: normal;
+  }
+
+  .gobench-elo-value {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+  }
+
+  .gobench-table td.is-cost,
+  .gobench-table td.is-seconds {
+    font-size: 16px;
+  }
+
   .gobench-provider-logo {
-    width: 17px;
-    height: 17px;
-    flex-basis: 17px;
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+    margin-right: 4px;
+    vertical-align: text-bottom;
   }
 
   .gobench-provider-logo svg,
   .gobench-provider-logo.is-katago svg {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
   }
 
   .gobench-chart-tick {
@@ -1232,6 +1218,15 @@
 }
 
 @media (max-width: 350px) {
+  .gobench-table td.is-player {
+    font-family: 'Avenir Next Condensed', 'Arial Narrow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  .gobench-table td.is-cost,
+  .gobench-table td.is-seconds {
+    font-family: 'Avenir Next Condensed', 'Arial Narrow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
   .gobench-playback-buttons {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 6px;
@@ -1243,27 +1238,6 @@
     white-space: nowrap;
   }
 
-  .gobench-table-toolbar {
-    font-size: 16px;
-  }
-
-  .gobench-col-rank {
-    display: none;
-    width: 0;
-  }
-
-  .gobench-col-player {
-    width: 230px;
-  }
-
-  .gobench-col-cost {
-    width: 150px;
-  }
-
-  .gobench-table th:first-child,
-  .gobench-table td:first-child {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
