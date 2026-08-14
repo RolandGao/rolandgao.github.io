@@ -152,6 +152,12 @@ nav {
   line-height: 1;
 }
 
+.blog-post--gobench .post-date,
+.blog-post--gobench .draft-preview-notice {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 .blog-post--gobench .markdown-body > p:first-child {
   max-width: 680px;
   color: #5e5954;

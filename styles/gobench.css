@@ -13,8 +13,8 @@
   transform: translateX(-50%);
   color: var(--gobench-ink);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 15px;
-  line-height: 1.4;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .gobench-root *,
@@ -29,7 +29,7 @@
 .gobench-game-meta dt {
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.075em;
   text-transform: uppercase;
@@ -75,8 +75,8 @@
   margin: 0 0 2px;
   color: var(--gobench-muted);
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .gobench-table-shell {
@@ -114,16 +114,17 @@
 .gobench-table-toolbar {
   display: flex;
   width: 100%;
-  min-height: 38px;
+  min-height: 48px;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 8px 13px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--gobench-line);
   background: #fbfbf9;
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 9px;
+  font-size: 16px;
+  line-height: 1.35;
   letter-spacing: 0.035em;
   text-transform: uppercase;
 }
@@ -170,29 +171,29 @@
 .gobench-table {
   display: table;
   width: 100%;
-  min-width: 820px;
+  min-width: 1040px;
   margin: 0;
   border: 0;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 12px;
-  line-height: 1.3;
+  font-size: 16px;
+  line-height: 1.4;
 }
 
 .gobench-col-rank {
-  width: 72px;
+  width: 80px;
 }
 
 .gobench-col-elo {
-  width: 172px;
+  width: 210px;
 }
 
 .gobench-col-cost {
-  width: 154px;
+  width: 190px;
 }
 
 .gobench-col-seconds {
-  width: 174px;
+  width: 210px;
 }
 
 .markdown-body .gobench-table tbody tr,
@@ -209,7 +210,7 @@
 .markdown-body .gobench-table td,
 .gobench-table th,
 .gobench-table td {
-  height: 49px;
+  height: 60px;
   padding: 0;
   border: 0;
   border-bottom: 1px solid var(--gobench-line);
@@ -229,11 +230,11 @@
 
 .markdown-body .gobench-table th,
 .gobench-table th {
-  height: 44px;
+  height: 54px;
   background: #e7efe9;
   color: #52645c;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 9px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -276,14 +277,14 @@
   padding: 0 16px;
   color: var(--gobench-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
+  font-size: 16px;
   font-variant-numeric: tabular-nums;
 }
 
 .gobench-table td.is-player {
   min-width: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 450;
 }
 
@@ -317,7 +318,7 @@
   background: rgba(255, 255, 255, 0.52);
   color: #52645c;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 8px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.045em;
   line-height: 1.35;
@@ -394,7 +395,7 @@
 }
 
 .gobench-table .gobench-reference-heading th {
-  height: 34px;
+  height: 44px;
   padding: 0 16px;
   border-top: 1px solid var(--gobench-line-strong);
   border-right: 0;
@@ -414,7 +415,7 @@
 
 .sort-indicator {
   color: #789087;
-  font-size: 11px;
+  font-size: 16px;
   opacity: 0.42;
 }
 
@@ -425,7 +426,7 @@
 
 .gobench-table td.is-rank {
   color: #356654;
-  font-size: 10px;
+  font-size: 16px;
 }
 
 .gobench-elo-value {
@@ -440,7 +441,7 @@
 
 .gobench-elo-value span {
   color: #4e7868;
-  font-size: 9px;
+  font-size: 16px;
 }
 
 .markdown-body .gobench-caption,
@@ -448,8 +449,8 @@
   margin: 9px 0 0;
   color: var(--gobench-muted);
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .gobench-chart-grid {
@@ -467,12 +468,13 @@
 }
 
 .gobench-chart-title {
-  height: 39px;
-  padding: 12px 14px 0;
+  min-height: 48px;
+  padding: 13px 16px;
   border-bottom: 1px solid var(--gobench-line);
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
+  font-size: 16px;
+  line-height: 1.35;
   letter-spacing: 0.065em;
   text-transform: uppercase;
 }
@@ -506,13 +508,13 @@
 .gobench-reference-label {
   fill: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
+  font-size: 16px;
   font-variant-numeric: tabular-nums;
 }
 
 .gobench-chart-axis-label {
   fill: var(--gobench-ink);
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .gobench-reference-line {
@@ -524,7 +526,7 @@
 
 .gobench-reference-label {
   fill: #536171;
-  font-size: 9px;
+  font-size: 16px;
 }
 
 .gobench-error-bar {
@@ -557,7 +559,7 @@
   left: clamp(88px, var(--gobench-tooltip-x), calc(100% - 88px));
   z-index: 4;
   display: flex;
-  min-width: 158px;
+  min-width: 220px;
   flex-direction: column;
   gap: 3px;
   padding: 9px 11px;
@@ -565,8 +567,8 @@
   background: rgba(28, 28, 26, 0.96);
   color: #ffffff;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
-  line-height: 1.35;
+  font-size: 16px;
+  line-height: 1.4;
   pointer-events: none;
   transform: translate(-50%, calc(-100% - 18px));
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.14);
@@ -588,22 +590,23 @@
 
 .gobench-chart-legend {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border-left: 1px solid var(--gobench-line);
 }
 
 .gobench-legend-item {
   display: flex;
   min-width: 0;
-  min-height: 34px;
+  min-height: 48px;
   align-items: center;
   gap: 8px;
-  padding: 7px 10px;
+  padding: 10px 12px;
   border-right: 1px solid var(--gobench-line);
   border-bottom: 1px solid var(--gobench-line);
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 9px;
+  font-size: 16px;
+  line-height: 1.35;
 }
 
 .gobench-legend-item > span:last-child {
@@ -625,7 +628,11 @@
 }
 
 @media (min-width: 881px) {
-  .gobench-legend-item:last-child:nth-child(4n + 3) {
+  .gobench-legend-item:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+
+  .gobench-legend-item:last-child:nth-child(3n + 2) {
     grid-column: span 2;
   }
 }
@@ -642,8 +649,8 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 8px;
-  padding: 12px;
+  gap: 10px;
+  padding: 16px;
   border-right: 1px solid var(--gobench-line);
   border-bottom: 1px solid var(--gobench-line);
 }
@@ -656,18 +663,18 @@
 
 .gobench-picker-grid label > span b {
   display: inline-grid;
-  width: 17px;
-  height: 17px;
+  width: 24px;
+  height: 24px;
   place-items: center;
   border: 1px solid var(--gobench-line-strong);
   border-radius: 50%;
   color: var(--gobench-ink);
-  font-size: 9px;
+  font-size: 16px;
 }
 
 .gobench-picker-grid select {
   width: 100%;
-  height: 38px;
+  height: 46px;
   padding: 0 34px 0 10px;
   overflow: hidden;
   border: 1px solid var(--gobench-line);
@@ -675,7 +682,7 @@
   background-color: #ffffff;
   color: var(--gobench-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
+  font-size: 16px;
   text-overflow: ellipsis;
 }
 
@@ -725,7 +732,7 @@
 .gobench-board-coordinate {
   fill: #5e4e34;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
+  font-size: 16px;
 }
 
 .gobench-board-star {
@@ -756,7 +763,7 @@
 
 .gobench-game-meta > div {
   min-width: 0;
-  padding: 12px 14px;
+  padding: 14px 16px;
   border-right: 1px solid var(--gobench-line);
   border-bottom: 1px solid var(--gobench-line);
 }
@@ -785,7 +792,7 @@
   overflow: hidden;
   color: var(--gobench-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
+  font-size: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -842,7 +849,7 @@
   display: flex;
   grid-column: span 3;
   min-width: 0;
-  min-height: 36px;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   padding: 5px;
@@ -850,7 +857,7 @@
   border-bottom: 0;
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 9px;
+  font-size: 16px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -898,7 +905,7 @@
 
 .gobench-move-strip span.is-empty {
   grid-column: 1 / -1;
-  min-height: 72px;
+  min-height: 88px;
   border: 0;
 }
 
@@ -914,12 +921,12 @@
 
 .gobench-playback-buttons {
   display: grid;
-  grid-template-columns: 38px 38px minmax(72px, 1fr) 38px 38px;
-  gap: 6px;
+  grid-template-columns: 44px 44px minmax(84px, 1fr) 44px 44px;
+  gap: 8px;
 }
 
 .gobench-playback button {
-  min-height: 37px;
+  min-height: 44px;
   padding: 0 8px;
   border: 1px solid var(--gobench-line);
   border-radius: 0;
@@ -927,7 +934,7 @@
   color: var(--gobench-ink);
   cursor: pointer;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
+  font-size: 16px;
 }
 
 .gobench-playback button:hover:not(:disabled) {
@@ -959,10 +966,10 @@
 }
 
 .gobench-scrubber-row span {
-  min-width: 56px;
+  min-width: 76px;
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 9px;
+  font-size: 16px;
   text-align: right;
 }
 
@@ -977,7 +984,7 @@
   background: #f7f6f3;
   color: #77716b;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
+  font-size: 16px;
   text-align: center;
 }
 
@@ -1052,9 +1059,22 @@
   }
 
   .gobench-table-toolbar {
-    min-height: 40px;
-    gap: 10px;
-    padding: 8px 10px;
+    min-height: 0;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px;
+  }
+
+  .gobench-table-toolbar > * {
+    min-width: 0;
+  }
+
+  .markdown-body .gobench-table-toolbar .gobench-scroll-hint,
+  .gobench-table-toolbar .gobench-scroll-hint {
+    width: 100%;
+    flex: 0 0 100%;
+    justify-content: flex-start;
+    white-space: normal;
   }
 
   .gobench-reference-count {
@@ -1063,29 +1083,29 @@
 
   .markdown-body .gobench-table,
   .gobench-table {
-    width: calc(100vw + 116px);
-    min-width: calc(100vw + 116px);
+    width: 760px;
+    min-width: 760px;
     table-layout: fixed;
   }
 
   .gobench-col-rank {
-    width: 40px;
+    width: 56px;
   }
 
   .gobench-col-player {
-    width: calc(100vw - 248px);
+    width: 230px;
   }
 
   .gobench-col-elo {
-    width: 92px;
+    width: 150px;
   }
 
   .gobench-col-cost {
-    width: 82px;
+    width: 150px;
   }
 
   .gobench-col-seconds {
-    width: 150px;
+    width: 174px;
   }
 
   .gobench-table th button {
@@ -1099,7 +1119,7 @@
   }
 
   .gobench-table td.is-player {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .gobench-player-cell {
@@ -1111,18 +1131,17 @@
   }
 
   .gobench-player-tier {
-    padding-right: 4px;
-    padding-left: 4px;
-    font-size: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 16px;
   }
 
   .gobench-player-tier::after {
-    content: attr(data-short);
-    font-size: 8px;
+    content: none;
   }
 
   .gobench-table td.is-cost {
-    font-size: 10px;
+    font-size: 16px;
   }
 
   .gobench-table th:first-child button,
@@ -1133,7 +1152,7 @@
 
   .gobench-table th:first-child button {
     gap: 2px;
-    font-size: 9px;
+    font-size: 16px;
   }
 
   .gobench-table .sort-indicator:not(.is-active) {
@@ -1153,7 +1172,7 @@
   }
 
   .gobench-chart-tick {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .gobench-chart-axis-label {
@@ -1161,7 +1180,7 @@
   }
 
   .gobench-reference-label {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .gobench-error-bar {
@@ -1181,7 +1200,7 @@
   }
 
   .gobench-legend-item {
-    min-height: 39px;
+    min-height: 52px;
     line-height: 1.3;
   }
 
@@ -1213,8 +1232,19 @@
 }
 
 @media (max-width: 350px) {
+  .gobench-playback-buttons {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .gobench-playback button {
+    padding-right: 2px;
+    padding-left: 2px;
+    white-space: nowrap;
+  }
+
   .gobench-table-toolbar {
-    font-size: 8px;
+    font-size: 16px;
   }
 
   .gobench-col-rank {
@@ -1223,11 +1253,11 @@
   }
 
   .gobench-col-player {
-    width: calc(100vw - 206px);
+    width: 230px;
   }
 
   .gobench-col-cost {
-    width: 80px;
+    width: 150px;
   }
 
   .gobench-table th:first-child,
