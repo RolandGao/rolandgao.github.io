@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import ProviderLogo from './ProviderLogo';
+
 const DATA_URL = '/data/gobench_data/paper_results.json';
 const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
 const CHART_COLORS = [
@@ -31,37 +33,30 @@ const TABLE_COLUMNS = [
     label: 'Player',
     align: 'left',
     value: row => row.label.toLowerCase(),
-    render: row => row.label,
+    render: row => (
+      <span className="gobench-player-cell">
+        <ProviderLogo player={row.player} />
+        <span>{row.label}</span>
+      </span>
+    ),
   },
   {
     key: 'elo',
     label: 'Elo',
     value: row => row.elo,
-    render: row => formatInteger(row.elo),
-  },
-  {
-    key: 'elo_ci_95',
-    label: '95% CI',
-    value: row => row.elo_ci_95,
-    render: row => '±' + formatInteger(row.elo_ci_95),
-  },
-  {
-    key: 'games',
-    label: 'Games',
-    value: row => row.games,
-    render: row => formatInteger(row.games),
-  },
-  {
-    key: 'seconds',
-    label: 'Seconds / move',
-    value: row => row.seconds,
-    render: row => formatTwoSignificantFigures(row.seconds) + 's',
+    render: row => formatInteger(row.elo) + ' ± ' + formatInteger(row.elo_ci_95),
   },
   {
     key: 'cost',
     label: 'Cost / move',
     value: row => row.cost,
     render: row => formatCost(row.cost),
+  },
+  {
+    key: 'seconds',
+    label: 'Seconds / move',
+    value: row => row.seconds,
+    render: row => formatTwoSignificantFigures(row.seconds) + 's',
   },
 ];
 
@@ -136,7 +131,10 @@ const Leaderboard = ({ data }) => {
     }
 
     const column = TABLE_COLUMNS.find(candidate => candidate.key === sort.key);
-    return rows
+    const llmRows = rows.filter(row => row.rowType === 'llm');
+    const referenceRows = rows.filter(row => row.rowType === 'reference');
+
+    const sortedLlmRows = llmRows
       .map((row, index) => ({ row, index }))
       .sort((left, right) => {
         const leftValue = column.value(left.row);
@@ -156,16 +154,22 @@ const Leaderboard = ({ data }) => {
         return sort.direction === 'ascending' ? comparison : -comparison;
       })
       .map(item => item.row);
+
+    return [...sortedLlmRows, ...referenceRows];
   }, [rows, sort]);
 
   const sortBy = key => {
-    setSort(current => ({
-      key,
-      direction:
-        current?.key === key && current.direction === 'ascending'
-          ? 'descending'
-          : 'ascending',
-    }));
+    setSort(current => {
+      if (current?.key !== key) {
+        return { key, direction: 'ascending' };
+      }
+
+      if (current.direction === 'ascending') {
+        return { key, direction: 'descending' };
+      }
+
+      return null;
+    });
   };
 
   return (
@@ -176,9 +180,11 @@ const Leaderboard = ({ data }) => {
           <h2 id="gobench-leaderboard-title">GoBench results</h2>
         </div>
         <p className="gobench-section-note">
-          Click a column title to sort. Time and cost are rounded to two significant figures.
+          Click a column title to cycle ascending, descending, and default order. Time and cost are rounded to two significant figures.
         </p>
       </div>
+
+      <p className="gobench-scroll-hint" aria-hidden="true">Swipe to see every column →</p>
 
       <div className="gobench-table-scroll">
         <table className="gobench-table">
@@ -266,7 +272,6 @@ const PointGlyph = ({ point, x, y, color, muted = false, onEnter, onLeave }) => 
       onBlur={onLeave}
     >
       <title>{label}</title>
-      <circle className="gobench-point-hitbox" cx={x} cy={y} r="13" />
       <circle
         cx={x}
         cy={y}
@@ -729,6 +734,11 @@ const compactOpponentName = player => {
   return 'KataGo · ' + stepLabel + (temperature ? ' · temp ' + temperature : '');
 };
 
+const compactGamePlayerName = player =>
+  player.startsWith('kata1-')
+    ? compactOpponentName(player).replace(' steps', '')
+    : player;
+
 const getOpponentRating = (player, katagoPlayers) => {
   if (player === 'kata1-random') {
     return { elo: 0, eloCi95: 0 };
@@ -924,17 +934,56 @@ const GameReplayer = ({ data }) => {
             <span className="gobench-result-code">{selectedGame.result}</span>
           </div>
 
+          <div className="gobench-playback">
+            <div className="gobench-playback-buttons">
+              <button type="button" onClick={() => moveTo(0)} disabled={moveCount === 0} aria-label="First move">↤</button>
+              <button type="button" onClick={() => moveTo(moveCount - 1)} disabled={moveCount === 0} aria-label="Previous move">←</button>
+              <button
+                type="button"
+                className="is-primary"
+                onClick={() => {
+                  if (moveCount >= selectedGame.moves.length) {
+                    setMoveCount(0);
+                  }
+                  setPlaying(current => !current);
+                }}
+                aria-label={playing ? 'Pause replay' : 'Play replay'}
+              >
+                {playing ? 'Pause' : 'Play'}
+              </button>
+              <button type="button" onClick={() => moveTo(moveCount + 1)} disabled={moveCount === selectedGame.moves.length} aria-label="Next move">→</button>
+              <button type="button" onClick={() => moveTo(selectedGame.moves.length)} disabled={moveCount === selectedGame.moves.length} aria-label="Last move">↦</button>
+            </div>
+            <div className="gobench-scrubber-row">
+              <input
+                type="range"
+                min="0"
+                max={selectedGame.moves.length}
+                value={moveCount}
+                onChange={event => moveTo(Number(event.target.value))}
+                aria-label="Replay position"
+              />
+              <span>{moveCount} / {selectedGame.moves.length}</span>
+            </div>
+          </div>
+
           <dl className="gobench-game-meta">
             <div>
               <dt>Black</dt>
-              <dd><span className="gobench-color-chip is-black" />{selectedGame.black}</dd>
+              <dd title={selectedGame.black}>
+                <span className="gobench-color-chip is-black" />
+                <span>{compactGamePlayerName(selectedGame.black)}</span>
+              </dd>
             </div>
             <div>
               <dt>White</dt>
-              <dd><span className="gobench-color-chip is-white" />{selectedGame.white}</dd>
+              <dd title={selectedGame.white}>
+                <span className="gobench-color-chip is-white" />
+                <span>{compactGamePlayerName(selectedGame.white)}</span>
+              </dd>
             </div>
             <div>
-              <dt>Opponent Elo · 95% CI</dt>
+              <dt>Elo · 95% CI</dt>
               <dd>{selectedOpponent?.elo === null ? 'N/A' : formatInteger(selectedOpponent?.elo) + ' ±' + formatInteger(selectedOpponent?.eloCi95)}</dd>
             </div>
             <div>
@@ -960,38 +1009,6 @@ const GameReplayer = ({ data }) => {
             )) : <span className="is-empty">No moves played</span>}
           </div>
 
-          <div className="gobench-playback">
-            <div className="gobench-playback-buttons">
-              <button type="button" onClick={() => moveTo(0)} disabled={moveCount === 0} aria-label="First move">|←</button>
-              <button type="button" onClick={() => moveTo(moveCount - 1)} disabled={moveCount === 0} aria-label="Previous move">←</button>
-              <button
-                type="button"
-                className="is-primary"
-                onClick={() => {
-                  if (moveCount >= selectedGame.moves.length) {
-                    setMoveCount(0);
-                  }
-                  setPlaying(current => !current);
-                }}
-                aria-label={playing ? 'Pause replay' : 'Play replay'}
-              >
-                {playing ? 'Pause' : 'Play'}
-              </button>
-              <button type="button" onClick={() => moveTo(moveCount + 1)} disabled={moveCount === selectedGame.moves.length} aria-label="Next move">→</button>
-              <button type="button" onClick={() => moveTo(selectedGame.moves.length)} disabled={moveCount === selectedGame.moves.length} aria-label="Last move">→|</button>
-            </div>
-            <div className="gobench-scrubber-row">
-              <input
-                type="range"
-                min="0"
-                max={selectedGame.moves.length}
-                value={moveCount}
-                onChange={event => moveTo(Number(event.target.value))}
-                aria-label="Replay position"
-              />
-              <span>{moveCount} / {selectedGame.moves.length}</span>
-            </div>
-          </div>
         </div>
       </div>
       <p className="gobench-caption">
@@ -1042,24 +1059,6 @@ const GoBench = () => {
 
   return (
     <div className="gobench-root">
-      <div className="gobench-overview" aria-label="Benchmark summary">
-        <div>
-          <span>Evaluated models</span>
-          <strong>{data.datasets.llm_players.length}</strong>
-        </div>
-        <div>
-          <span>KataGo references</span>
-          <strong>{data.datasets.katago_players.length}</strong>
-        </div>
-        <div>
-          <span>Recorded games</span>
-          <strong>{data.games.count}</strong>
-        </div>
-        <div>
-          <span>Board</span>
-          <strong>{data.games.board_size}×{data.games.board_size}</strong>
-        </div>
-      </div>
       <Leaderboard data={data} />
       <CostChart data={data} />
       <GameReplayer data={data} />

@@ -141,3 +141,21 @@ nav {
   border: 1px solid #d8bd70;
   background: #fff8df;
 }
+
+.blog-post--gobench > header h1 {
+  margin: 18px 0 20px;
+  color: #1c1c1a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.75rem, 7vw, 4.25rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.blog-post--gobench .markdown-body > p:first-child {
+  max-width: 680px;
+  color: #5e5954;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.18rem;
+  line-height: 1.55;
+}

@@ -39,7 +39,13 @@ const DraftBlogPage = ({ metadata, content }) => (
     <Head>
       <meta name="robots" content="noindex,nofollow" />
     </Head>
-    <article className="blog-post draft-blog-post">
+    <article
+      className={
+        metadata.id === 'gobench'
+          ? 'blog-post draft-blog-post blog-post--gobench'
+          : 'blog-post draft-blog-post'
+      }
+    >
       <header>
         <p className="draft-preview-notice">Local draft preview · not included in production</p>
         <h1>{metadata.title}</h1>
