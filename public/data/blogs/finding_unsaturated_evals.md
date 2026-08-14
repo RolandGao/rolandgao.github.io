@@ -10,7 +10,6 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 | Coding       | [ProgramBench](https://www.vals.ai/benchmarks/programbench)    |         3% | Opus 5 |
 | Game       | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) | 11k / $63k | Opus 5                  |
 | Game        | [Chess](https://dubesor.de/chess/chess-leaderboard)            |   1.8k Elo | Gemini 3.0 Pro                   |
-<!-- | Game        | [GoBench]()            |   1.8k Elo | Gemini 3.0 Pro                   | -->
 | Vision       | [ZeroBench](https://zerobench.github.io/)                      |        30% | GPT-5.6 |
 | Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |        63% | GPT-5.6             |
 | Law       | [Harvey's Legal Agent Benchmark](https://www.vals.ai/benchmarks/hlab)    |         25% | Muse Spark 1.2|
@@ -18,6 +17,7 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 <!-- | Coding       | [SlopCodeBench](https://www.scbench.ai/leaderboard)            |        14% | GPT 5.5 (no GPT-5.6) | -->
 
+<!-- | Game        | [GoBench]()            |   1.8k Elo | Gemini 3.0 Pro                   | -->
 
 <!-- ## Recently saturated evals
 https://www.frontierbench.ai/
@@ -89,6 +89,8 @@ grok: 0/1
 opus 5:
 health: 7/9
 water maybe not a risk
+immigration 1: 0/3
+immigration 2: 2.5/3
 
 
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -7,6 +8,15 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import 'github-markdown-css/github-markdown-light.css';
 import 'katex/dist/katex.min.css';
+
+const GoBench = dynamic(() => import('./GoBench'), {
+  loading: () => (
+    <div className="gobench-loading" role="status">
+      <span />
+      <p>Loading GoBench…</p>
+    </div>
+  ),
+});
 
 const MarkdownRenderer = ({ content = '' }) => {
   const markdownComponents = {
@@ -20,10 +30,12 @@ const MarkdownRenderer = ({ content = '' }) => {
 
       return <a {...props} />;
     },
+    gobench: () => <GoBench />,
   };
 
   const markdownSchema = {
     ...defaultSchema,
+    tagNames: [...(defaultSchema.tagNames || []), 'gobench'],
     attributes: {
       ...defaultSchema.attributes,
       code: [
