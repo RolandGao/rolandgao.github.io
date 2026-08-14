@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import ProviderLogo from './ProviderLogo';
 
@@ -17,6 +17,33 @@ const CHART_COLORS = [
   '#3678d8',
 ];
 
+const PLAYER_PRESENTATION = {
+  'opus-5-high': { label: 'Claude Opus 5', tier: 'High' },
+  'gemini-3.1-pro-high': { label: 'Gemini 3.1 Pro', tier: 'High' },
+  'DeepSeek-V4-Flash-0731-high': { label: 'DeepSeek V4 Flash 0731', tier: 'High' },
+  'kimi-k3-high': { label: 'Kimi K3', tier: 'High' },
+  'gpt5.6-sol-high': { label: 'GPT-5.6 Sol', tier: 'High' },
+  'gpt5.6-sol-low': { label: 'GPT-5.6 Sol', tier: 'Low' },
+  'muse-spark-1.2-openrouter-high': { label: 'Muse Spark 1.2', tier: 'High' },
+  'gpt-5.4-low': { label: 'GPT-5.4', tier: 'Low' },
+  'grok-4.5-high': { label: 'Grok 4.5', tier: 'High' },
+  'gemini-3.6-flash-high': { label: 'Gemini 3.6 Flash', tier: 'High' },
+};
+
+const getPlayerPresentation = player => PLAYER_PRESENTATION[player] || {
+  label: player,
+  tier: null,
+};
+
+const formatPlayerDisplayName = player => {
+  const presentation = getPlayerPresentation(player);
+  return presentation.tier
+    ? presentation.label + ' · ' + presentation.tier
+    : presentation.label;
+};
+
+const RESULT_ROW_ALPHAS = [0.17, 0.135, 0.105, 0.072, 0.06, 0.052, 0.046, 0.041, 0.037, 0.034];
+
 const TABLE_COLUMNS = [
   {
     key: 'rank',
@@ -34,9 +61,16 @@ const TABLE_COLUMNS = [
     align: 'left',
     value: row => row.label.toLowerCase(),
     render: row => (
-      <span className="gobench-player-cell">
+      <span className="gobench-player-cell" title={row.player}>
         <ProviderLogo player={row.player} />
-        <span>{row.label}</span>
+        <span className="gobench-player-details">
+          <span>{row.label}</span>
+          {row.tier ? (
+            <span className="gobench-player-tier" data-short={row.tier.slice(0, 1)}>
+              {row.tier}
+            </span>
+          ) : null}
+        </span>
       </span>
     ),
   },
@@ -44,7 +78,12 @@ const TABLE_COLUMNS = [
     key: 'elo',
     label: 'Elo',
     value: row => row.elo,
-    render: row => formatInteger(row.elo) + ' ± ' + formatInteger(row.elo_ci_95),
+    render: row => (
+      <span className="gobench-elo-value">
+        <strong>{formatInteger(row.elo)}</strong>
+        <span>± {formatInteger(row.elo_ci_95)}</span>
+      </span>
+    ),
   },
   {
     key: 'cost',
@@ -103,13 +142,18 @@ const formatCost = value => {
 };
 
 const getTableRows = data => {
-  const llmRows = data.datasets.llm_players.map(player => ({
-    ...player,
-    label: player.player,
-    seconds: player.api_seconds_per_move,
-    cost: player.cost_usd_per_move,
-    rowType: 'llm',
-  }));
+  const llmRows = data.datasets.llm_players.map((player, resultOrder) => {
+    const presentation = getPlayerPresentation(player.player);
+
+    return {
+      ...player,
+      ...presentation,
+      resultOrder,
+      seconds: player.api_seconds_per_move,
+      cost: player.cost_usd_per_move,
+      rowType: 'llm',
+    };
+  });
   const references = data.table_2.katago_reference_players.map(player => ({
     ...player,
     rank: '—',
@@ -124,6 +168,8 @@ const getTableRows = data => {
 const Leaderboard = ({ data }) => {
   const rows = useMemo(() => getTableRows(data), [data]);
   const [sort, setSort] = useState(null);
+  const llmCount = data.datasets.llm_players.length;
+  const referenceCount = data.table_2.katago_reference_players.length;
 
   const displayedRows = useMemo(() => {
     if (!sort) {
@@ -180,64 +226,104 @@ const Leaderboard = ({ data }) => {
           <h2 id="gobench-leaderboard-title">GoBench results</h2>
         </div>
         <p className="gobench-section-note">
-          Click a column title to cycle ascending, descending, and default order. Time and cost are rounded to two significant figures.
+          Compare playing strength, inference price, and latency. Select any heading to sort the results.
         </p>
       </div>
 
-      <p className="gobench-scroll-hint" aria-hidden="true">Swipe to see every column →</p>
+      <div className="gobench-table-shell">
+        <div className="gobench-table-toolbar">
+          <p>
+            <span className="gobench-status-dot" aria-hidden="true" />
+            <strong>{llmCount}</strong> language models
+            <span className="gobench-reference-count">
+              <span className="gobench-toolbar-divider" aria-hidden="true">·</span>
+              {referenceCount} KataGo references
+            </span>
+          </p>
+          <p className="gobench-table-instructions">Values rounded to two significant figures</p>
+          <span className="gobench-scroll-hint" aria-hidden="true">Swipe for all metrics →</span>
+        </div>
+        <div className="gobench-table-scroll">
+          <table className="gobench-table">
+            <colgroup>
+              <col className="gobench-col-rank" />
+              <col className="gobench-col-player" />
+              <col className="gobench-col-elo" />
+              <col className="gobench-col-cost" />
+              <col className="gobench-col-seconds" />
+            </colgroup>
+            <thead>
+              <tr>
+                {TABLE_COLUMNS.map(column => {
+                  const isActive = sort?.key === column.key;
+                  const ariaSort = isActive ? sort.direction : 'none';
+                  const indicator = !isActive
+                    ? '↕'
+                    : sort.direction === 'ascending'
+                      ? '↑'
+                      : '↓';
 
-      <div className="gobench-table-scroll">
-        <table className="gobench-table">
-          <thead>
-            <tr>
-              {TABLE_COLUMNS.map(column => {
-                const isActive = sort?.key === column.key;
-                const ariaSort = isActive ? sort.direction : 'none';
-                const indicator = !isActive
-                  ? '↕'
-                  : sort.direction === 'ascending'
-                    ? '↑'
-                    : '↓';
+                  return (
+                    <th
+                      key={column.key}
+                      scope="col"
+                      aria-sort={ariaSort}
+                      className={column.align === 'left' ? 'is-left' : undefined}
+                    >
+                      <button type="button" onClick={() => sortBy(column.key)}>
+                        <span>{column.label}</span>
+                        <span className={isActive ? 'sort-indicator is-active' : 'sort-indicator'}>
+                          {indicator}
+                        </span>
+                      </button>
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody>
+              {displayedRows.map((row, index) => {
+                const isFirstReference = row.rowType === 'reference' &&
+                  (index === 0 || displayedRows[index - 1].rowType !== 'reference');
+                const rowStyle = row.rowType === 'llm'
+                  ? { '--gobench-row-alpha': RESULT_ROW_ALPHAS[row.resultOrder] || 0.034 }
+                  : undefined;
 
                 return (
-                  <th
-                    key={column.key}
-                    scope="col"
-                    aria-sort={ariaSort}
-                    className={column.align === 'left' ? 'is-left' : undefined}
-                  >
-                    <button type="button" onClick={() => sortBy(column.key)}>
-                      <span>{column.label}</span>
-                      <span className={isActive ? 'sort-indicator is-active' : 'sort-indicator'}>
-                        {indicator}
-                      </span>
-                    </button>
-                  </th>
+                  <Fragment key={row.player}>
+                    {isFirstReference ? (
+                      <tr className="gobench-reference-heading">
+                        <th colSpan={TABLE_COLUMNS.length} scope="rowgroup">
+                          <span>KataGo references</span>
+                          <span>Calibrated engine baselines</span>
+                        </th>
+                      </tr>
+                    ) : null}
+                    <tr
+                      className={row.rowType === 'reference'
+                        ? 'gobench-reference-row'
+                        : 'gobench-result-row'}
+                      style={rowStyle}
+                    >
+                      {TABLE_COLUMNS.map(column => (
+                        <td
+                          key={column.key}
+                          className={
+                            (column.align === 'left' ? 'is-left ' : '') +
+                            (column.key === 'player' ? 'is-player ' : '') +
+                            'is-' + column.key
+                          }
+                        >
+                          {column.render(row, index)}
+                        </td>
+                      ))}
+                    </tr>
+                  </Fragment>
                 );
               })}
-            </tr>
-          </thead>
-          <tbody>
-            {displayedRows.map((row, index) => (
-              <tr
-                key={row.player}
-                className={row.rowType === 'reference' ? 'gobench-reference-row' : undefined}
-              >
-                {TABLE_COLUMNS.map(column => (
-                  <td
-                    key={column.key}
-                    className={
-                      (column.align === 'left' ? 'is-left ' : '') +
-                      (column.key === 'player' ? 'is-player' : '')
-                    }
-                  >
-                    {column.render(row, index)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
       <p className="gobench-caption">{data.table_2.caption}</p>
     </section>
@@ -256,8 +342,8 @@ const linearScale = (value, domainMin, domainMax, rangeMin, rangeMax) => {
   return rangeMin + ratio * (rangeMax - rangeMin);
 };
 
-const PointGlyph = ({ point, x, y, color, muted = false, onEnter, onLeave }) => {
-  const label = point.player + ', ' + formatInteger(point.elo) + ' Elo';
+const PointGlyph = ({ point, displayName, x, y, color, muted = false, onEnter, onLeave }) => {
+  const label = displayName + ', ' + formatInteger(point.elo) + ' Elo';
   const radius = muted ? 4 : 6;
 
   return (
@@ -284,7 +370,15 @@ const PointGlyph = ({ point, x, y, color, muted = false, onEnter, onLeave }) => 
   );
 };
 
-const ChartPanel = ({ title, points, llmNames, xDomain, xTicks, referenceElo }) => {
+const ChartPanel = ({
+  title,
+  points,
+  llmNames,
+  referenceNames,
+  xDomain,
+  xTicks,
+  referenceElo,
+}) => {
   const width = 560;
   const height = 390;
   const margin = { top: 45, right: 22, bottom: 60, left: 62 };
@@ -298,11 +392,16 @@ const ChartPanel = ({ title, points, llmNames, xDomain, xTicks, referenceElo }) 
   const yPosition = value =>
     linearScale(value, 0, 4600, margin.top + plotHeight, margin.top);
 
-  const showPoint = point => {
+  const showPoint = (point, displayName) => {
     const x = xPosition(point.cost_usd_per_move);
     const y = yPosition(point.elo);
-    const left = Math.min(82, Math.max(18, (x / width) * 100));
-    setHovered({ point, left, top: (y / height) * 100 });
+    setHovered({
+      point,
+      displayName,
+      left: (x / width) * 100,
+      top: (y / height) * 100,
+      placement: y < margin.top + 70 ? 'below' : 'above',
+    });
   };
 
   return (
@@ -391,6 +490,9 @@ const ChartPanel = ({ title, points, llmNames, xDomain, xTicks, referenceElo }) 
 
           {points.map(point => {
             const isLlm = llmNames.has(point.player);
+            const displayName = isLlm
+              ? formatPlayerDisplayName(point.player)
+              : referenceNames.get(point.player) || 'KataGo';
             const llmIndex = isLlm ? Array.from(llmNames).indexOf(point.player) : -1;
             const x = xPosition(point.cost_usd_per_move);
             const y = yPosition(point.elo);
@@ -408,11 +510,12 @@ const ChartPanel = ({ title, points, llmNames, xDomain, xTicks, referenceElo }) 
                 ) : null}
                 <PointGlyph
                   point={point}
+                  displayName={displayName}
                   x={x}
                   y={y}
                   color={color}
                   muted={!isLlm}
-                  onEnter={() => showPoint(point)}
+                  onEnter={() => showPoint(point, displayName)}
                   onLeave={() => setHovered(null)}
                 />
               </g>
@@ -438,10 +541,13 @@ const ChartPanel = ({ title, points, llmNames, xDomain, xTicks, referenceElo }) 
 
         {hovered ? (
           <div
-            className="gobench-chart-tooltip"
-            style={{ left: String(hovered.left) + '%', top: String(hovered.top) + '%' }}
+            className={'gobench-chart-tooltip is-' + hovered.placement}
+            style={{
+              '--gobench-tooltip-x': String(hovered.left) + '%',
+              top: String(hovered.top) + '%',
+            }}
           >
-            <strong>{hovered.point.player}</strong>
+            <strong>{hovered.displayName}</strong>
             <span>{formatInteger(hovered.point.elo)} Elo</span>
             <span>{formatCost(hovered.point.cost_usd_per_move)} / move</span>
           </div>
@@ -459,6 +565,12 @@ const CostChart = ({ data }) => {
     [llmPlayers],
   );
   const allPoints = useMemo(() => [...katagoPlayers, ...llmPlayers], [katagoPlayers, llmPlayers]);
+  const referenceNames = useMemo(
+    () => new Map(
+      data.table_2.katago_reference_players.map(player => [player.player, player.label]),
+    ),
+    [data.table_2.katago_reference_players],
+  );
   const referenceElo = data.figure_2.panels[1].katago_reference_line.elo;
 
   return (
@@ -476,6 +588,7 @@ const CostChart = ({ data }) => {
           title="(a) All players"
           points={allPoints}
           llmNames={llmNames}
+          referenceNames={referenceNames}
           xDomain={[1e-7, 0.6]}
           xTicks={[
             { value: 1e-7, label: '10⁻⁷' },
@@ -488,6 +601,7 @@ const CostChart = ({ data }) => {
           title="(b) LLMs only"
           points={llmPlayers}
           llmNames={llmNames}
+          referenceNames={referenceNames}
           xDomain={[0.011, 0.35]}
           xTicks={[
             { value: 0.02, label: '$0.02' },
@@ -510,7 +624,7 @@ const CostChart = ({ data }) => {
               className="gobench-legend-dot"
               style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
             />
-            <span>{player.player}</span>
+            <span>{formatPlayerDisplayName(player.player)}</span>
           </div>
         ))}
       </div>
@@ -719,26 +833,6 @@ const getOutcome = game => {
   return game.winner === game.llm_player ? 'Win' : 'Loss';
 };
 
-const compactOpponentName = player => {
-  if (player === 'kata1-random') {
-    return 'KataGo · random';
-  }
-
-  const step = player.match(/-s(\d+)/)?.[1];
-  const temperature = player.match(/-temp-([\d.]+)/)?.[1];
-  const stepLabel = step
-    ? Number(step) >= 1e6
-      ? formatTwoSignificantFigures(Number(step) / 1e6) + 'M steps'
-      : formatInteger(Number(step)) + ' steps'
-    : player;
-  return 'KataGo · ' + stepLabel + (temperature ? ' · temp ' + temperature : '');
-};
-
-const compactGamePlayerName = player =>
-  player.startsWith('kata1-')
-    ? compactOpponentName(player).replace(' steps', '')
-    : player;
-
 const getOpponentRating = (player, katagoPlayers) => {
   if (player === 'kata1-random') {
     return { elo: 0, eloCi95: 0 };
@@ -749,6 +843,26 @@ const getOpponentRating = (player, katagoPlayers) => {
   return checkpoint
     ? { elo: checkpoint.elo, eloCi95: checkpoint.elo_ci_95 }
     : { elo: null, eloCi95: null };
+};
+
+const formatOpponentRating = ({ elo, eloCi95 }) =>
+  elo === null
+    ? 'Elo N/A'
+    : 'Elo ' + formatInteger(elo) + ' ± ' + formatInteger(eloCi95);
+
+const formatOpponentOption = option =>
+  'KataGo · ' + formatOpponentRating(option) +
+  ' · ' + option.wins + '–' + option.losses + '–' + option.draws;
+
+const compactGamePlayerName = (player, katagoPlayers) => {
+  if (!player.startsWith('kata1-')) {
+    return player;
+  }
+
+  const rating = getOpponentRating(player, katagoPlayers);
+  return rating.elo === null
+    ? 'KataGo · Elo N/A'
+    : 'KataGo · ' + formatInteger(rating.elo) + ' Elo';
 };
 
 const GameReplayer = ({ data }) => {
@@ -775,36 +889,42 @@ const GameReplayer = ({ data }) => {
     games
       .filter(game => game.llm_player === llm)
       .forEach(game => {
-        const current = grouped.get(game.katago_player) || {
-          player: game.katago_player,
+        const rating = getOpponentRating(game.katago_player, data.datasets.katago_players);
+        const key = String(rating.elo) + ':' + String(rating.eloCi95);
+        const current = grouped.get(key) || {
+          key,
+          players: [],
+          ...rating,
           wins: 0,
           losses: 0,
           draws: 0,
         };
+        if (!current.players.includes(game.katago_player)) {
+          current.players.push(game.katago_player);
+        }
         const outcome = getOutcome(game);
         if (outcome === 'Win') current.wins += 1;
         if (outcome === 'Loss') current.losses += 1;
         if (outcome === 'Draw') current.draws += 1;
-        grouped.set(game.katago_player, current);
+        grouped.set(key, current);
       });
 
     return Array.from(grouped.values())
-      .map(item => ({
-        ...item,
-        ...getOpponentRating(item.player, data.datasets.katago_players),
-      }))
       .sort((left, right) => (right.elo ?? -1) - (left.elo ?? -1));
   }, [data.datasets.katago_players, games, llm]);
 
   useEffect(() => {
-    if (!opponentOptions.some(option => option.player === opponent)) {
-      setOpponent(opponentOptions[0]?.player || '');
+    if (!opponentOptions.some(option => option.key === opponent)) {
+      setOpponent(opponentOptions[0]?.key || '');
     }
   }, [opponent, opponentOptions]);
 
+  const selectedOpponent = opponentOptions.find(option => option.key === opponent);
+
   const filteredGames = useMemo(
-    () => games.filter(game => game.llm_player === llm && game.katago_player === opponent),
-    [games, llm, opponent],
+    () => games.filter(game =>
+      game.llm_player === llm && selectedOpponent?.players.includes(game.katago_player)),
+    [games, llm, selectedOpponent],
   );
 
   useEffect(() => {
@@ -814,7 +934,6 @@ const GameReplayer = ({ data }) => {
   }, [filteredGames, gameId]);
 
   const selectedGame = filteredGames.find(game => game.id === gameId) || filteredGames[0];
-  const selectedOpponent = opponentOptions.find(option => option.player === opponent);
 
   useEffect(() => {
     setMoveCount(0);
@@ -843,9 +962,15 @@ const GameReplayer = ({ data }) => {
   }
 
   const currentMove = moveCount > 0 ? selectedGame.moves[moveCount - 1] : null;
-  const outcome = getOutcome(selectedGame);
-  const outcomeClass = outcome.toLowerCase();
-  const visibleMoves = selectedGame.moves.slice(Math.max(0, moveCount - 7), moveCount);
+  const visibleMoves = selectedGame.moves.slice(Math.max(0, moveCount - 8), moveCount);
+  const blackPlayerName = compactGamePlayerName(
+    selectedGame.black,
+    data.datasets.katago_players,
+  );
+  const whitePlayerName = compactGamePlayerName(
+    selectedGame.white,
+    data.datasets.katago_players,
+  );
 
   const moveTo = nextMove => {
     setPlaying(false);
@@ -882,7 +1007,7 @@ const GameReplayer = ({ data }) => {
         </label>
 
         <label>
-          <span><b>2</b> Opponent · W–L–D · Elo ± 95% CI</span>
+          <span><b>2</b> KataGo · Elo ± 95% CI · W–L–D</span>
           <select
             value={opponent}
             onChange={event => {
@@ -891,8 +1016,8 @@ const GameReplayer = ({ data }) => {
             }}
           >
             {opponentOptions.map(option => (
-              <option key={option.player} value={option.player}>
-                {compactOpponentName(option.player)} · {option.wins}–{option.losses}–{option.draws} · {option.elo === null ? 'Elo N/A' : formatInteger(option.elo) + ' Elo ±' + formatInteger(option.eloCi95)}
+              <option key={option.key} value={option.key}>
+                {formatOpponentOption(option)}
               </option>
             ))}
           </select>
@@ -929,11 +1054,6 @@ const GameReplayer = ({ data }) => {
         </div>
 
         <div className="gobench-game-panel">
-          <div className="gobench-game-result-row">
-            <span className={'gobench-outcome is-' + outcomeClass}>{outcome}</span>
-            <span className="gobench-result-code">{selectedGame.result}</span>
-          </div>
-
           <div className="gobench-playback">
             <div className="gobench-playback-buttons">
               <button type="button" onClick={() => moveTo(0)} disabled={moveCount === 0} aria-label="First move">↤</button>
@@ -970,25 +1090,17 @@ const GameReplayer = ({ data }) => {
           <dl className="gobench-game-meta">
             <div>
               <dt>Black</dt>
-              <dd title={selectedGame.black}>
+              <dd title={blackPlayerName}>
                 <span className="gobench-color-chip is-black" />
-                <span>{compactGamePlayerName(selectedGame.black)}</span>
+                <span>{blackPlayerName}</span>
               </dd>
             </div>
             <div>
               <dt>White</dt>
-              <dd title={selectedGame.white}>
+              <dd title={whitePlayerName}>
                 <span className="gobench-color-chip is-white" />
-                <span>{compactGamePlayerName(selectedGame.white)}</span>
+                <span>{whitePlayerName}</span>
               </dd>
-            </div>
-            <div>
-              <dt>Elo · 95% CI</dt>
-              <dd>{selectedOpponent?.elo === null ? 'N/A' : formatInteger(selectedOpponent?.elo) + ' ±' + formatInteger(selectedOpponent?.eloCi95)}</dd>
-            </div>
-            <div>
-              <dt>Ended by</dt>
-              <dd>{selectedGame.reason.replace('_', ' ')}</dd>
             </div>
           </dl>
 
@@ -1001,7 +1113,11 @@ const GameReplayer = ({ data }) => {
             </strong>
           </div>
 
-          <div className="gobench-move-strip" aria-hidden="true">
+          <div
+            className="gobench-move-strip"
+            data-count={visibleMoves.length}
+            aria-hidden="true"
+          >
             {visibleMoves.length ? visibleMoves.map(move => (
               <span key={move.number} className={move.number === currentMove?.number ? 'is-current' : undefined}>
                 {move.number} {move.move}

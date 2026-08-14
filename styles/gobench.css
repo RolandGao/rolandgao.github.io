@@ -79,12 +79,87 @@
   line-height: 1.45;
 }
 
+.gobench-table-shell {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--gobench-line);
+  border-radius: 3px;
+  background: var(--gobench-surface);
+  overflow: hidden;
+}
+
 .gobench-table-scroll {
   width: 100%;
   overflow-x: auto;
-  border-left: 1px solid var(--gobench-line);
-  border-top: 1px solid var(--gobench-line);
-  background: var(--gobench-surface);
+  overscroll-behavior-inline: contain;
+  scrollbar-color: var(--gobench-line-strong) var(--gobench-bg);
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gobench-table-scroll::-webkit-scrollbar {
+  height: 7px;
+}
+
+.gobench-table-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid var(--gobench-bg);
+  border-radius: 99px;
+  background: var(--gobench-line-strong);
+}
+
+.gobench-table-scroll::-webkit-scrollbar-track {
+  background: var(--gobench-bg);
+}
+
+.gobench-table-toolbar {
+  display: flex;
+  width: 100%;
+  min-height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 13px;
+  border-bottom: 1px solid var(--gobench-line);
+  background: #fbfbf9;
+  color: var(--gobench-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.markdown-body .gobench-table-toolbar p,
+.gobench-table-toolbar p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.gobench-table-toolbar strong {
+  color: var(--gobench-ink);
+  font-weight: 600;
+}
+
+.gobench-status-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--gobench-accent);
+  box-shadow: 0 0 0 3px var(--gobench-accent-soft);
+}
+
+.gobench-toolbar-divider {
+  margin: 0 3px;
+  color: var(--gobench-faint);
+}
+
+.gobench-reference-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .gobench-scroll-hint {
@@ -95,17 +170,34 @@
 .gobench-table {
   display: table;
   width: 100%;
-  min-width: 760px;
+  min-width: 820px;
   margin: 0;
   border: 0;
   border-collapse: collapse;
+  table-layout: fixed;
   font-size: 12px;
-  line-height: 1.25;
+  line-height: 1.3;
+}
+
+.gobench-col-rank {
+  width: 72px;
+}
+
+.gobench-col-elo {
+  width: 172px;
+}
+
+.gobench-col-cost {
+  width: 154px;
+}
+
+.gobench-col-seconds {
+  width: 174px;
 }
 
 .markdown-body .gobench-table tbody tr,
 .gobench-table tbody tr {
-  background: var(--gobench-surface);
+  background: transparent;
 }
 
 .markdown-body .gobench-table thead,
@@ -117,13 +209,17 @@
 .markdown-body .gobench-table td,
 .gobench-table th,
 .gobench-table td {
-  height: 39px;
+  height: 49px;
   padding: 0;
   border: 0;
-  border-right: 1px solid var(--gobench-line);
   border-bottom: 1px solid var(--gobench-line);
   text-align: right;
   white-space: nowrap;
+}
+
+.gobench-table th:first-child,
+.gobench-table td:first-child {
+  border-right: 1px solid var(--gobench-line);
 }
 
 .gobench-table th.is-left,
@@ -134,12 +230,12 @@
 .markdown-body .gobench-table th,
 .gobench-table th {
   height: 44px;
-  background: var(--gobench-bg);
-  color: var(--gobench-muted);
+  background: #e7efe9;
+  color: #52645c;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -149,8 +245,8 @@
   height: 100%;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
-  padding: 0 12px;
+  gap: 7px;
+  padding: 0 16px;
   border: 0;
   background: transparent;
   color: inherit;
@@ -166,35 +262,66 @@
 
 .gobench-table th button:hover,
 .gobench-table th button:focus-visible {
-  background: #eeece8;
-  color: var(--gobench-ink);
+  background: #dbe8df;
+  color: #164f3d;
   outline: none;
 }
 
+.gobench-table th button:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--gobench-accent);
+}
+
+.markdown-body .gobench-table td,
 .gobench-table td {
-  padding: 0 12px;
+  padding: 0 16px;
   color: var(--gobench-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
 
 .gobench-table td.is-player {
-  min-width: 280px;
-  font-weight: 500;
+  min-width: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 450;
 }
 
 .gobench-player-cell {
-  display: inline-flex;
+  display: flex;
+  width: 100%;
   max-width: 100%;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   vertical-align: middle;
 }
 
-.gobench-player-cell > span:last-child {
+.gobench-player-details {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.gobench-player-details > span:first-child {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gobench-player-tier {
+  padding: 2px 5px 1px;
+  border: 1px solid #b8c9c0;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.52);
+  color: #52645c;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.045em;
+  line-height: 1.35;
+  text-transform: uppercase;
 }
 
 .gobench-provider-logo {
@@ -250,23 +377,45 @@
   stroke-width: 1.25;
 }
 
-.gobench-table tbody tr:hover td {
-  background: #f3f8f5;
+.gobench-table .gobench-result-row td {
+  background: linear-gradient(
+      rgba(8, 120, 86, var(--gobench-row-alpha)),
+      rgba(8, 120, 86, var(--gobench-row-alpha))
+    ),
+    #ffffff;
 }
 
 .gobench-table .gobench-reference-row td {
-  background: var(--gobench-bg);
+  background: #faf9f7;
 }
 
-.gobench-table .gobench-reference-row:first-of-type td,
-.gobench-table tr:not(.gobench-reference-row) + .gobench-reference-row td {
+.gobench-table tbody tr:not(.gobench-reference-heading):hover td {
+  background: #edf5f0;
+}
+
+.gobench-table .gobench-reference-heading th {
+  height: 34px;
+  padding: 0 16px;
   border-top: 1px solid var(--gobench-line-strong);
+  border-right: 0;
+  background: #f0efec;
+  text-align: left;
+}
+
+.gobench-reference-heading th > span:first-child {
+  color: var(--gobench-ink);
+}
+
+.gobench-reference-heading th > span:last-child {
+  margin-left: 9px;
+  color: var(--gobench-faint);
+  font-weight: 500;
 }
 
 .sort-indicator {
-  color: var(--gobench-faint);
-  font-size: 12px;
-  opacity: 0.5;
+  color: #789087;
+  font-size: 11px;
+  opacity: 0.42;
 }
 
 .sort-indicator.is-active {
@@ -274,9 +423,29 @@
   opacity: 1;
 }
 
+.gobench-table td.is-rank {
+  color: #356654;
+  font-size: 10px;
+}
+
+.gobench-elo-value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.gobench-elo-value strong {
+  font-weight: 600;
+}
+
+.gobench-elo-value span {
+  color: #4e7868;
+  font-size: 9px;
+}
+
 .markdown-body .gobench-caption,
 .gobench-caption {
-  margin: 10px 0 0;
+  margin: 9px 0 0;
   color: var(--gobench-muted);
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 13px;
@@ -385,6 +554,7 @@
 
 .gobench-chart-tooltip {
   position: absolute;
+  left: clamp(88px, var(--gobench-tooltip-x), calc(100% - 88px));
   z-index: 4;
   display: flex;
   min-width: 158px;
@@ -398,8 +568,12 @@
   font-size: 10px;
   line-height: 1.35;
   pointer-events: none;
-  transform: translate(-50%, calc(-100% - 12px));
+  transform: translate(-50%, calc(-100% - 18px));
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.14);
+}
+
+.gobench-chart-tooltip.is-below {
+  transform: translate(-50%, 18px);
 }
 
 .gobench-chart-tooltip strong {
@@ -572,48 +746,6 @@
   background: var(--gobench-surface);
 }
 
-.gobench-game-result-row {
-  display: flex;
-  min-height: 59px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 15px;
-  border-bottom: 1px solid var(--gobench-line);
-}
-
-.gobench-outcome {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 8px;
-  border: 1px solid currentColor;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.gobench-outcome.is-win {
-  background: #e3f3eb;
-  color: #087856;
-}
-
-.gobench-outcome.is-loss {
-  background: #f6e9e6;
-  color: #a34435;
-}
-
-.gobench-outcome.is-draw {
-  background: #efede9;
-  color: #6c6761;
-}
-
-.gobench-result-code {
-  color: var(--gobench-ink);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 24px;
-}
-
 .markdown-body .gobench-game-meta,
 .gobench-game-meta {
   display: grid;
@@ -699,32 +831,63 @@
 
 .gobench-move-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  flex: 1 1 0;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: minmax(36px, 1fr);
   min-height: 72px;
   border-bottom: 1px solid var(--gobench-line);
 }
 
 .gobench-move-strip span {
   display: flex;
+  grid-column: span 3;
   min-width: 0;
   min-height: 36px;
   align-items: center;
   justify-content: center;
   padding: 5px;
   border-right: 1px solid var(--gobench-line);
-  border-bottom: 1px solid var(--gobench-line);
+  border-bottom: 0;
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 9px;
   font-variant-numeric: tabular-nums;
 }
 
-.gobench-move-strip span:nth-child(4n) {
+.gobench-move-strip span:nth-child(4n),
+.gobench-move-strip span:last-child {
   border-right: 0;
 }
 
-.gobench-move-strip span:nth-last-child(-n + 4) {
-  border-bottom: 0;
+.gobench-move-strip[data-count='1'] span {
+  grid-column: span 12;
+}
+
+.gobench-move-strip[data-count='2'] span {
+  grid-column: span 6;
+}
+
+.gobench-move-strip[data-count='3'] span {
+  grid-column: span 4;
+}
+
+.gobench-move-strip[data-count='5'] span:nth-child(n + 5) {
+  grid-column: span 12;
+}
+
+.gobench-move-strip[data-count='6'] span:nth-child(n + 5) {
+  grid-column: span 6;
+}
+
+.gobench-move-strip[data-count='7'] span:nth-child(n + 5) {
+  grid-column: span 4;
+}
+
+.gobench-move-strip[data-count='5'] span:nth-child(-n + 4),
+.gobench-move-strip[data-count='6'] span:nth-child(-n + 4),
+.gobench-move-strip[data-count='7'] span:nth-child(-n + 4),
+.gobench-move-strip[data-count='8'] span:nth-child(-n + 4) {
+  border-bottom: 1px solid var(--gobench-line);
 }
 
 .gobench-move-strip span.is-current {
@@ -848,6 +1011,18 @@
     gap: 10px;
   }
 
+  .markdown-body .gobench-table-toolbar .gobench-table-instructions,
+  .gobench-table-toolbar .gobench-table-instructions {
+    display: none;
+  }
+
+  .markdown-body .gobench-table-toolbar .gobench-scroll-hint,
+  .gobench-table-toolbar .gobench-scroll-hint {
+    display: flex;
+    color: var(--gobench-accent);
+    text-align: right;
+  }
+
   .gobench-chart-grid,
   .gobench-replayer {
     grid-template-columns: 1fr;
@@ -865,9 +1040,6 @@
     grid-template-columns: 1fr;
   }
 
-  .gobench-game-panel {
-    min-height: 490px;
-  }
 }
 
 @media (max-width: 620px) {
@@ -879,71 +1051,84 @@
     margin-top: 56px;
   }
 
+  .gobench-table-toolbar {
+    min-height: 40px;
+    gap: 10px;
+    padding: 8px 10px;
+  }
+
+  .gobench-reference-count {
+    display: none;
+  }
+
   .markdown-body .gobench-table,
   .gobench-table {
-    width: 100%;
-    min-width: 408px;
+    width: calc(100vw + 116px);
+    min-width: calc(100vw + 116px);
     table-layout: fixed;
-    font-size: 10px;
   }
 
-  .gobench-table th:nth-child(1),
-  .gobench-table td:nth-child(1) {
-    width: 32px;
+  .gobench-col-rank {
+    width: 40px;
   }
 
-  .gobench-table th:nth-child(2),
-  .gobench-table td:nth-child(2) {
-    width: auto;
+  .gobench-col-player {
+    width: calc(100vw - 248px);
   }
 
-  .gobench-table th:nth-child(3),
-  .gobench-table td:nth-child(3) {
+  .gobench-col-elo {
     width: 92px;
   }
 
-  .gobench-table th:nth-child(4),
-  .gobench-table td:nth-child(4) {
-    width: 84px;
+  .gobench-col-cost {
+    width: 82px;
   }
 
-  .gobench-table th:nth-child(5),
-  .gobench-table td:nth-child(5) {
-    width: 92px;
+  .gobench-col-seconds {
+    width: 150px;
   }
 
   .gobench-table th button {
-    gap: 4px;
-    padding: 0 6px;
+    gap: 5px;
+    padding: 0 8px;
   }
 
+  .markdown-body .gobench-table td,
   .gobench-table td {
-    padding: 0 6px;
+    padding: 0 8px;
   }
 
   .gobench-table td.is-player {
-    min-width: 0;
-    line-height: 1.3;
-    white-space: normal;
+    font-size: 12px;
   }
 
   .gobench-player-cell {
-    width: 100%;
-    gap: 6px;
-    padding: 5px 0;
+    gap: 8px;
   }
 
-  .gobench-player-cell > span:last-child {
-    overflow: visible;
-    overflow-wrap: anywhere;
-    text-overflow: clip;
-    white-space: normal;
+  .gobench-player-details {
+    gap: 5px;
+  }
+
+  .gobench-player-tier {
+    padding-right: 4px;
+    padding-left: 4px;
+    font-size: 0;
+  }
+
+  .gobench-player-tier::after {
+    content: attr(data-short);
+    font-size: 8px;
+  }
+
+  .gobench-table td.is-cost {
+    font-size: 10px;
   }
 
   .gobench-table th:first-child button,
   .gobench-table td:first-child {
-    padding-right: 3px;
-    padding-left: 3px;
+    padding-right: 8px;
+    padding-left: 8px;
   }
 
   .gobench-table th:first-child button {
@@ -965,18 +1150,6 @@
   .gobench-provider-logo.is-katago svg {
     width: 15px;
     height: 15px;
-  }
-
-  .markdown-body .gobench-scroll-hint,
-  .gobench-scroll-hint {
-    display: block;
-    margin: -3px 0 8px;
-    color: var(--gobench-accent);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 9px;
-    letter-spacing: 0.045em;
-    text-align: right;
-    text-transform: uppercase;
   }
 
   .gobench-chart-tick {
@@ -1027,6 +1200,7 @@
     padding: 10px;
   }
 
+  .markdown-body .gobench-game-meta,
   .gobench-game-meta {
     grid-template-columns: 1fr;
   }
@@ -1036,16 +1210,24 @@
     border-right: 0;
   }
 
-  .gobench-game-panel {
-    min-height: 540px;
-  }
 }
 
 @media (max-width: 350px) {
-  .markdown-body .gobench-table,
-  .gobench-table {
-    width: 100%;
-    min-width: 376px;
+  .gobench-table-toolbar {
+    font-size: 8px;
+  }
+
+  .gobench-col-rank {
+    display: none;
+    width: 0;
+  }
+
+  .gobench-col-player {
+    width: calc(100vw - 206px);
+  }
+
+  .gobench-col-cost {
+    width: 80px;
   }
 
   .gobench-table th:first-child,
