@@ -62,7 +62,7 @@
 .gobench-table-shell {
   position: relative;
   width: 100%;
-  border: 1px solid var(--gobench-line);
+  border: 0;
   border-radius: 3px;
   background: var(--gobench-surface);
   overflow: hidden;
@@ -122,9 +122,12 @@
 
 .markdown-body .gobench-table tbody tr,
 .gobench-table tbody tr {
+  border: 0;
   background: transparent;
 }
 
+.markdown-body .gobench-table thead tr,
+.gobench-table thead tr,
 .markdown-body .gobench-table thead,
 .gobench-table thead {
   border: 0;
@@ -137,14 +140,13 @@
   height: 60px;
   padding: 0;
   border: 0;
-  border-bottom: 1px solid var(--gobench-line);
   text-align: right;
   white-space: nowrap;
 }
 
 .gobench-table th:first-child,
 .gobench-table td:first-child {
-  border-right: 1px solid var(--gobench-line);
+  border-right: 0;
 }
 
 .gobench-table th.is-left,
@@ -230,8 +232,8 @@
 
 .gobench-player-details > span:first-child {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: clip;
   white-space: nowrap;
 }
 
@@ -321,7 +323,7 @@
 .gobench-table .gobench-reference-heading th {
   height: 44px;
   padding: 0 16px;
-  border-top: 1px solid var(--gobench-line-strong);
+  border-top: 0;
   border-right: 0;
   background: #f0efec;
   text-align: left;
@@ -346,6 +348,11 @@
 .sort-indicator.is-active {
   color: var(--gobench-accent);
   opacity: 1;
+}
+
+.gobench-column-label-compact,
+.gobench-cost-value-compact {
+  display: none;
 }
 
 .gobench-table td.is-rank {
@@ -940,58 +947,72 @@
   .markdown-body .gobench-table,
   .gobench-table {
     width: 100%;
-    min-width: 100%;
+    min-width: 834px;
     table-layout: fixed;
   }
 
   .gobench-col-rank {
-    width: 70px;
+    width: 64px;
+  }
+
+  .gobench-col-player {
+    width: 310px;
   }
 
   .gobench-col-elo {
-    width: 130px;
+    width: 150px;
   }
 
   .gobench-col-cost {
-    width: 120px;
+    width: 140px;
   }
 
   .gobench-col-seconds {
-    width: 125px;
+    width: 170px;
   }
 
   .markdown-body .gobench-table th,
   .gobench-table th {
-    height: 70px;
-    white-space: normal;
+    height: 60px;
+    white-space: nowrap;
   }
 
   .gobench-table th button {
-    padding: 8px;
+    position: relative;
+    gap: 0;
+    padding: 0 10px;
     line-height: 1.25;
+  }
+
+  .gobench-table .sort-indicator {
+    position: absolute;
+    top: 0;
+    right: 1px;
+    line-height: 1;
   }
 
   .markdown-body .gobench-table td,
   .gobench-table td {
-    height: auto;
-    min-height: 60px;
-    padding: 10px 8px;
+    height: 60px;
+    padding: 0 10px;
+    overflow-wrap: normal;
+    white-space: nowrap;
   }
 
   .gobench-player-details {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .gobench-player-details > span:first-child {
     overflow: visible;
     text-overflow: clip;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .gobench-table td.is-cost,
   .gobench-table td.is-seconds,
   .gobench-reference-heading th.is-player {
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .gobench-chart-grid,
@@ -1013,6 +1034,110 @@
 
 }
 
+@media (max-width: 900px) {
+  .markdown-body .gobench-table,
+  .gobench-table {
+    --gobench-compact-player-width: max(296px, calc(100vw - 274px));
+    width: calc(var(--gobench-compact-player-width) + 324px);
+    min-width: calc(var(--gobench-compact-player-width) + 324px);
+  }
+
+  .gobench-col-rank {
+    width: 56px;
+  }
+
+  .gobench-col-player {
+    width: var(--gobench-compact-player-width);
+  }
+
+  .gobench-col-elo {
+    width: 110px;
+  }
+
+  .gobench-col-cost {
+    width: 76px;
+  }
+
+  .gobench-col-seconds {
+    width: 82px;
+  }
+
+  .markdown-body .gobench-table td,
+  .gobench-table td {
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+
+  .gobench-table th button {
+    position: relative;
+    gap: 0;
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+
+  .gobench-table th.is-rank button,
+  .gobench-table th.is-elo button,
+  .gobench-table th.is-cost button,
+  .gobench-table th.is-seconds button {
+    justify-content: center;
+  }
+
+  .gobench-table th.is-player button {
+    padding-left: 6px;
+  }
+
+  .gobench-table th:first-child,
+  .gobench-table td:first-child {
+    border-right: 0;
+  }
+
+  .gobench-table .sort-indicator {
+    position: absolute;
+    top: 0;
+    right: 1px;
+    line-height: 1;
+  }
+
+  .gobench-player-cell,
+  .gobench-player-details {
+    gap: 8px;
+  }
+
+  .gobench-table th.is-cost .gobench-column-label-full,
+  .gobench-table th.is-seconds .gobench-column-label-full,
+  .gobench-cost-value-full {
+    display: none;
+  }
+
+  .gobench-table th.is-cost .gobench-column-label-compact,
+  .gobench-table th.is-seconds .gobench-column-label-compact,
+  .gobench-cost-value-compact {
+    display: inline;
+  }
+
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table th.is-cost,
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table td.is-cost {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    box-shadow: -8px 0 12px -12px rgba(28, 28, 26, 0.7);
+  }
+
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table th.is-elo,
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table td.is-elo {
+    position: sticky;
+    right: 76px;
+    z-index: 2;
+    box-shadow: -8px 0 12px -12px rgba(28, 28, 26, 0.7);
+  }
+
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table th.is-cost,
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table th.is-elo {
+    z-index: 3;
+    background: #e7efe9;
+  }
+}
+
 @media (max-width: 620px) {
   .gobench-root {
     margin-top: 36px;
@@ -1022,36 +1147,46 @@
     margin-top: 56px;
   }
 
+  .gobench-table-shell {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
   .gobench-table-scroll {
-    overflow-x: hidden;
+    overflow-x: auto;
   }
 
   .markdown-body .gobench-table,
   .gobench-table {
+    --gobench-compact-player-width: max(296px, calc(100vw - 190px));
     display: table;
-    width: 100%;
-    min-width: 0;
+    width: calc(var(--gobench-compact-player-width) + 272px);
+    min-width: calc(var(--gobench-compact-player-width) + 272px);
     table-layout: fixed;
   }
 
   .gobench-col-rank {
-    width: 15%;
+    display: none;
+    width: 0;
   }
 
   .gobench-col-player {
-    width: 25%;
+    width: var(--gobench-compact-player-width);
   }
 
   .gobench-col-elo {
-    width: 19%;
+    width: 110px;
   }
 
   .gobench-col-cost {
-    width: 22%;
+    width: 80px;
   }
 
   .gobench-col-seconds {
-    width: 19%;
+    width: 82px;
   }
 
   .markdown-body .gobench-table tbody tr,
@@ -1065,11 +1200,18 @@
   .gobench-table td {
     display: table-cell;
     min-width: 0;
-    height: auto;
-    padding: 10px 1px;
-    overflow-wrap: anywhere;
-    white-space: normal;
+    height: 60px;
+    padding: 0 3px;
+    overflow-wrap: normal;
+    white-space: nowrap;
     vertical-align: middle;
+  }
+
+  .markdown-body .gobench-table th.is-rank,
+  .markdown-body .gobench-table td.is-rank,
+  .gobench-table th.is-rank,
+  .gobench-table td.is-rank {
+    display: none;
   }
 
   .markdown-body .gobench-table th,
@@ -1078,11 +1220,11 @@
   }
 
   .gobench-table th button {
-    min-height: 72px;
-    gap: 2px;
-    padding: 8px 3px;
+    min-height: 60px;
+    gap: 0;
+    padding: 0 3px;
     line-height: 1.25;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
   }
 
   .gobench-table .sort-indicator:not(.is-active) {
@@ -1091,39 +1233,61 @@
 
   .gobench-table th:first-child,
   .gobench-table td:first-child {
-    border-right: 1px solid var(--gobench-line);
+    border-right: 0;
   }
 
   .markdown-body .gobench-table td.is-player,
   .gobench-table td.is-player {
-    padding-right: 2px;
-    padding-left: 4px;
+    padding-right: 3px;
+    padding-left: 12px;
+  }
+
+  .gobench-table th.is-player button {
+    padding-left: 12px;
   }
 
   .gobench-table th.is-cost,
   .gobench-table td.is-cost {
-    padding-left: 2px;
-    border-left: 1px solid var(--gobench-line);
+    padding-right: 10px;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .gobench-table th.is-cost button {
+    letter-spacing: 0;
+  }
+
+  .gobench-table td.is-cost {
+    text-align: right;
+  }
+
+  .gobench-table td.is-seconds {
+    padding-right: 12px;
+  }
+
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table th.is-elo,
+  .gobench-table-scroll:not(.is-horizontally-scrolled) .gobench-table td.is-elo {
+    right: 80px;
   }
 
   .gobench-player-cell {
-    display: block;
+    display: flex;
   }
 
   .gobench-player-details {
-    display: inline;
+    display: flex;
   }
 
   .gobench-player-details > span:first-child {
     display: inline;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
   }
 
   .gobench-player-tier {
     display: inline-block;
-    margin-left: 4px;
-    padding-right: 3px;
-    padding-left: 3px;
+    margin-left: 0;
+    padding-right: 5px;
+    padding-left: 5px;
   }
 
   .gobench-table .gobench-reference-heading th {
@@ -1133,9 +1297,9 @@
   }
 
   .gobench-elo-value {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 7px;
   }
 
   .gobench-table td.is-cost,
@@ -1147,8 +1311,8 @@
     width: 20px;
     height: 20px;
     flex-basis: 20px;
-    margin-right: 4px;
-    vertical-align: text-bottom;
+    margin-right: 0;
+    vertical-align: middle;
   }
 
   .gobench-provider-logo svg,
@@ -1218,15 +1382,6 @@
 }
 
 @media (max-width: 350px) {
-  .gobench-table td.is-player {
-    font-family: 'Avenir Next Condensed', 'Arial Narrow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
-
-  .gobench-table td.is-cost,
-  .gobench-table td.is-seconds {
-    font-family: 'Avenir Next Condensed', 'Arial Narrow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
-
   .gobench-playback-buttons {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 6px;

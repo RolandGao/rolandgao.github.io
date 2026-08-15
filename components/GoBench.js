@@ -88,12 +88,21 @@ const TABLE_COLUMNS = [
   {
     key: 'cost',
     label: 'Cost / move',
+    compactLabel: 'Cost',
     value: row => row.cost,
-    render: row => formatCost(row.cost),
+    render: row => (
+      <span className="gobench-cost-value">
+        <span className="gobench-cost-value-full">{formatCost(row.cost)}</span>
+        <span className="gobench-cost-value-compact" aria-hidden="true">
+          {formatCompactCost(row.cost)}
+        </span>
+      </span>
+    ),
   },
   {
     key: 'seconds',
     label: 'Seconds / move',
+    compactLabel: 'Seconds',
     value: row => row.seconds,
     render: row => formatTwoSignificantFigures(row.seconds) + 's',
   },
@@ -141,6 +150,16 @@ const formatCost = value => {
   return '$' + formatTwoSignificantFigures(value);
 };
 
+const formatCompactCost = value => {
+  if (value > 0 && value < 0.0001) {
+    const exponent = Math.floor(Math.log10(value));
+    const mantissa = value / 10 ** exponent;
+    return '$' + formatTwoSignificantFigures(mantissa) + 'e' + exponent;
+  }
+
+  return '$' + formatTwoSignificantFigures(value);
+};
+
 const getTableRows = data => {
   const llmRows = data.datasets.llm_players.map((player, resultOrder) => {
     const presentation = getPlayerPresentation(player.player);
@@ -168,6 +187,7 @@ const getTableRows = data => {
 const Leaderboard = ({ data }) => {
   const rows = useMemo(() => getTableRows(data), [data]);
   const [sort, setSort] = useState(null);
+  const [isHorizontallyScrolled, setIsHorizontallyScrolled] = useState(false);
 
   const displayedRows = useMemo(() => {
     if (!sort) {
@@ -225,7 +245,19 @@ const Leaderboard = ({ data }) => {
       </div>
 
       <div className="gobench-table-shell">
-        <div className="gobench-table-scroll">
+        <div
+          className={
+            isHorizontallyScrolled
+              ? 'gobench-table-scroll is-horizontally-scrolled'
+              : 'gobench-table-scroll'
+          }
+          onScroll={event => {
+            const nextIsScrolled = event.currentTarget.scrollLeft > 1;
+            if (nextIsScrolled !== isHorizontallyScrolled) {
+              setIsHorizontallyScrolled(nextIsScrolled);
+            }
+          }}
+        >
           <table className="gobench-table">
             <colgroup>
               <col className="gobench-col-rank" />
@@ -255,8 +287,19 @@ const Leaderboard = ({ data }) => {
                         'is-' + column.key
                       }
                     >
-                      <button type="button" onClick={() => sortBy(column.key)}>
-                        <span>{column.label}</span>
+                      <button
+                        type="button"
+                        aria-label={'Sort by ' + column.label}
+                        onClick={() => sortBy(column.key)}
+                      >
+                        <span className="gobench-column-label">
+                          <span className="gobench-column-label-full">{column.label}</span>
+                          {column.compactLabel ? (
+                            <span className="gobench-column-label-compact" aria-hidden="true">
+                              {column.compactLabel}
+                            </span>
+                          ) : null}
+                        </span>
                         <span className={isActive ? 'sort-indicator is-active' : 'sort-indicator'}>
                           {indicator}
                         </span>
