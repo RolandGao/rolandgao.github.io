@@ -25,7 +25,7 @@ const PROVIDERS = {
   },
 };
 
-const getProvider = player => {
+export const getProvider = player => {
   const normalized = player.toLowerCase();
 
   if (normalized.startsWith('kata1-')) return 'katago';

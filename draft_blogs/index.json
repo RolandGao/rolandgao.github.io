@@ -3,6 +3,10 @@
     {
       "id": "gobench",
       "title": "GoBench"
+    },
+    {
+      "id": "goplay",
+      "title": "GoPlay"
     }
   ]
 }

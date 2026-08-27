@@ -1,0 +1,454 @@
+.goplay-root {
+  --goplay-bg: #f5f3ee;
+  --goplay-surface: #fffefb;
+  --goplay-ink: #1e201d;
+  --goplay-muted: #716e67;
+  --goplay-line: #d4d0c7;
+  --goplay-accent: #087856;
+  --goplay-accent-dark: #056346;
+  --goplay-accent-soft: #e2f1ea;
+  width: min(1100px, calc(100vw - 40px));
+  margin: 38px 0 18px 50%;
+  color: var(--goplay-ink);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transform: translateX(-50%);
+}
+
+.goplay-root *,
+.goplay-root *::before,
+.goplay-root *::after {
+  box-sizing: border-box;
+}
+
+.goplay-heading-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.markdown-body .goplay-heading-row h2,
+.goplay-heading-row h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--goplay-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.markdown-body .goplay-heading-row p,
+.goplay-heading-row p {
+  margin: 8px 0 0;
+  color: var(--goplay-muted);
+  font-size: 0.9rem;
+}
+
+.goplay-game {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(300px, 0.85fr);
+  overflow: hidden;
+  border: 1px solid var(--goplay-line);
+  border-radius: 12px;
+  background: var(--goplay-surface);
+  box-shadow: 0 14px 34px rgba(38, 35, 28, 0.08);
+}
+
+.goplay-board-shell {
+  display: grid;
+  min-width: 0;
+  padding: clamp(15px, 3vw, 30px);
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.68), transparent 68%),
+    var(--goplay-bg);
+}
+
+.goplay-board {
+  display: block;
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 12px 16px rgba(69, 50, 21, 0.16));
+  touch-action: manipulation;
+}
+
+.goplay-board-background {
+  fill: #dcb36a;
+}
+
+.goplay-board-line {
+  stroke: #5d472a;
+  stroke-width: 1.45;
+}
+
+.goplay-board-coordinate {
+  fill: rgba(59, 43, 24, 0.7);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.goplay-board-star {
+  fill: #594329;
+  pointer-events: none;
+}
+
+.goplay-stone {
+  stroke: rgba(0, 0, 0, 0.28);
+  stroke-width: 1.2;
+  filter: drop-shadow(1.5px 2.5px 2px rgba(42, 29, 13, 0.32));
+  pointer-events: none;
+}
+
+.goplay-last-move {
+  fill: none;
+  stroke-width: 3;
+  pointer-events: none;
+}
+
+.goplay-last-move.is-black {
+  stroke: #f5d670;
+}
+
+.goplay-last-move.is-white {
+  stroke: #087856;
+}
+
+.goplay-board-hit {
+  fill: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.goplay-board-hit:not([aria-disabled="true"]):hover,
+.goplay-board-hit:not([aria-disabled="true"]):focus-visible {
+  fill: rgba(8, 120, 86, 0.28);
+  stroke: rgba(255, 255, 255, 0.88);
+  stroke-width: 2;
+}
+
+.goplay-board-hit[aria-disabled="true"] {
+  cursor: default;
+}
+
+.goplay-panel {
+  min-width: 0;
+  padding: clamp(20px, 3vw, 30px);
+  border-left: 1px solid var(--goplay-line);
+  background: var(--goplay-surface);
+}
+
+.goplay-field + .goplay-field {
+  margin-top: 20px;
+}
+
+.goplay-field label,
+.goplay-field-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--goplay-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.goplay-field select {
+  display: block;
+  width: 100%;
+  height: 42px;
+  margin: 0;
+  padding: 0 34px 0 11px;
+  border: 1px solid #bbb6ac;
+  border-radius: 7px;
+  background-color: #fff;
+  color: var(--goplay-ink);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.goplay-field select:focus-visible,
+.goplay-actions button:focus-visible,
+.goplay-color-picker button:focus-visible {
+  border-color: var(--goplay-accent);
+  outline: 3px solid rgba(8, 120, 86, 0.2);
+  outline-offset: 1px;
+}
+
+.goplay-rating-detail {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  color: var(--goplay-muted);
+  font-size: 0.77rem;
+}
+
+.goplay-rating-detail strong {
+  color: var(--goplay-accent-dark);
+  font-size: 0.86rem;
+}
+
+.goplay-color-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.goplay-color-picker button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 39px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid var(--goplay-line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--goplay-muted);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.goplay-color-picker button.is-active {
+  border-color: #9bc3b2;
+  background: var(--goplay-accent-soft);
+  color: var(--goplay-accent-dark);
+}
+
+.goplay-color-picker button:disabled,
+.goplay-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.goplay-color-dot {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #77736d;
+  border-radius: 50%;
+}
+
+.goplay-color-dot.is-black {
+  border-color: #151515;
+  background: #20201f;
+}
+
+.goplay-color-dot.is-white {
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.goplay-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 62px;
+  margin-top: 22px;
+  padding: 12px 13px;
+  border: 1px solid #c9ded5;
+  border-radius: 8px;
+  background: #f0f8f4;
+  color: var(--goplay-accent-dark);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.goplay-status.is-finished {
+  border-color: #d9c88f;
+  background: #fff9e6;
+  color: #6d5716;
+}
+
+.goplay-progress {
+  display: block;
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: rgba(8, 120, 86, 0.14);
+}
+
+.goplay-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--goplay-accent);
+  transition: width 120ms ease;
+}
+
+.markdown-body .goplay-inline-error,
+.goplay-inline-error {
+  margin: 8px 0 0;
+  color: #a23b34;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.goplay-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.goplay-actions button {
+  height: 37px;
+  margin: 0;
+  padding: 0 8px;
+  border: 1px solid var(--goplay-line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--goplay-ink);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.goplay-actions button:not(:disabled):hover {
+  border-color: #a5a097;
+  background: #f7f6f2;
+}
+
+.goplay-actions button.is-primary {
+  border-color: var(--goplay-accent);
+  background: var(--goplay-accent);
+  color: #fff;
+}
+
+.goplay-actions button.is-primary:not(:disabled):hover {
+  border-color: var(--goplay-accent-dark);
+  background: var(--goplay-accent-dark);
+}
+
+.goplay-moves {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--goplay-line);
+}
+
+.goplay-moves > span {
+  color: var(--goplay-muted);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.goplay-moves > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.goplay-moves > div span,
+.goplay-moves em {
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: #f0eee9;
+  color: #5f5b54;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.67rem;
+  font-style: normal;
+}
+
+.goplay-loading,
+.goplay-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  margin: 32px 0;
+  border: 1px solid #d7d3cb;
+  border-radius: 10px;
+  background: #f7f6f2;
+  color: #706c65;
+}
+
+.goplay-loading {
+  flex-direction: column;
+  gap: 12px;
+}
+
+.markdown-body .goplay-loading p,
+.goplay-loading p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.goplay-loading > span {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #c8c3bb;
+  border-top-color: var(--goplay-accent, #087856);
+  border-radius: 50%;
+  animation: goplay-spin 700ms linear infinite;
+}
+
+@keyframes goplay-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 900px) {
+  .goplay-game {
+    grid-template-columns: 1fr;
+  }
+
+  .goplay-panel {
+    border-top: 1px solid var(--goplay-line);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .goplay-root {
+    width: calc(100vw - 20px);
+    margin-top: 28px;
+  }
+
+  .goplay-heading-row {
+    display: block;
+  }
+
+  .goplay-board-shell {
+    padding: 8px;
+  }
+
+  .goplay-panel {
+    padding: 19px 15px;
+  }
+
+  .goplay-rating-detail {
+    display: block;
+  }
+
+  .goplay-rating-detail span {
+    display: block;
+    margin-top: 2px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goplay-loading > span {
+    animation-duration: 1.6s;
+  }
+
+  .goplay-progress > span {
+    transition: none;
+  }
+}

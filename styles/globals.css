@@ -142,7 +142,8 @@ nav {
   background: #fff8df;
 }
 
-.blog-post--gobench > header h1 {
+.blog-post--gobench > header h1,
+.blog-post--goplay > header h1 {
   margin: 18px 0 20px;
   color: #1c1c1a;
   font-family: Georgia, 'Times New Roman', serif;
@@ -153,12 +154,15 @@ nav {
 }
 
 .blog-post--gobench .post-date,
-.blog-post--gobench .draft-preview-notice {
+.blog-post--gobench .draft-preview-notice,
+.blog-post--goplay .post-date,
+.blog-post--goplay .draft-preview-notice {
   font-size: 16px;
   line-height: 1.5;
 }
 
-.blog-post--gobench .markdown-body > p:first-child {
+.blog-post--gobench .markdown-body > p:first-child,
+.blog-post--goplay .markdown-body > p:first-child {
   max-width: 680px;
   color: #5e5954;
   font-family: Georgia, 'Times New Roman', serif;

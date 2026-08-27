@@ -1,21 +1,19 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 
-import ProviderLogo from './ProviderLogo';
+import ProviderLogo, { getProvider } from './ProviderLogo';
 
-const DATA_URL = '/data/gobench_data/paper_results.json';
+const DATA_URL = '/data/gobench_data/paper_results2.json';
 const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
-const CHART_COLORS = [
-  '#9b4f32',
-  '#356fd4',
-  '#6754d9',
-  '#e59112',
-  '#109b78',
-  '#11a783',
-  '#e34f88',
-  '#167c68',
-  '#272727',
-  '#3678d8',
-];
+const CHART_COLORS = {
+  anthropic: '#9b4f32',
+  google: '#356fd4',
+  deepseek: '#6754d9',
+  moonshot: '#e59112',
+  openai: '#109b78',
+  meta: '#e34f88',
+  xai: '#272727',
+  unknown: '#767676',
+};
 
 const PLAYER_PRESENTATION = {
   'opus-5-high': { label: 'Claude Opus 5', tier: 'High' },
@@ -24,6 +22,12 @@ const PLAYER_PRESENTATION = {
   'kimi-k3-high': { label: 'Kimi K3', tier: 'High' },
   'gpt5.6-sol-high': { label: 'GPT-5.6 Sol', tier: 'High' },
   'gpt5.6-sol-low': { label: 'GPT-5.6 Sol', tier: 'Low' },
+  'gpt5.6-sol-high-context': { label: 'GPT-5.6 Sol', tier: 'High · Context' },
+  'gpt5.6-sol-max-context': { label: 'GPT-5.6 Sol', tier: 'Max · Context' },
+  'gpt5.6-luna-high': { label: 'GPT-5.6 Luna', tier: 'High' },
+  'gpt5.6-luna-low': { label: 'GPT-5.6 Luna', tier: 'Low' },
+  'gpt5.6-luna-high-context': { label: 'GPT-5.6 Luna', tier: 'High · Context' },
+  'gpt5.6-luna-max-context': { label: 'GPT-5.6 Luna', tier: 'Max · Context' },
   'muse-spark-1.2-openrouter-high': { label: 'Muse Spark 1.2', tier: 'High' },
   'gpt-5.4-low': { label: 'GPT-5.4', tier: 'Low' },
   'grok-4.5-high': { label: 'Grok 4.5', tier: 'High' },
@@ -42,7 +46,16 @@ const formatPlayerDisplayName = player => {
     : presentation.label;
 };
 
-const RESULT_ROW_ALPHAS = [0.17, 0.135, 0.105, 0.072, 0.06, 0.052, 0.046, 0.041, 0.037, 0.034];
+const getResultRowAlpha = (resultOrder, resultCount) => {
+  if (resultCount <= 1) {
+    return 0.17;
+  }
+
+  const progress = resultOrder / (resultCount - 1);
+  return 0.17 + (0.03 - 0.17) * progress;
+};
+
+const getChartColor = player => CHART_COLORS[getProvider(player)] || CHART_COLORS.unknown;
 
 const TABLE_COLUMNS = [
   {
@@ -186,6 +199,7 @@ const getTableRows = data => {
 
 const Leaderboard = ({ data }) => {
   const rows = useMemo(() => getTableRows(data), [data]);
+  const resultCount = data.datasets.llm_players.length;
   const [sort, setSort] = useState(null);
   const [isHorizontallyScrolled, setIsHorizontallyScrolled] = useState(false);
 
@@ -314,7 +328,7 @@ const Leaderboard = ({ data }) => {
                 const isFirstReference = row.rowType === 'reference' &&
                   (index === 0 || displayedRows[index - 1].rowType !== 'reference');
                 const rowStyle = row.rowType === 'llm'
-                  ? { '--gobench-row-alpha': RESULT_ROW_ALPHAS[row.resultOrder] || 0.034 }
+                  ? { '--gobench-row-alpha': getResultRowAlpha(row.resultOrder, resultCount) }
                   : undefined;
 
                 return (
@@ -520,11 +534,10 @@ const ChartPanel = ({
             const displayName = isLlm
               ? formatPlayerDisplayName(point.player)
               : referenceNames.get(point.player) || 'KataGo';
-            const llmIndex = isLlm ? Array.from(llmNames).indexOf(point.player) : -1;
             const x = xPosition(point.cost_usd_per_move);
             const y = yPosition(point.elo);
             const error = isLlm ? point.elo_ci_95 : null;
-            const color = isLlm ? CHART_COLORS[llmIndex % CHART_COLORS.length] : '#9aa3ad';
+            const color = isLlm ? getChartColor(point.player) : '#9aa3ad';
 
             return (
               <g key={point.player}>
@@ -599,6 +612,23 @@ const CostChart = ({ data }) => {
     [data.table_2.katago_reference_players],
   );
   const referenceElo = data.figure_2.panels[1].katago_reference_line.elo;
+  const llmCostDomain = useMemo(() => {
+    const costs = llmPlayers
+      .map(player => player.cost_usd_per_move)
+      .filter(cost => Number.isFinite(cost) && cost > 0);
+
+    if (!costs.length) {
+      return [0.001, 0.5];
+    }
+
+    return [Math.min(...costs) / 1.45, Math.max(...costs) * 1.3];
+  }, [llmPlayers]);
+  const llmCostTicks = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5]
+    .filter(value => value > llmCostDomain[0] && value < llmCostDomain[1])
+    .map(value => ({
+      value,
+      label: '$' + value,
+    }));
 
   return (
     <section className="gobench-section" aria-labelledby="gobench-chart-heading">
@@ -627,13 +657,8 @@ const CostChart = ({ data }) => {
           points={llmPlayers}
           llmNames={llmNames}
           referenceNames={referenceNames}
-          xDomain={[0.011, 0.35]}
-          xTicks={[
-            { value: 0.02, label: '$0.02' },
-            { value: 0.05, label: '$0.05' },
-            { value: 0.1, label: '$0.10' },
-            { value: 0.2, label: '$0.20' },
-          ]}
+          xDomain={llmCostDomain}
+          xTicks={llmCostTicks}
           referenceElo={referenceElo}
         />
       </div>
@@ -643,11 +668,11 @@ const CostChart = ({ data }) => {
           <span className="gobench-legend-dot is-katago" />
           <span>KataGo ({katagoPlayers.length})</span>
         </div>
-        {llmPlayers.map((player, index) => (
+        {llmPlayers.map(player => (
           <div className="gobench-legend-item" key={player.player}>
             <span
               className="gobench-legend-dot"
-              style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
+              style={{ backgroundColor: getChartColor(player.player) }}
             />
             <span>{formatPlayerDisplayName(player.player)}</span>
           </div>
@@ -880,7 +905,7 @@ const formatOpponentOption = option =>
 
 const compactGamePlayerName = (player, katagoPlayers) => {
   if (!player.startsWith('kata1-')) {
-    return player;
+    return formatPlayerDisplayName(player);
   }
 
   const rating = getOpponentRating(player, katagoPlayers);
@@ -1022,7 +1047,7 @@ const GameReplayer = ({ data }) => {
             }}
           >
             {llmPlayers.map(player => (
-              <option key={player} value={player}>{player}</option>
+              <option key={player} value={player}>{formatPlayerDisplayName(player)}</option>
             ))}
           </select>
         </label>

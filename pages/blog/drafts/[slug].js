@@ -30,29 +30,29 @@ export const getStaticProps = ({ params }) => {
   };
 };
 
-const DraftBlogPage = ({ metadata, content }) => (
-  <Layout
-    title={`${metadata.title} — Local Draft`}
-    description={`Local preview of the unpublished “${metadata.title}” draft.`}
-    canonicalPath={metadata.path}
-  >
-    <Head>
-      <meta name="robots" content="noindex,nofollow" />
-    </Head>
-    <article
-      className={
-        metadata.id === 'gobench'
-          ? 'blog-post draft-blog-post blog-post--gobench'
-          : 'blog-post draft-blog-post'
-      }
+const DraftBlogPage = ({ metadata, content }) => {
+  const featureClass = ['gobench', 'goplay'].includes(metadata.id)
+    ? ` blog-post--${metadata.id}`
+    : '';
+
+  return (
+    <Layout
+      title={`${metadata.title} — Local Draft`}
+      description={`Local preview of the unpublished “${metadata.title}” draft.`}
+      canonicalPath={metadata.path}
     >
-      <header>
-        <p className="draft-preview-notice">Local draft preview · not included in production</p>
-        <h1>{metadata.title}</h1>
-      </header>
-      <MarkdownRenderer content={content} />
-    </article>
-  </Layout>
-);
+      <Head>
+        <meta name="robots" content="noindex,nofollow" />
+      </Head>
+      <article className={`blog-post draft-blog-post${featureClass}`}>
+        <header>
+          <p className="draft-preview-notice">Local draft preview · not included in production</p>
+          <h1>{metadata.title}</h1>
+        </header>
+        <MarkdownRenderer content={content} />
+      </article>
+    </Layout>
+  );
+};
 
 export default DraftBlogPage;

@@ -1,0 +1,761 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+const BASE_DATA_URL = '/data/gobench_data/paper_results2.json';
+const SUPPLEMENT_DATA_URL = '/data/goplay_players.json';
+const ENGINE_WORKER_URL = '/goplay/kata-worker.js';
+const BOARD_SIZE = 9;
+const KOMI = 7;
+const NUM_VISITS = 1;
+const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
+const DEFAULT_ELO = 1523;
+const TEMPERATURE_SUFFIX = /-temp-(\d+(?:\.\d+)?)$/;
+
+const emptyBoard = () => new Array(BOARD_SIZE * BOARD_SIZE).fill(0);
+const boardSignature = board => board.join('');
+const otherColor = color => (color === 1 ? 2 : 1);
+const colorName = color => (color === 1 ? 'Black' : 'White');
+
+const toCoordinate = location => {
+  if (location < 0) {
+    return 'Pass';
+  }
+
+  const x = location % BOARD_SIZE;
+  const y = Math.floor(location / BOARD_SIZE);
+  return GO_COLUMNS[x] + String(BOARD_SIZE - y);
+};
+
+const getNeighbors = location => {
+  const x = location % BOARD_SIZE;
+  const y = Math.floor(location / BOARD_SIZE);
+  const neighbors = [];
+
+  if (x > 0) neighbors.push(location - 1);
+  if (x < BOARD_SIZE - 1) neighbors.push(location + 1);
+  if (y > 0) neighbors.push(location - BOARD_SIZE);
+  if (y < BOARD_SIZE - 1) neighbors.push(location + BOARD_SIZE);
+
+  return neighbors;
+};
+
+const getGroup = (board, start) => {
+  const color = board[start];
+  const stones = [];
+  const liberties = new Set();
+  const seen = new Set([start]);
+  const queue = [start];
+
+  while (queue.length) {
+    const location = queue.pop();
+    stones.push(location);
+
+    getNeighbors(location).forEach(neighbor => {
+      if (board[neighbor] === 0) {
+        liberties.add(neighbor);
+      } else if (board[neighbor] === color && !seen.has(neighbor)) {
+        seen.add(neighbor);
+        queue.push(neighbor);
+      }
+    });
+  }
+
+  return { stones, liberties };
+};
+
+const playOnBoard = (board, location, color, positionHistory) => {
+  if (location < 0) {
+    return {
+      board: board.slice(),
+      captures: 0,
+      signature: boardSignature(board),
+    };
+  }
+
+  if (board[location] !== 0) {
+    return null;
+  }
+
+  const nextBoard = board.slice();
+  nextBoard[location] = color;
+  let captures = 0;
+
+  getNeighbors(location).forEach(neighbor => {
+    if (nextBoard[neighbor] !== otherColor(color)) {
+      return;
+    }
+
+    const group = getGroup(nextBoard, neighbor);
+    if (group.liberties.size === 0) {
+      group.stones.forEach(stone => {
+        nextBoard[stone] = 0;
+        captures += 1;
+      });
+    }
+  });
+
+  if (getGroup(nextBoard, location).liberties.size === 0) {
+    return null;
+  }
+
+  const signature = boardSignature(nextBoard);
+  if (positionHistory.has(signature)) {
+    return null;
+  }
+
+  return { board: nextBoard, captures, signature };
+};
+
+const scoreBoard = board => {
+  let black = 0;
+  let white = KOMI;
+  const visited = new Set();
+
+  board.forEach((stone, location) => {
+    if (stone === 1) black += 1;
+    if (stone === 2) white += 1;
+    if (stone !== 0 || visited.has(location)) return;
+
+    const region = [];
+    const borders = new Set();
+    const queue = [location];
+    visited.add(location);
+
+    while (queue.length) {
+      const point = queue.pop();
+      region.push(point);
+
+      getNeighbors(point).forEach(neighbor => {
+        if (board[neighbor] === 0 && !visited.has(neighbor)) {
+          visited.add(neighbor);
+          queue.push(neighbor);
+        } else if (board[neighbor] !== 0) {
+          borders.add(board[neighbor]);
+        }
+      });
+    }
+
+    if (borders.size === 1) {
+      if (borders.has(1)) black += region.length;
+      if (borders.has(2)) white += region.length;
+    }
+  });
+
+  return { black, white };
+};
+
+const formatResult = board => {
+  const score = scoreBoard(board);
+  const difference = Math.abs(score.black - score.white);
+
+  if (difference === 0) {
+    return `Draw · ${score.black}–${score.white}`;
+  }
+
+  const winner = score.black > score.white ? 'Black' : 'White';
+  return `${winner} wins by ${difference} · ${score.black}–${score.white}`;
+};
+
+const formatElo = value =>
+  new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
+
+const basePlayerName = player => player.replace(TEMPERATURE_SUFFIX, '');
+
+const temperatureTarget = player => {
+  const match = player.match(TEMPERATURE_SUFFIX);
+  return match ? Number(match[1]) : 0.1;
+};
+
+const thinOpponents = players => {
+  const sorted = players.slice().sort((left, right) => left.elo - right.elo);
+  const thinned = [];
+
+  sorted.forEach(player => {
+    const previous = thinned[thinned.length - 1];
+    if (!previous || player.elo - previous.elo >= 50) thinned.push(player);
+  });
+
+  const strongest = sorted[sorted.length - 1];
+  if (strongest && !thinned.some(player => player.player === strongest.player)) {
+    thinned.push(strongest);
+  }
+
+  return thinned.sort((left, right) => left.elo - right.elo);
+};
+
+const getLegalMoves = (board, color, positionHistory) => {
+  const legalMoves = [-1];
+  board.forEach((_, location) => {
+    if (playOnBoard(board, location, color, positionHistory)) legalMoves.push(location);
+  });
+  return legalMoves;
+};
+
+const replayMoves = moves => {
+  let board = emptyBoard();
+  const positionHistory = new Set([boardSignature(board)]);
+  let consecutivePasses = 0;
+
+  moves.forEach(move => {
+    const played = playOnBoard(board, move.loc, move.col, positionHistory);
+    if (!played) throw new Error('Unable to restore the previous position');
+
+    board = played.board;
+    consecutivePasses = move.loc < 0 ? consecutivePasses + 1 : 0;
+    if (move.loc >= 0) positionHistory.add(played.signature);
+  });
+
+  return {
+    board,
+    consecutivePasses,
+    lastMove: moves.length ? moves[moves.length - 1].loc : null,
+    positionHistory,
+    toPlay: moves.length ? otherColor(moves[moves.length - 1].col) : 1,
+  };
+};
+
+const createEngine = (worker, onProgress) => {
+  const pending = new Map();
+  let requestId = 0;
+
+  worker.onmessage = event => {
+    if (event.data.type === 'progress') {
+      onProgress(event.data);
+      return;
+    }
+
+    const request = pending.get(event.data.id);
+    if (!request) return;
+
+    pending.delete(event.data.id);
+    if (event.data.ok) {
+      request.resolve(event.data);
+    } else {
+      request.reject(new Error(event.data.error || 'KataGo worker error'));
+    }
+  };
+
+  const call = payload =>
+    new Promise((resolve, reject) => {
+      const id = ++requestId;
+      pending.set(id, { resolve, reject });
+      worker.postMessage({ id, ...payload });
+    });
+
+  const destroy = () => {
+    pending.forEach(request => request.reject(new Error('KataGo model unloaded')));
+    pending.clear();
+    worker.terminate();
+  };
+
+  return { call, destroy };
+};
+
+const GoBoard = ({ board, disabled, lastMove, onPlay }) => {
+  const viewSize = 500;
+  const margin = 50;
+  const spacing = (viewSize - margin * 2) / (BOARD_SIZE - 1);
+  const points = Array.from({ length: BOARD_SIZE }, (_, index) => index);
+  const starPoints = [
+    [2, 2], [6, 2], [4, 4], [2, 6], [6, 6],
+  ];
+
+  return (
+    <svg
+      className="goplay-board"
+      viewBox={`0 0 ${viewSize} ${viewSize}`}
+      role="grid"
+      aria-label="Interactive 9 by 9 Go board"
+    >
+      <defs>
+        <radialGradient id="goplay-white-stone" cx="34%" cy="27%" r="72%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="70%" stopColor="#f2f0eb" />
+          <stop offset="100%" stopColor="#c9c5bd" />
+        </radialGradient>
+        <radialGradient id="goplay-black-stone" cx="34%" cy="27%" r="72%">
+          <stop offset="0%" stopColor="#5b5b58" />
+          <stop offset="52%" stopColor="#242422" />
+          <stop offset="100%" stopColor="#050505" />
+        </radialGradient>
+      </defs>
+
+      <rect className="goplay-board-background" width={viewSize} height={viewSize} rx="7" />
+
+      {points.map(index => {
+        const offset = margin + index * spacing;
+        return (
+          <g key={`line-${index}`}>
+            <line className="goplay-board-line" x1={margin} x2={viewSize - margin} y1={offset} y2={offset} />
+            <line className="goplay-board-line" x1={offset} x2={offset} y1={margin} y2={viewSize - margin} />
+            <text className="goplay-board-coordinate" x={offset} y={viewSize - 12} textAnchor="middle">
+              {GO_COLUMNS[index]}
+            </text>
+            <text className="goplay-board-coordinate" x="20" y={offset + 5} textAnchor="middle">
+              {BOARD_SIZE - index}
+            </text>
+          </g>
+        );
+      })}
+
+      {starPoints.map(([x, y]) => (
+        <circle
+          key={`star-${x}-${y}`}
+          className="goplay-board-star"
+          cx={margin + x * spacing}
+          cy={margin + y * spacing}
+          r="4.5"
+        />
+      ))}
+
+      {board.map((stone, location) => {
+        if (!stone) return null;
+        const x = location % BOARD_SIZE;
+        const y = Math.floor(location / BOARD_SIZE);
+        const cx = margin + x * spacing;
+        const cy = margin + y * spacing;
+
+        return (
+          <g key={`stone-${location}`}>
+            <circle
+              className="goplay-stone"
+              cx={cx}
+              cy={cy}
+              r={spacing * 0.45}
+              fill={stone === 1 ? 'url(#goplay-black-stone)' : 'url(#goplay-white-stone)'}
+            />
+            {lastMove === location ? (
+              <circle
+                className={stone === 1 ? 'goplay-last-move is-black' : 'goplay-last-move is-white'}
+                cx={cx}
+                cy={cy}
+                r={spacing * 0.12}
+              />
+            ) : null}
+          </g>
+        );
+      })}
+
+      {board.map((stone, location) => {
+        if (stone) return null;
+        const x = location % BOARD_SIZE;
+        const y = Math.floor(location / BOARD_SIZE);
+        const cx = margin + x * spacing;
+        const cy = margin + y * spacing;
+        const label = `Play ${toCoordinate(location)}`;
+
+        return (
+          <circle
+            key={`hit-${location}`}
+            className="goplay-board-hit"
+            cx={cx}
+            cy={cy}
+            r={spacing * 0.42}
+            role="gridcell"
+            aria-label={label}
+            aria-disabled={disabled}
+            tabIndex={disabled ? -1 : 0}
+            onClick={() => {
+              if (!disabled) onPlay(location);
+            }}
+            onKeyDown={event => {
+              if (!disabled && (event.key === 'Enter' || event.key === ' ')) {
+                event.preventDefault();
+                onPlay(location);
+              }
+            }}
+          />
+        );
+      })}
+    </svg>
+  );
+};
+
+const GoPlay = () => {
+  const [opponents, setOpponents] = useState([]);
+  const [selectedPlayer, setSelectedPlayer] = useState('');
+  const [dataError, setDataError] = useState('');
+  const [engineState, setEngineState] = useState({ status: 'idle', progress: 0, error: '' });
+  const [humanColor, setHumanColor] = useState(1);
+  const [board, setBoard] = useState(() => emptyBoard());
+  const [moves, setMoves] = useState([]);
+  const [toPlay, setToPlay] = useState(1);
+  const [positionHistory, setPositionHistory] = useState(
+    () => new Set([boardSignature(emptyBoard())]),
+  );
+  const [consecutivePasses, setConsecutivePasses] = useState(0);
+  const [lastMove, setLastMove] = useState(null);
+  const [gameState, setGameState] = useState('playing');
+  const [result, setResult] = useState('');
+  const [thinking, setThinking] = useState(false);
+  const [moveError, setMoveError] = useState('');
+  const engineRef = useRef(null);
+  const thinkingRef = useRef(false);
+  const gameTokenRef = useRef(0);
+  const selectedModel = basePlayerName(selectedPlayer);
+  const selectedTemperatureTarget = temperatureTarget(selectedPlayer);
+
+  const lastHumanMoveIndex = useMemo(() => {
+    for (let index = moves.length - 1; index >= 0; index -= 1) {
+      if (moves[index].col === humanColor) return index;
+    }
+    return -1;
+  }, [humanColor, moves]);
+
+  const resetGame = useCallback(() => {
+    gameTokenRef.current += 1;
+    thinkingRef.current = false;
+    setThinking(false);
+    setBoard(emptyBoard());
+    setMoves([]);
+    setToPlay(1);
+    setPositionHistory(new Set([boardSignature(emptyBoard())]));
+    setConsecutivePasses(0);
+    setLastMove(null);
+    setGameState('playing');
+    setResult('');
+    setMoveError('');
+  }, []);
+
+  const undoLastTurn = useCallback(() => {
+    gameTokenRef.current += 1;
+    thinkingRef.current = false;
+    setThinking(false);
+    setMoveError('');
+
+    if (gameState === 'finished' && result.includes('resignation')) {
+      setGameState('playing');
+      setResult('');
+      return;
+    }
+
+    if (lastHumanMoveIndex < 0) return;
+
+    try {
+      const retainedMoves = moves.slice(0, lastHumanMoveIndex);
+      const restored = replayMoves(retainedMoves);
+      setBoard(restored.board);
+      setMoves(retainedMoves);
+      setToPlay(restored.toPlay);
+      setPositionHistory(restored.positionHistory);
+      setConsecutivePasses(restored.consecutivePasses);
+      setLastMove(restored.lastMove);
+      setGameState('playing');
+      setResult('');
+    } catch (error) {
+      setMoveError(error.message);
+    }
+  }, [gameState, lastHumanMoveIndex, moves, result]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchRatings = url => fetch(url, { signal: controller.signal }).then(response => {
+      if (!response.ok) throw new Error(`ratings request failed (${response.status})`);
+      return response.json();
+    });
+
+    Promise.all([
+      fetchRatings(BASE_DATA_URL),
+      fetchRatings(SUPPLEMENT_DATA_URL),
+    ])
+      .then(([baseData, supplementData]) => {
+        const mergedPlayers = new Map();
+        baseData.datasets.katago_players
+          .filter(player => /^kata1-b6c96-/.test(player.player))
+          .forEach(player => mergedPlayers.set(player.player, player));
+        supplementData.players
+          .filter(player => /^kata1-b6c96-/.test(player.player))
+          .forEach(player => mergedPlayers.set(player.player, player));
+
+        const b6c96Players = thinOpponents(
+          Array.from(mergedPlayers.values()),
+        );
+
+        setOpponents(b6c96Players);
+        const defaultOpponent = b6c96Players.reduce((closest, player) => (
+          !closest || Math.abs(player.elo - DEFAULT_ELO) < Math.abs(closest.elo - DEFAULT_ELO)
+            ? player
+            : closest
+        ), null);
+        setSelectedPlayer(defaultOpponent?.player || '');
+      })
+      .catch(error => {
+        if (error.name !== 'AbortError') {
+          setDataError(`Unable to load KataGo ratings: ${error.message}`);
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedModel) return undefined;
+
+    let active = true;
+    const worker = new Worker(ENGINE_WORKER_URL);
+    const engine = createEngine(worker, progress => {
+      if (!active) return;
+      const ratio = progress.total > 0 ? progress.loaded / progress.total : 0;
+      setEngineState({ status: 'loading', progress: ratio, error: '' });
+    });
+
+    engineRef.current = engine;
+    setEngineState({ status: 'loading', progress: 0, error: '' });
+
+    engine.call({
+      type: 'init',
+      modelUrl: `/goplay/networks/${selectedModel}.txt.gz`,
+      boardSize: BOARD_SIZE,
+    }).then(() => {
+      if (active) {
+        setEngineState({ status: 'ready', progress: 1, error: '' });
+      }
+    }).catch(error => {
+      if (active) {
+        setEngineState({ status: 'error', progress: 0, error: error.message });
+      }
+    });
+
+    return () => {
+      active = false;
+      if (engineRef.current === engine) engineRef.current = null;
+      engine.destroy();
+    };
+  }, [selectedModel]);
+
+  const commitMove = useCallback((location, color) => {
+    const played = playOnBoard(board, location, color, positionHistory);
+    if (!played) {
+      setMoveError('That move is illegal (occupied, suicide, ko, or superko).');
+      return false;
+    }
+
+    const nextMoves = [...moves, { loc: location, col: color }];
+    const nextPasses = location < 0 ? consecutivePasses + 1 : 0;
+    const nextHistory = new Set(positionHistory);
+    if (location >= 0) nextHistory.add(played.signature);
+
+    setBoard(played.board);
+    setMoves(nextMoves);
+    setPositionHistory(nextHistory);
+    setConsecutivePasses(nextPasses);
+    setLastMove(location);
+    setMoveError('');
+
+    if (nextPasses >= 2) {
+      setGameState('finished');
+      setResult(formatResult(played.board));
+    } else {
+      setToPlay(otherColor(color));
+    }
+
+    return true;
+  }, [board, consecutivePasses, moves, positionHistory]);
+
+  useEffect(() => {
+    if (
+      engineState.status !== 'ready' ||
+      gameState !== 'playing' ||
+      toPlay === humanColor ||
+      thinkingRef.current
+    ) {
+      return undefined;
+    }
+
+    const engine = engineRef.current;
+    if (!engine) return undefined;
+
+    const gameToken = gameTokenRef.current;
+    thinkingRef.current = true;
+    setThinking(true);
+
+    engine.call({
+      type: 'genmove',
+      moves,
+      toPlay,
+      komi: KOMI,
+      numVisits: NUM_VISITS,
+      legalMoves: getLegalMoves(board, toPlay, positionHistory),
+      temperatureTarget: selectedTemperatureTarget,
+    }).then(response => {
+      if (gameTokenRef.current !== gameToken) return;
+      commitMove(response.move, toPlay);
+    }).catch(error => {
+      if (gameTokenRef.current === gameToken) {
+        setMoveError(`KataGo could not move: ${error.message}`);
+      }
+    }).finally(() => {
+      if (gameTokenRef.current === gameToken) {
+        thinkingRef.current = false;
+        setThinking(false);
+      }
+    });
+
+    return undefined;
+  }, [
+    board,
+    commitMove,
+    engineState.status,
+    gameState,
+    humanColor,
+    moves,
+    positionHistory,
+    selectedTemperatureTarget,
+    toPlay,
+  ]);
+
+  const isHumanTurn = gameState === 'playing' && toPlay === humanColor;
+  const boardDisabled = engineState.status !== 'ready' || thinking || !isHumanTurn;
+
+  const statusText = (() => {
+    if (engineState.status === 'loading') {
+      const percentage = Math.round(engineState.progress * 100);
+      return `Loading selected model${percentage ? ` · ${percentage}%` : '…'}`;
+    }
+    if (engineState.status === 'error') return 'Engine failed to load';
+    if (gameState !== 'playing') return result;
+    if (thinking) return 'KataGo is choosing a move…';
+    if (isHumanTurn) return `Your turn · ${colorName(humanColor)}`;
+    return 'Waiting for KataGo…';
+  })();
+
+  if (dataError) {
+    return <div className="goplay-error" role="alert">{dataError}</div>;
+  }
+
+  if (!opponents.length) {
+    return (
+      <div className="goplay-loading" role="status">
+        <span />
+        <p>Loading GoPlay…</p>
+      </div>
+    );
+  }
+
+  return (
+    <section className="goplay-root" aria-labelledby="goplay-heading">
+      <div className="goplay-heading-row">
+        <div>
+          <h2 id="goplay-heading">Play KataGo</h2>
+          <p>9×9 · Tromp–Taylor area scoring · 7 komi</p>
+        </div>
+      </div>
+
+      <div className="goplay-game">
+        <div className="goplay-board-shell">
+          <GoBoard
+            board={board}
+            disabled={boardDisabled}
+            lastMove={lastMove}
+            onPlay={location => commitMove(location, humanColor)}
+          />
+        </div>
+
+        <aside className="goplay-panel">
+          <div className="goplay-field">
+            <label htmlFor="goplay-opponent">KataGo opponent</label>
+            <select
+              id="goplay-opponent"
+              value={selectedPlayer}
+              disabled={thinking}
+              onChange={event => {
+                const nextPlayer = event.target.value;
+                if (basePlayerName(nextPlayer) !== selectedModel) {
+                  setEngineState({ status: 'loading', progress: 0, error: '' });
+                }
+                resetGame();
+                setSelectedPlayer(nextPlayer);
+              }}
+            >
+              {opponents.map(opponent => (
+                <option key={opponent.player} value={opponent.player}>
+                  {formatElo(opponent.elo)} Elo
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="goplay-field">
+            <span className="goplay-field-label">Play as</span>
+            <div className="goplay-color-picker" role="group" aria-label="Choose your stone color">
+              {[1, 2].map(color => (
+                <button
+                  key={color}
+                  type="button"
+                  className={humanColor === color ? 'is-active' : ''}
+                  disabled={thinking}
+                  onClick={() => {
+                    setHumanColor(color);
+                    resetGame();
+                  }}
+                >
+                  <span className={color === 1 ? 'goplay-color-dot is-black' : 'goplay-color-dot is-white'} />
+                  {colorName(color)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className={gameState === 'playing' ? 'goplay-status' : 'goplay-status is-finished'} aria-live="polite">
+            <span>{statusText}</span>
+            {engineState.status === 'loading' ? (
+              <span className="goplay-progress" aria-hidden="true">
+                <span style={{ width: `${Math.max(4, engineState.progress * 100)}%` }} />
+              </span>
+            ) : null}
+          </div>
+
+          {engineState.error ? <p className="goplay-inline-error">{engineState.error}</p> : null}
+          {moveError ? <p className="goplay-inline-error">{moveError}</p> : null}
+
+          <div className="goplay-actions">
+            <button
+              type="button"
+              disabled={
+                engineState.status !== 'ready' ||
+                (lastHumanMoveIndex < 0 && !result.includes('resignation'))
+              }
+              onClick={undoLastTurn}
+            >
+              Undo
+            </button>
+            <button
+              type="button"
+              disabled={!isHumanTurn || thinking || engineState.status !== 'ready'}
+              onClick={() => commitMove(-1, humanColor)}
+            >
+              Pass
+            </button>
+            <button
+              type="button"
+              disabled={!isHumanTurn || thinking || gameState !== 'playing'}
+              onClick={() => {
+                gameTokenRef.current += 1;
+                setGameState('finished');
+                setResult(`${colorName(otherColor(humanColor))} wins by resignation`);
+              }}
+            >
+              Resign
+            </button>
+            <button type="button" className="is-primary" disabled={thinking} onClick={resetGame}>
+              New game
+            </button>
+          </div>
+
+          <div className="goplay-moves" aria-label="Recent moves">
+            <span>Recent moves</span>
+            <div>
+              {moves.length ? moves.slice(-8).map((move, index) => (
+                <span key={`${moves.length - 8 + index}-${move.loc}`}>
+                  {moves.length - Math.min(8, moves.length) + index + 1}. {move.col === 1 ? 'B' : 'W'} {toCoordinate(move.loc)}
+                </span>
+              )) : <em>No moves yet</em>}
+            </div>
+          </div>
+        </aside>
+      </div>
+
+    </section>
+  );
+};
+
+export default GoPlay;

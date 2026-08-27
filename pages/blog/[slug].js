@@ -50,7 +50,11 @@ const BlogPostPage = ({
   updatedDisplay,
 }) => {
   const router = useRouter();
-  const isGoBench = content.includes('<gobench');
+  const featureClass = content.includes('<gobench')
+    ? ' blog-post--gobench'
+    : content.includes('<goplay')
+      ? ' blog-post--goplay'
+      : '';
 
   useEffect(() => {
     if (!isLegacySlug) {
@@ -75,7 +79,7 @@ const BlogPostPage = ({
           <meta httpEquiv="refresh" content={`0; url=${canonicalPath}`} />
         </Head>
       ) : null}
-      <article className={isGoBench ? 'blog-post blog-post--gobench' : 'blog-post'}>
+      <article className={`blog-post${featureClass}`}>
         <header>
           <h1>{metadata.title}</h1>
           {dateDisplay || updatedDisplay ? (

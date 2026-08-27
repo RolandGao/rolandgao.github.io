@@ -18,6 +18,15 @@ const GoBench = dynamic(() => import('./GoBench'), {
   ),
 });
 
+const GoPlay = dynamic(() => import('./GoPlay'), {
+  loading: () => (
+    <div className="goplay-loading" role="status">
+      <span />
+      <p>Loading GoPlay…</p>
+    </div>
+  ),
+});
+
 const MarkdownRenderer = ({ content = '' }) => {
   const markdownComponents = {
     a: ({ node, ...props }) => {
@@ -31,11 +40,12 @@ const MarkdownRenderer = ({ content = '' }) => {
       return <a {...props} />;
     },
     gobench: () => <GoBench />,
+    goplay: () => <GoPlay />,
   };
 
   const markdownSchema = {
     ...defaultSchema,
-    tagNames: [...(defaultSchema.tagNames || []), 'gobench'],
+    tagNames: [...(defaultSchema.tagNames || []), 'gobench', 'goplay'],
     attributes: {
       ...defaultSchema.attributes,
       code: [
