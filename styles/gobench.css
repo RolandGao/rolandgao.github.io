@@ -391,6 +391,15 @@
   border-left: 1px solid var(--gobench-line);
 }
 
+.gobench-chart-grid.is-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gobench-chart-grid.is-single .gobench-chart-canvas {
+  width: min(100%, 720px);
+  margin: 0 auto;
+}
+
 .gobench-chart-panel {
   min-width: 0;
   border-right: 1px solid var(--gobench-line);
@@ -452,6 +461,15 @@
   stroke: #687789;
   stroke-width: 1.5;
   stroke-dasharray: 7 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.gobench-chart-series {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.25;
+  opacity: 0.8;
   vector-effect: non-scaling-stroke;
 }
 
@@ -558,6 +576,13 @@
   background: #9aa3ad;
 }
 
+.gobench-legend-line {
+  width: 22px;
+  height: 3px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+}
+
 @media (min-width: 881px) {
   .gobench-legend-item:last-child:nth-child(3n + 1) {
     grid-column: 1 / -1;
@@ -565,6 +590,16 @@
 
   .gobench-legend-item:last-child:nth-child(3n + 2) {
     grid-column: span 2;
+  }
+}
+
+@media (min-width: 1081px) {
+  .gobench-chart-legend.is-harness {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .gobench-chart-legend.is-harness .gobench-legend-item:last-child {
+    grid-column: auto;
   }
 }
 

@@ -2,7 +2,8 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import ProviderLogo, { getProvider } from './ProviderLogo';
 
-const DATA_URL = '/data/gobench_data/paper_results2.json';
+const DATA_URL = '/data/gobench_data/paper_results.json';
+const API_PLAYER_SUFFIX = '-api';
 const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
 const CHART_COLORS = {
   anthropic: '#9b4f32',
@@ -14,6 +15,14 @@ const CHART_COLORS = {
   xai: '#272727',
   unknown: '#767676',
 };
+const HARNESS_PRESENTATION = {
+  api: { label: 'API', color: '#272727' },
+  'codex-multi': { label: 'Codex multi-agent', color: '#6754d9' },
+  'codex-workspace': { label: 'Codex workspace', color: '#109b78' },
+  'codex-workspace-continual': { label: 'Codex workspace · Continual', color: '#d06f32' },
+};
+const HARNESS_ORDER = Object.keys(HARNESS_PRESENTATION);
+const REASONING_ORDER = { low: 0, high: 1, max: 2 };
 
 const PLAYER_PRESENTATION = {
   'opus-5-high': { label: 'Claude Opus 5', tier: 'High' },
@@ -34,10 +43,43 @@ const PLAYER_PRESENTATION = {
   'gemini-3.6-flash-high': { label: 'Gemini 3.6 Flash', tier: 'High' },
 };
 
-const getPlayerPresentation = player => PLAYER_PRESENTATION[player] || {
-  label: player,
-  tier: null,
+const getApiPlayerBaseName = player => player.endsWith(API_PLAYER_SUFFIX)
+  ? player.slice(0, -API_PLAYER_SUFFIX.length)
+  : player;
+
+const isApiPlayer = player => typeof player === 'string' && player.endsWith(API_PLAYER_SUFFIX);
+
+const getHarnessPlayerDetails = player => {
+  const match = player.match(/^gpt5\.6-sol-(low|high|max)-(.+)$/);
+
+  if (!match || !HARNESS_PRESENTATION[match[2]]) {
+    return null;
+  }
+
+  return {
+    reasoning: match[1],
+    harness: match[2],
+  };
 };
+
+const getPlayerPresentation = player => {
+  const baseName = getApiPlayerBaseName(player);
+
+  return PLAYER_PRESENTATION[baseName] || {
+    label: baseName,
+    tier: null,
+  };
+};
+
+const filterApiData = data => ({
+  ...data,
+  datasets: {
+    ...data.datasets,
+    llm_players: data.datasets.llm_players.filter(player => isApiPlayer(player.player)),
+    llm_vs_katago_games: data.datasets.llm_vs_katago_games.filter(game =>
+      isApiPlayer(game.llm_player)),
+  },
+});
 
 const formatPlayerDisplayName = player => {
   const presentation = getPlayerPresentation(player);
@@ -419,19 +461,23 @@ const ChartPanel = ({
   xDomain,
   xTicks,
   referenceElo,
+  displayNames,
+  pointColors,
+  series = [],
+  yDomain = [0, 4600],
+  yTicks = [0, 1000, 2000, 3000, 4000],
 }) => {
   const width = 560;
   const height = 390;
   const margin = { top: 45, right: 22, bottom: 60, left: 96 };
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
-  const yTicks = [0, 1000, 2000, 3000, 4000];
   const [hovered, setHovered] = useState(null);
 
   const xPosition = value =>
     logScale(value, xDomain[0], xDomain[1], margin.left, margin.left + plotWidth);
   const yPosition = value =>
-    linearScale(value, 0, 4600, margin.top + plotHeight, margin.top);
+    linearScale(value, yDomain[0], yDomain[1], margin.top + plotHeight, margin.top);
 
   const showPoint = (point, displayName) => {
     const x = xPosition(point.cost_usd_per_move);
@@ -510,6 +556,16 @@ const ChartPanel = ({
             y2={margin.top + plotHeight}
           />
 
+          {series.map(item => (
+            <polyline
+              key={item.key}
+              className="gobench-chart-series"
+              points={item.points.map(point =>
+                xPosition(point.cost_usd_per_move) + ',' + yPosition(point.elo)).join(' ')}
+              stroke={item.color}
+            />
+          ))}
+
           {referenceElo ? (
             <g>
               <line
@@ -531,13 +587,14 @@ const ChartPanel = ({
 
           {points.map(point => {
             const isLlm = llmNames.has(point.player);
-            const displayName = isLlm
+            const displayName = displayNames?.get(point.player) || (isLlm
               ? formatPlayerDisplayName(point.player)
-              : referenceNames.get(point.player) || 'KataGo';
+              : referenceNames.get(point.player) || 'KataGo');
             const x = xPosition(point.cost_usd_per_move);
             const y = yPosition(point.elo);
             const error = isLlm ? point.elo_ci_95 : null;
-            const color = isLlm ? getChartColor(point.player) : '#9aa3ad';
+            const color = pointColors?.get(point.player) ||
+              (isLlm ? getChartColor(point.player) : '#9aa3ad');
 
             return (
               <g key={point.player}>
@@ -611,7 +668,9 @@ const CostChart = ({ data }) => {
     ),
     [data.table_2.katago_reference_players],
   );
-  const referenceElo = data.figure_2.panels[1].katago_reference_line.elo;
+  const referenceElo = Math.max(
+    ...data.table_2.katago_reference_players.map(player => player.elo),
+  );
   const llmCostDomain = useMemo(() => {
     const costs = llmPlayers
       .map(player => player.cost_usd_per_move)
@@ -678,6 +737,101 @@ const CostChart = ({ data }) => {
           </div>
         ))}
       </div>
+    </section>
+  );
+};
+
+const AgenticHarnessChart = ({ data }) => {
+  const chartData = useMemo(() => {
+    const groupedPlayers = new Map(HARNESS_ORDER.map(harness => [harness, []]));
+
+    data.datasets.sol_harness_players.forEach(player => {
+      const details = getHarnessPlayerDetails(player.player);
+      if (details) {
+        groupedPlayers.get(details.harness).push({ ...player, ...details });
+      }
+    });
+
+    const series = HARNESS_ORDER.map(harness => {
+      const presentation = HARNESS_PRESENTATION[harness];
+      return {
+        key: harness,
+        label: presentation.label,
+        color: presentation.color,
+        points: groupedPlayers.get(harness)
+          .sort((left, right) => REASONING_ORDER[left.reasoning] - REASONING_ORDER[right.reasoning]),
+      };
+    }).filter(item => item.points.length);
+    const points = series.flatMap(item => item.points);
+    const pointColors = new Map();
+    const displayNames = new Map();
+
+    series.forEach(item => {
+      item.points.forEach(point => {
+        pointColors.set(point.player, item.color);
+        displayNames.set(
+          point.player,
+          'GPT-5.6 Sol · ' +
+            point.reasoning[0].toUpperCase() + point.reasoning.slice(1) +
+            ' · ' + item.label,
+        );
+      });
+    });
+
+    return {
+      series,
+      points,
+      pointColors,
+      displayNames,
+      playerNames: new Set(points.map(player => player.player)),
+    };
+  }, [data.datasets.sol_harness_players]);
+
+  if (!chartData.points.length) {
+    return null;
+  }
+
+  return (
+    <section className="gobench-section" aria-labelledby="gobench-harness-chart-heading">
+      <div className="gobench-section-header">
+        <div>
+          <h2 id="gobench-harness-chart-heading">GPT-5.6 API and agentic harness cost per move vs. Elo</h2>
+        </div>
+      </div>
+
+      <div className="gobench-chart-grid is-single">
+        <ChartPanel
+          title="GPT-5.6 Sol · API and agentic harnesses"
+          points={chartData.points}
+          llmNames={chartData.playerNames}
+          referenceNames={new Map()}
+          displayNames={chartData.displayNames}
+          pointColors={chartData.pointColors}
+          series={chartData.series}
+          xDomain={[0.02, 0.5]}
+          xTicks={[
+            { value: 0.02, label: '$0.02' },
+            { value: 0.05, label: '$0.05' },
+            { value: 0.1, label: '$0.10' },
+            { value: 0.2, label: '$0.20' },
+            { value: 0.5, label: '$0.50' },
+          ]}
+          yDomain={[750, 2500]}
+          yTicks={[1000, 1500, 2000, 2500]}
+        />
+      </div>
+
+      <div className="gobench-chart-legend is-harness" aria-label="API and agentic harness chart legend">
+        {chartData.series.map(item => (
+          <div className="gobench-legend-item" key={item.key}>
+            <span className="gobench-legend-line" style={{ backgroundColor: item.color }} />
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+      <p className="gobench-caption">
+        Each line connects the available reasoning-effort runs from left to right: low, high, then max. The API series stops at high.
+      </p>
     </section>
   );
 };
@@ -1176,7 +1330,7 @@ const GameReplayer = ({ data }) => {
         </div>
       </div>
       <p className="gobench-caption">
-        {formatInteger(data.games.count)} games · {data.games.board_size}×{data.games.board_size} board · {data.games.rules} rules · {data.games.komi} komi
+        {formatInteger(games.length)} games · {data.games.board_size}×{data.games.board_size} board · {data.games.rules} rules · {data.games.komi} komi
       </p>
     </section>
   );
@@ -1203,7 +1357,7 @@ const GoBench = () => {
         }
         return response.json();
       })
-      .then(setData)
+      .then(result => setData(filterApiData(result)))
       .catch(fetchError => {
         if (fetchError.name !== 'AbortError') {
           setError(fetchError.message);
@@ -1225,6 +1379,7 @@ const GoBench = () => {
     <div className="gobench-root">
       <Leaderboard data={data} />
       <CostChart data={data} />
+      <AgenticHarnessChart data={data} />
       <GameReplayer data={data} />
     </div>
   );
