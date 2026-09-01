@@ -47,15 +47,16 @@ const sampleMove = (legalMoves, temperature) => {
   return candidates[candidates.length - 1].move;
 };
 
-const readWinrate = toPlay => {
+const readPlayerValue = () => {
   const valueIndex = valuePointer >> 2;
   const logits = [0, 1, 2].map(offset => moduleInstance.HEAPF32[valueIndex + offset]);
   const maxLogit = Math.max(...logits);
   const probabilities = logits.map(logit => Math.exp(logit - maxLogit));
   const total = probabilities.reduce((sum, probability) => sum + probability, 0);
-  const whiteUtility = (probabilities[0] - probabilities[1]) / total;
-  const playerUtility = toPlay === 2 ? whiteUtility : -whiteUtility;
-  return (playerUtility + 1) / 2;
+  // The direct evaluator returns raw win/loss/no-result logits from the
+  // perspective of the player to move. Unlike NNEvaluator, it has not yet
+  // converted them to White's perspective.
+  return (probabilities[0] - probabilities[1]) / total;
 };
 
 const postProgress = (loaded, total) => {
@@ -185,10 +186,12 @@ const generateMove = async ({
   }
 
   const temperature = moveTemperature(moves.length, temperatureTarget);
+  const value = readPlayerValue();
 
   return {
     move: sampleMove(legalMoves, temperature),
-    winrate: readWinrate(toPlay),
+    value,
+    winrate: (value + 1) / 2,
     visits: 1,
     temperature,
   };

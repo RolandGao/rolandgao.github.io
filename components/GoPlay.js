@@ -9,6 +9,13 @@ const NUM_VISITS = 1;
 const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
 const DEFAULT_ELO = 1523;
 const TEMPERATURE_SUFFIX = /-temp-(\d+(?:\.\d+)?)$/;
+const HISTORY_STORAGE_KEY = 'goplay.game-history.v1';
+const RATING_PRIOR_MEAN = 1000;
+const RATING_PRIOR_STANDARD_DEVIATION = 2000;
+const ELO_LOGISTIC_SCALE = Math.log(10) / 400;
+const CONFIDENCE_95_Z_SCORE = 1.96;
+const KATAGO_RESIGN_VALUE = -0.95;
+const KATAGO_RESIGN_TURNS = 3;
 
 const emptyBoard = () => new Array(BOARD_SIZE * BOARD_SIZE).fill(0);
 const boardSignature = board => board.join('');
@@ -143,20 +150,106 @@ const scoreBoard = board => {
   return { black, white };
 };
 
-const formatResult = board => {
+const scoreGame = board => {
   const score = scoreBoard(board);
   const difference = Math.abs(score.black - score.white);
 
   if (difference === 0) {
-    return `Draw · ${score.black}–${score.white}`;
+    return {
+      blackScore: score.black,
+      whiteScore: score.white,
+      label: `Draw · ${score.black}–${score.white}`,
+      margin: 0,
+      reason: 'score',
+      winnerColor: null,
+    };
   }
 
-  const winner = score.black > score.white ? 'Black' : 'White';
-  return `${winner} wins by ${difference} · ${score.black}–${score.white}`;
+  const winnerColor = score.black > score.white ? 1 : 2;
+  return {
+    blackScore: score.black,
+    whiteScore: score.white,
+    label: `${colorName(winnerColor)} wins by ${difference} · ${score.black}–${score.white}`,
+    margin: difference,
+    reason: 'score',
+    winnerColor,
+  };
 };
 
 const formatElo = value =>
   new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
+
+const formatHistoryDate = value => new Intl.DateTimeFormat('en-US', {
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  month: 'short',
+  year: 'numeric',
+}).format(new Date(value));
+
+const createGameId = () => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+};
+
+const gameScoreForRating = game => {
+  if (game?.result?.outcome === 'win') return 1;
+  if (game?.result?.outcome === 'loss') return 0;
+  if (game?.result?.outcome === 'draw') return 0.5;
+  return null;
+};
+
+const bradleyTerryWinProbability = (rating, opponentElo) => {
+  const exponent = ELO_LOGISTIC_SCALE * (rating - opponentElo);
+  const exponential = Math.exp(exponent >= 0 ? -exponent : exponent);
+  return exponent >= 0
+    ? 1 / (1 + exponential)
+    : exponential / (1 + exponential);
+};
+
+const estimatePlayerElo = games => {
+  const ratedGames = games.filter(game => (
+    Number.isFinite(game?.opponent?.elo) && gameScoreForRating(game) !== null
+  ));
+  const priorVariance = RATING_PRIOR_STANDARD_DEVIATION ** 2;
+  const ratingGradient = rating => {
+    let gradient = -(rating - RATING_PRIOR_MEAN) / priorVariance;
+    ratedGames.forEach(game => {
+      const winProbability = bradleyTerryWinProbability(rating, game.opponent.elo);
+      gradient += ELO_LOGISTIC_SCALE * (gameScoreForRating(game) - winProbability);
+    });
+    return gradient;
+  };
+
+  let lower = RATING_PRIOR_MEAN - 4000;
+  let upper = RATING_PRIOR_MEAN + 4000;
+  while (ratingGradient(lower) < 0) lower -= 4000;
+  while (ratingGradient(upper) > 0) upper += 4000;
+
+  for (let iteration = 0; iteration < 80; iteration += 1) {
+    const midpoint = (lower + upper) / 2;
+    if (ratingGradient(midpoint) > 0) {
+      lower = midpoint;
+    } else {
+      upper = midpoint;
+    }
+  }
+  const rating = (lower + upper) / 2;
+
+  let precision = 1 / priorVariance;
+  ratedGames.forEach(game => {
+    const winProbability = bradleyTerryWinProbability(rating, game.opponent.elo);
+    precision += (ELO_LOGISTIC_SCALE ** 2) * winProbability * (1 - winProbability);
+  });
+
+  return {
+    games: ratedGames.length,
+    rating,
+    standardDeviation: Math.sqrt(1 / precision),
+  };
+};
 
 const basePlayerName = player => player.replace(TEMPERATURE_SUFFIX, '');
 
@@ -388,11 +481,19 @@ const GoPlay = () => {
   const [result, setResult] = useState('');
   const [thinking, setThinking] = useState(false);
   const [moveError, setMoveError] = useState('');
+  const [gameHistory, setGameHistory] = useState([]);
+  const [historyReady, setHistoryReady] = useState(false);
+  const [historyError, setHistoryError] = useState('');
   const engineRef = useRef(null);
   const thinkingRef = useRef(false);
   const gameTokenRef = useRef(0);
+  const completedGameIdRef = useRef(null);
+  const katagoLosingTurnsRef = useRef(0);
   const selectedModel = basePlayerName(selectedPlayer);
   const selectedTemperatureTarget = temperatureTarget(selectedPlayer);
+
+  const ratingEstimate = useMemo(() => estimatePlayerElo(gameHistory), [gameHistory]);
+  const ratingConfidenceInterval = CONFIDENCE_95_Z_SCORE * ratingEstimate.standardDeviation;
 
   const lastHumanMoveIndex = useMemo(() => {
     for (let index = moves.length - 1; index >= 0; index -= 1) {
@@ -403,6 +504,8 @@ const GoPlay = () => {
 
   const resetGame = useCallback(() => {
     gameTokenRef.current += 1;
+    completedGameIdRef.current = null;
+    katagoLosingTurnsRef.current = 0;
     thinkingRef.current = false;
     setThinking(false);
     setBoard(emptyBoard());
@@ -416,11 +519,98 @@ const GoPlay = () => {
     setMoveError('');
   }, []);
 
+  useEffect(() => {
+    try {
+      const savedHistory = window.localStorage.getItem(HISTORY_STORAGE_KEY);
+      if (savedHistory) {
+        const parsedHistory = JSON.parse(savedHistory);
+        if (!Array.isArray(parsedHistory)) throw new Error('saved data is not a game list');
+        setGameHistory(currentHistory => {
+          const currentIds = new Set(currentHistory.map(game => game.id));
+          return [
+            ...currentHistory,
+            ...parsedHistory.filter(game => (
+              game && typeof game.id === 'string' && !currentIds.has(game.id)
+            )),
+          ];
+        });
+      }
+    } catch (error) {
+      setHistoryError(`Saved game history could not be read: ${error.message}`);
+    } finally {
+      setHistoryReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!historyReady) return;
+    try {
+      window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(gameHistory));
+      setHistoryError('');
+    } catch (error) {
+      setHistoryError(`Game history could not be saved: ${error.message}`);
+    }
+  }, [gameHistory, historyReady]);
+
+  const recordCompletedGame = useCallback((details, completedMoves) => {
+    const opponent = opponents.find(player => player.player === selectedPlayer);
+    if (!opponent) return;
+
+    const id = createGameId();
+    const outcome = details.winnerColor === null
+      ? 'draw'
+      : details.winnerColor === humanColor ? 'win' : 'loss';
+    const completedAt = new Date().toISOString();
+    const game = {
+      id,
+      completedAt,
+      boardSize: BOARD_SIZE,
+      rules: 'Tromp–Taylor area scoring',
+      komi: KOMI,
+      humanColor: colorName(humanColor).toLowerCase(),
+      opponent: {
+        player: opponent.player,
+        elo: opponent.elo,
+        temperatureTarget: selectedTemperatureTarget,
+      },
+      result: {
+        outcome,
+        winner: details.winnerColor === null
+          ? null
+          : colorName(details.winnerColor).toLowerCase(),
+        reason: details.reason,
+        label: details.label,
+        margin: details.margin ?? null,
+        blackScore: details.blackScore ?? null,
+        whiteScore: details.whiteScore ?? null,
+        resignedBy: details.resignedBy ?? null,
+      },
+      moves: completedMoves.map((move, index) => ({
+        number: index + 1,
+        color: colorName(move.col).toLowerCase(),
+        location: move.loc,
+        coordinate: toCoordinate(move.loc),
+      })),
+    };
+
+    completedGameIdRef.current = id;
+    setGameHistory(currentHistory => [game, ...currentHistory]);
+  }, [humanColor, opponents, selectedPlayer, selectedTemperatureTarget]);
+
   const undoLastTurn = useCallback(() => {
     gameTokenRef.current += 1;
     thinkingRef.current = false;
+    katagoLosingTurnsRef.current = 0;
     setThinking(false);
     setMoveError('');
+
+    if (gameState === 'finished' && completedGameIdRef.current) {
+      const completedGameId = completedGameIdRef.current;
+      completedGameIdRef.current = null;
+      setGameHistory(currentHistory => (
+        currentHistory.filter(game => game.id !== completedGameId)
+      ));
+    }
 
     if (gameState === 'finished' && result.includes('resignation')) {
       setGameState('playing');
@@ -542,14 +732,16 @@ const GoPlay = () => {
     setMoveError('');
 
     if (nextPasses >= 2) {
+      const details = scoreGame(played.board);
       setGameState('finished');
-      setResult(formatResult(played.board));
+      setResult(details.label);
+      recordCompletedGame(details, nextMoves);
     } else {
       setToPlay(otherColor(color));
     }
 
     return true;
-  }, [board, consecutivePasses, moves, positionHistory]);
+  }, [board, consecutivePasses, moves, positionHistory, recordCompletedGame]);
 
   useEffect(() => {
     if (
@@ -578,6 +770,26 @@ const GoPlay = () => {
       temperatureTarget: selectedTemperatureTarget,
     }).then(response => {
       if (gameTokenRef.current !== gameToken) return;
+
+      if (Number.isFinite(response.value) && response.value < KATAGO_RESIGN_VALUE) {
+        katagoLosingTurnsRef.current += 1;
+      } else {
+        katagoLosingTurnsRef.current = 0;
+      }
+
+      if (katagoLosingTurnsRef.current >= KATAGO_RESIGN_TURNS) {
+        const details = {
+          winnerColor: humanColor,
+          reason: 'resignation',
+          resignedBy: 'katago',
+          label: `${colorName(humanColor)} wins · KataGo resigns`,
+        };
+        setGameState('finished');
+        setResult(details.label);
+        recordCompletedGame(details, moves);
+        return;
+      }
+
       commitMove(response.move, toPlay);
     }).catch(error => {
       if (gameTokenRef.current === gameToken) {
@@ -599,12 +811,62 @@ const GoPlay = () => {
     humanColor,
     moves,
     positionHistory,
+    recordCompletedGame,
     selectedTemperatureTarget,
     toPlay,
   ]);
 
   const isHumanTurn = gameState === 'playing' && toPlay === humanColor;
   const boardDisabled = engineState.status !== 'ready' || thinking || !isHumanTurn;
+
+  const downloadGameHistory = useCallback(() => {
+    const exportData = {
+      schemaVersion: 1,
+      exportedAt: new Date().toISOString(),
+      game: 'GoPlay',
+      ratingModel: {
+        model: 'Bradley–Terry',
+        eloScale: 400,
+        prior: {
+          distribution: 'normal',
+          mean: RATING_PRIOR_MEAN,
+          standardDeviation: RATING_PRIOR_STANDARD_DEVIATION,
+        },
+        estimate: {
+          method: 'maximum a posteriori',
+          elo: ratingEstimate.rating,
+          approximatePosteriorStandardDeviation: ratingEstimate.standardDeviation,
+          approximate95PercentConfidenceInterval: {
+            plusOrMinus: ratingConfidenceInterval,
+            lower: ratingEstimate.rating - ratingConfidenceInterval,
+            upper: ratingEstimate.rating + ratingConfidenceInterval,
+          },
+          games: ratingEstimate.games,
+        },
+      },
+      games: gameHistory,
+    };
+    const blob = new Blob([`${JSON.stringify(exportData, null, 2)}\n`], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `goplay-games-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  }, [gameHistory, ratingConfidenceInterval, ratingEstimate]);
+
+  const deleteHistoryGame = useCallback(gameId => {
+    if (completedGameIdRef.current === gameId) {
+      completedGameIdRef.current = null;
+    }
+    setGameHistory(currentHistory => (
+      currentHistory.filter(game => game.id !== gameId)
+    ));
+  }, []);
 
   const statusText = (() => {
     if (engineState.status === 'loading') {
@@ -632,14 +894,7 @@ const GoPlay = () => {
   }
 
   return (
-    <section className="goplay-root" aria-labelledby="goplay-heading">
-      <div className="goplay-heading-row">
-        <div>
-          <h2 id="goplay-heading">Play KataGo</h2>
-          <p>9×9 · Tromp–Taylor area scoring · 7 komi</p>
-        </div>
-      </div>
-
+    <section className="goplay-root" aria-label="Play 9 by 9 Go against KataGo">
       <div className="goplay-game">
         <div className="goplay-board-shell">
           <GoBoard
@@ -729,9 +984,17 @@ const GoPlay = () => {
               type="button"
               disabled={!isHumanTurn || thinking || gameState !== 'playing'}
               onClick={() => {
+                const winnerColor = otherColor(humanColor);
+                const details = {
+                  winnerColor,
+                  reason: 'resignation',
+                  resignedBy: 'human',
+                  label: `${colorName(winnerColor)} wins by resignation`,
+                };
                 gameTokenRef.current += 1;
                 setGameState('finished');
-                setResult(`${colorName(otherColor(humanColor))} wins by resignation`);
+                setResult(details.label);
+                recordCompletedGame(details, moves);
               }}
             >
               Resign
@@ -754,6 +1017,94 @@ const GoPlay = () => {
         </aside>
       </div>
 
+      <section className="goplay-history" aria-labelledby="goplay-history-heading">
+        <header className="goplay-history-header">
+          <div>
+            <h3 id="goplay-history-heading">Past games</h3>
+            <p>Saved in this browser.</p>
+          </div>
+          <div className="goplay-history-actions">
+            <button
+              type="button"
+              disabled={!gameHistory.length}
+              onClick={downloadGameHistory}
+            >
+              Download JSON
+            </button>
+            <button
+              type="button"
+              className="is-danger"
+              disabled={!gameHistory.length}
+              onClick={() => {
+                if (!window.confirm('Clear all saved GoPlay games from this browser?')) return;
+                completedGameIdRef.current = null;
+                setGameHistory([]);
+              }}
+            >
+              Clear games
+            </button>
+          </div>
+        </header>
+
+        <div className="goplay-history-summary">
+          <div className="goplay-estimated-elo">
+            <span>Your estimated Elo</span>
+            <strong aria-label={`${formatElo(ratingEstimate.rating)} plus or minus ${formatElo(ratingConfidenceInterval)} Elo at 95 percent confidence`}>
+              {formatElo(ratingEstimate.rating)}
+              <span>± {formatElo(ratingConfidenceInterval)}</span>
+            </strong>
+          </div>
+        </div>
+
+        {historyError ? <p className="goplay-inline-error">{historyError}</p> : null}
+
+        {gameHistory.length ? (
+          <div className="goplay-history-table-wrap">
+            <table className="goplay-history-table">
+              <thead>
+                <tr>
+                  <th scope="col">Completed</th>
+                  <th scope="col">Opponent</th>
+                  <th scope="col">You</th>
+                  <th scope="col">Result</th>
+                  <th scope="col" className="goplay-history-action-cell">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gameHistory.map(game => (
+                  <tr key={game.id}>
+                    <td title={game.completedAt}>{formatHistoryDate(game.completedAt)}</td>
+                    <td>{formatElo(game.opponent.elo)} Elo</td>
+                    <td>{game.humanColor === 'black' ? 'Black' : 'White'}</td>
+                    <td>
+                      <span className="goplay-history-result">
+                        <strong className={`is-${game.result.outcome}`}>
+                          {game.result.outcome === 'win'
+                            ? 'Win'
+                            : game.result.outcome === 'loss' ? 'Loss' : 'Draw'}
+                        </strong>
+                        <span>{game.result.label}</span>
+                      </span>
+                    </td>
+                    <td className="goplay-history-action-cell">
+                      <button
+                        type="button"
+                        className="goplay-history-delete"
+                        aria-label={`Delete game against ${formatElo(game.opponent.elo)} Elo from ${formatHistoryDate(game.completedAt)}`}
+                        onClick={() => deleteHistoryGame(game.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="goplay-history-empty">Completed games will appear here.</p>
+        )}
+      </section>
     </section>
   );
 };
