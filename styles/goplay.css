@@ -219,7 +219,17 @@
 }
 
 .goplay-color-picker button:disabled,
-.goplay-actions button:disabled,
+.goplay-actions button:disabled {
+  cursor: not-allowed;
+}
+
+.goplay-field select:disabled {
+  color: var(--goplay-ink);
+  cursor: not-allowed;
+  opacity: 1;
+  -webkit-text-fill-color: var(--goplay-ink);
+}
+
 .goplay-history-header button:disabled {
   cursor: not-allowed;
   opacity: 0.45;

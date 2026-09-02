@@ -874,15 +874,11 @@ const GoPlay = () => {
       return `Loading selected model${percentage ? ` · ${percentage}%` : '…'}`;
     }
     if (engineState.status === 'error') return 'Engine failed to load';
-    if (gameState !== 'playing') return result;
-    if (thinking) return 'KataGo is choosing a move…';
-    return 'Waiting for KataGo…';
+    return result;
   })();
   const showStatus = (
     engineState.status !== 'ready' ||
-    gameState !== 'playing' ||
-    thinking ||
-    !isHumanTurn
+    gameState !== 'playing'
   );
 
   if (dataError) {
