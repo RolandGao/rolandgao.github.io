@@ -283,6 +283,22 @@ const getLegalMoves = (board, color, positionHistory) => {
   return legalMoves;
 };
 
+const getKataGoLegalMoves = (board, color, positionHistory) => {
+  const legalMoves = getLegalMoves(board, color, positionHistory);
+  const pointMoves = legalMoves.filter(location => location >= 0);
+  const score = scoreBoard(board);
+  const winsIfGameEnds = color === 1
+    ? score.black > score.white
+    : score.white > score.black;
+
+  // A raw policy evaluation can prefer pass based on the position it expects
+  // after cleanup. Under strict Tromp–Taylor, however, the opponent can answer
+  // with pass and make the current board the final position. Do not offer pass
+  // to KataGo when that exact score would not be a win. Keep it only when no
+  // point move is legal, so the engine can still finish a completely full game.
+  return winsIfGameEnds || pointMoves.length === 0 ? legalMoves : pointMoves;
+};
+
 const replayMoves = moves => {
   let board = emptyBoard();
   const positionHistory = new Set([boardSignature(board)]);
@@ -766,7 +782,7 @@ const GoPlay = () => {
       toPlay,
       komi: KOMI,
       numVisits: NUM_VISITS,
-      legalMoves: getLegalMoves(board, toPlay, positionHistory),
+      legalMoves: getKataGoLegalMoves(board, toPlay, positionHistory),
       temperatureTarget: selectedTemperatureTarget,
     }).then(response => {
       if (gameTokenRef.current !== gameToken) return;
