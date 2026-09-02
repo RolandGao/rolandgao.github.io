@@ -45,7 +45,8 @@
 
 .goplay-board {
   display: block;
-  width: 100%;
+  width: min(100%, max(280px, calc(100vh - 100px)));
+  width: min(100%, max(280px, calc(100dvh - 100px)));
   max-width: 680px;
   height: auto;
   overflow: visible;
@@ -656,6 +657,11 @@
     grid-row: 2;
   }
 
+  .goplay-board {
+    width: min(100%, max(220px, calc(100vh - 240px)));
+    width: min(100%, max(220px, calc(100dvh - 240px)));
+  }
+
   .goplay-controls {
     grid-row: 3;
     padding-top: clamp(20px, 3vw, 30px);
@@ -701,6 +707,25 @@
     min-width: 610px;
   }
 
+}
+
+@media (max-width: 900px) and (max-height: 500px) {
+  .goplay-board-shell {
+    padding: 4px;
+  }
+
+  .goplay-board {
+    width: min(100%, max(160px, calc(100vh - 90px)));
+    width: min(100%, max(160px, calc(100dvh - 90px)));
+  }
+
+  .goplay-controls {
+    padding: 10px 15px;
+  }
+
+  .goplay-moves {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
