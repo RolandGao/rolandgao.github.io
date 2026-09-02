@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-const BASE_DATA_URL = '/data/gobench_data/paper_results2.json';
+const BASE_DATA_URL = '/data/gobench_data/paper_results.json';
 const SUPPLEMENT_DATA_URL = '/data/goplay_players.json';
 const ENGINE_WORKER_URL = '/goplay/kata-worker.js';
 const BOARD_SIZE = 9;

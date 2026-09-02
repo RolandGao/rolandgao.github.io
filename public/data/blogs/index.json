@@ -1,6 +1,15 @@
 {
-  "generatedAt": "2026-07-10T17:37:52Z",
+  "generatedAt": "2026-09-02T05:26:09Z",
   "posts": [
+    {
+      "id": "goplay",
+      "title": "GoPlay",
+      "path": "/blog/goplay/",
+      "date": "2026-09-01",
+      "dateDisplay": "September 1, 2026",
+      "updated": "2026-09-01",
+      "description": "Play 9×9 Go in your browser against calibrated KataGo opponents."
+    },
     {
       "id": "relu_networks",
       "title": "ReLU Networks",
