@@ -9,11 +9,11 @@ It is plausible that repeated COVID infections can reduce one's lifespan and hea
 We can track the prevalence of COVID by [measuring wastewater data](https://www.cdc.gov/wastewater/respiratory-viruses/national.html?cove-tab=1).
 
 
-<img src="/data/images/covid3.png" width="400" alt="image3">
+<img src="/data/images/covid3.png" width="400" alt="National wastewater viral activity from May 2022 to January 2026, showing recurring peaks">
 
 Aggregating across the years and removing the Jan 2022 peak (outlier) yields the following graph:
 
-<img src="/data/images/covid4.png" width="400" alt="image4">
+<img src="/data/images/covid4.png" width="400" alt="Seasonal national wastewater viral activity by week, with winter and late-summer peaks">
 
 The following two periods have prevalence over 20:
 1. Nov 25 to Feb 18.
@@ -23,7 +23,7 @@ Therefore, be extra careful during those periods.
 
 ## How COVID is spread
 
-To contract COVID, one needs to inhale around [100 to 1,000 viral particles](https://www.google.com/search?q=https://pmc.ncbi.nlm.nih.gov/articles/PMC8082124/%23:~:text%3DAerosol%2520transmission%2520seemed%2520to%2520raise,small%252C%2520perhaps%2520about%2520100%2520particles.). If a contagious person is:
+To contract COVID, one needs to inhale around [100 to 1,000 viral particles](https://pmc.ncbi.nlm.nih.gov/articles/PMC8082124/). If a contagious person is:
 
 1. Physically close to you,
 2. Coughing or shouting

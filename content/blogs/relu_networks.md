@@ -4,7 +4,7 @@ It's hard to understand what exactly the network is doing, or why it works. A ne
 
 To resolve this conflict in my understanding of neural networks, I went on a journey to understand them a bit more.
 
-# ReLU networks can sort the input
+## ReLU networks can sort the input
 
 Sorting is a highly nonlinear function, but it's possible for a neural network to sort the input.
 
@@ -25,27 +25,27 @@ We can easily extend this to 3 dims, where we use $\max(\max(a,b),c)$ to compute
 
 In general, such a network is called a [sorting network](https://en.wikipedia.org/wiki/Sorting_network). We can naively use a $O(n^2)$ algorithm such as bubble sort, where we find the max among all elements, and then find the max among the remaining elements, and so on. There are also specialized algorithms such as bitonic sort, with $O(n\log^2(n))$ runtime complexity.
 
-# ReLU networks can produce common shapes
+## ReLU networks can produce common shapes
 
 We've seen how ReLU can be used to compute $\max(a,b)$, but how about $\text{clip}(x,a,b) = \min(b, \max(a,x))$? We can chain two ReLUs, but we can also use two ReLUs in parallel as follows:
 
 $$\text{ReLU}(x-a) + a - \text{ReLU}(x-b)$$
 
-<img src="/data/images/relu1.png" width="400" alt="relu1">
+<img src="/data/images/relu1.png" width="400" alt="Graph of a clipped linear function rising between two flat segments">
 
 With two clip functions in parallel, we can create shapes like buckets and triangles.
 
-<img src="/data/images/relu2.png" width="400" alt="relu2">
+<img src="/data/images/relu2.png" width="400" alt="ReLU combinations forming a peak, a bucket, and an inverted bucket">
 
 We can also increase the slope inside the clip to create an approximation to the discontinuous function $\text{Indicator}(x \ge 0)$.
 
-<img src="/data/images/relu3.png" width="400" alt="relu3">
+<img src="/data/images/relu3.png" width="400" alt="A steep clipped ReLU approximation to a step function">
 
 To create crazier shapes, check out this [Jane Street blog](https://blog.janestreet.com/visualizing-piecewise-linear-neural-networks/) where they used ReLU networks to create their logo.
 
-# LeakyReLU and the zero gradient problem
+## LeakyReLU and the zero gradient problem
 
-<img src="/data/images/relu4.png" width="400" alt="relu4">
+<img src="/data/images/relu4.png" width="400" alt="Leaky ReLU with a shallow negative slope and a steeper positive slope">
 
 If our linear layer is a Gaussian distribution with zero mean, then about half of the elements in the output will be negative. Because of ReLU, the weights responsible for negative outputs will receive zero gradients in the backward pass. To alleviate this problem, we can use:
 

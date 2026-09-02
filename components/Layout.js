@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 const SITE_URL = 'https://rolandgao.github.io';
 const DEFAULT_DESCRIPTION =
-  'Research Engineer at Meta Superintelligence Labs focusing on Safety Alignment, adversarial training, long context, optimizers, and scalable RL.';
+  'Independent AI researcher focused on safety alignment, adversarial training, long context, optimizers, and scalable reinforcement learning. Previously a Research Engineer at Meta Superintelligence Labs.';
 const SOCIAL_IMAGE_URL = `${SITE_URL}/social-preview.png`;
 
 const ensureCanonicalPath = path => {
@@ -67,10 +67,12 @@ const Layout = ({
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={SOCIAL_IMAGE_URL} />
+        <meta property="og:image:alt" content="Roland Gao — Independent AI Researcher" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={SOCIAL_IMAGE_URL} />
+        <meta name="twitter:image:alt" content="Roland Gao — Independent AI Researcher" />
       </Head>
       <div className="layout">
         <nav>

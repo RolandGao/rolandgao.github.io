@@ -387,8 +387,8 @@
   border-bottom: 1px solid var(--goplay-line);
 }
 
-.markdown-body .goplay-history-header h3,
-.goplay-history-header h3 {
+.markdown-body .goplay-history-header h2,
+.goplay-history-header h2 {
   margin: 0;
   padding: 0;
   border: 0;

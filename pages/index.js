@@ -24,14 +24,14 @@ const HomePage = ({ content, posts }) => {
   return (
     <Layout
       title="Roland Gao"
-      description="Research Engineer at Meta Superintelligence Labs focusing on Safety Alignment, adversarial training, long context, optimizers, and scalable RL."
+      description="Independent AI researcher focused on safety alignment, adversarial training, long context, optimizers, and scalable reinforcement learning. Previously a Research Engineer at Meta Superintelligence Labs."
       canonicalPath="/"
     >
       <div className="home-page">
         <div className="profile-header">
           <Image
             src="/profile_pic.png"
-            alt="Profile"
+            alt="Roland Gao"
             width={150}
             height={150}
             className="profile-pic"
@@ -41,7 +41,7 @@ const HomePage = ({ content, posts }) => {
         <MarkdownRenderer content={content} />
         {posts.length ? (
           <section className="home-blog-section">
-            <MarkdownRenderer content="# Latest Posts" />
+            <MarkdownRenderer content="## Latest Posts" />
             <ul className="blog-list">
               {posts.map(post => (
                 <li key={post.id}>

@@ -3,8 +3,8 @@ const path = require('path');
 
 const domain = 'https://rolandgao.github.io';
 const outputPath = path.join(__dirname, '../out');
-const publicPath = path.join(__dirname, '../public');
-const blogDirectory = path.join(publicPath, 'data/blogs');
+const contentPath = path.join(__dirname, '../content');
+const blogDirectory = path.join(contentPath, 'blogs');
 const blogIndexPath = path.join(blogDirectory, 'index.json');
 
 const ensureCanonicalPath = route => {

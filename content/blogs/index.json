@@ -16,7 +16,8 @@
       "path": "/blog/relu_networks/",
       "date": "2026-03-13",
       "dateDisplay": "March 13, 2026",
-      "updated": "2026-03-13"
+      "updated": "2026-03-13",
+      "description": "An intuitive look at how linear and ReLU layers can sort inputs, construct common shapes, and avoid zero-gradient problems."
     },
     {
       "id": "finding_unsaturated_evals",
@@ -24,7 +25,8 @@
       "path": "/blog/finding_unsaturated_evals/",
       "date": "2026-02-15",
       "dateDisplay": "February 15, 2026",
-      "updated": "2026-07-30"
+      "updated": "2026-07-30",
+      "description": "A survey of unsaturated AI evaluations, independent frontier-model testing, and gaps in video-game and web-browsing benchmarks."
     },
     {
       "id": "path_to_agi",
@@ -32,7 +34,8 @@
       "path": "/blog/path_to_agi/",
       "date": "2025-06-01",
       "dateDisplay": "June 1, 2025",
-      "updated": "2025-06-01"
+      "updated": "2025-06-01",
+      "description": "A research roadmap toward AGI spanning robust optimizers, long-context video understanding, general reinforcement learning, and continuous learning."
     },
     {
       "id": "undergrads_of_top_cs_phds",
@@ -40,7 +43,8 @@
       "path": "/blog/undergrads_of_top_cs_phds/",
       "date": "2025-11-26",
       "dateDisplay": "November 26, 2025",
-      "updated": "2025-11-26"
+      "updated": "2025-11-26",
+      "description": "A 2025 analysis of the undergraduate institutions attended by Stanford computer science PhD students."
     },
     {
       "id": "covid",
@@ -48,7 +52,8 @@
       "path": "/blog/covid/",
       "date": "2026-02-04",
       "dateDisplay": "February 4, 2026",
-      "updated": "2026-02-04"
+      "updated": "2026-02-04",
+      "description": "Personal notes on COVID prevalence, transmission, prevention, vaccination, recovery, and long-term risk."
     }
   ]
 }

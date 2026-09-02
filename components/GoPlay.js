@@ -356,7 +356,7 @@ const GoBoard = ({ board, disabled, lastMove, onPlay }) => {
     <svg
       className="goplay-board"
       viewBox={`0 0 ${viewSize} ${viewSize}`}
-      role="grid"
+      role="group"
       aria-label="Interactive 9 by 9 Go board"
     >
       <defs>
@@ -443,7 +443,7 @@ const GoBoard = ({ board, disabled, lastMove, onPlay }) => {
             cx={cx}
             cy={cy}
             r={spacing * 0.42}
-            role="gridcell"
+            role="button"
             aria-label={label}
             aria-disabled={disabled}
             tabIndex={disabled ? -1 : 0}
@@ -1025,7 +1025,7 @@ const GoPlay = () => {
       <section className="goplay-history" aria-labelledby="goplay-history-heading">
         <header className="goplay-history-header">
           <div>
-            <h3 id="goplay-history-heading">Past games</h3>
+            <h2 id="goplay-history-heading">Past games</h2>
             <p>Saved in this browser.</p>
           </div>
           <div className="goplay-history-actions">
