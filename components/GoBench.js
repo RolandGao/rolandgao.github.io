@@ -17,12 +17,17 @@ const CHART_COLORS = {
 };
 const HARNESS_PRESENTATION = {
   api: { label: 'API', color: '#272727' },
-  'codex-multi': { label: 'Codex multi-agent', color: '#6754d9' },
+  'codex-multi': { label: 'Codex multi', color: '#6754d9' },
   'codex-workspace': { label: 'Codex workspace', color: '#109b78' },
-  'codex-workspace-continual': { label: 'Codex workspace · Continual', color: '#d06f32' },
+  'codex-workspace-continual': { label: 'Codex workspace continual', color: '#d06f32' },
 };
 const HARNESS_ORDER = Object.keys(HARNESS_PRESENTATION);
 const REASONING_ORDER = { low: 0, high: 1, max: 2 };
+const REASONING_PRESENTATION = {
+  low: { label: 'Low', shape: 'triangle' },
+  high: { label: 'High', shape: 'diamond' },
+  max: { label: 'Max', shape: 'pentagon' },
+};
 
 const PLAYER_PRESENTATION = {
   'opus-5-high': { label: 'Claude Opus 5', tier: 'High' },
@@ -425,13 +430,51 @@ const linearScale = (value, domainMin, domainMax, rangeMin, rangeMax) => {
   return rangeMin + ratio * (rangeMax - rangeMin);
 };
 
-const PointGlyph = ({ point, displayName, x, y, color, muted = false, onEnter, onLeave }) => {
-  const label = displayName + ', ' + formatInteger(point.elo) + ' Elo';
-  const radius = muted ? 4 : 6;
+const PointMarker = ({ shape = 'circle', color, muted = false }) => {
+  const markerProps = {
+    className: 'gobench-point-shape',
+    fill: color,
+    stroke: muted ? '#f6f5f2' : '#ffffff',
+    strokeWidth: muted ? 1 : 2,
+  };
+
+  if (shape === 'triangle') {
+    return <polygon {...markerProps} points="0,-7 6.5,5.5 -6.5,5.5" />;
+  }
+
+  if (shape === 'diamond') {
+    return <polygon {...markerProps} points="0,-7 7,0 0,7 -7,0" />;
+  }
+
+  if (shape === 'pentagon') {
+    return <polygon {...markerProps} points="0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2" />;
+  }
+
+  return <circle {...markerProps} cx="0" cy="0" r={muted ? 4 : 6} />;
+};
+
+const PointGlyph = ({
+  point,
+  displayName,
+  x,
+  y,
+  color,
+  shape = 'circle',
+  muted = false,
+  onEnter,
+  onLeave,
+}) => {
+  const confidence = Number.isFinite(point.elo_ci_95)
+    ? ' plus or minus ' + formatInteger(point.elo_ci_95)
+    : '';
+  const label =
+    displayName + ', ' + formatInteger(point.elo) + confidence +
+    ' Elo, ' + formatCost(point.cost_usd_per_move) + ' per move';
 
   return (
     <g
       className={muted ? 'gobench-chart-point is-muted' : 'gobench-chart-point'}
+      transform={'translate(' + x + ' ' + y + ')'}
       role="img"
       aria-label={label}
       tabIndex={muted ? undefined : 0}
@@ -441,14 +484,7 @@ const PointGlyph = ({ point, displayName, x, y, color, muted = false, onEnter, o
       onBlur={onLeave}
     >
       <title>{label}</title>
-      <circle
-        cx={x}
-        cy={y}
-        r={radius}
-        fill={color}
-        stroke={muted ? '#f6f5f2' : '#ffffff'}
-        strokeWidth={muted ? 1 : 2}
-      />
+      <PointMarker shape={shape} color={color} muted={muted} />
     </g>
   );
 };
@@ -463,7 +499,9 @@ const ChartPanel = ({
   referenceElo,
   displayNames,
   pointColors,
+  pointShapes,
   series = [],
+  showTitle = true,
   yDomain = [0, 4600],
   yTicks = [0, 1000, 2000, 3000, 4000],
 }) => {
@@ -493,7 +531,7 @@ const ChartPanel = ({
 
   return (
     <div className="gobench-chart-panel">
-      <div className="gobench-chart-title">{title}</div>
+      {showTitle ? <div className="gobench-chart-title">{title}</div> : null}
       <div className="gobench-chart-canvas">
         <svg
           viewBox={'0 0 ' + width + ' ' + height}
@@ -611,6 +649,7 @@ const ChartPanel = ({
                   x={x}
                   y={y}
                   color={color}
+                  shape={pointShapes?.get(point.player)}
                   muted={!isLlm}
                   onEnter={() => showPoint(point, displayName)}
                   onLeave={() => setHovered(null)}
@@ -765,10 +804,12 @@ const AgenticHarnessChart = ({ data }) => {
     const points = series.flatMap(item => item.points);
     const pointColors = new Map();
     const displayNames = new Map();
+    const pointShapes = new Map();
 
     series.forEach(item => {
       item.points.forEach(point => {
         pointColors.set(point.player, item.color);
+        pointShapes.set(point.player, REASONING_PRESENTATION[point.reasoning].shape);
         displayNames.set(
           point.player,
           'GPT-5.6 Sol · ' +
@@ -782,6 +823,7 @@ const AgenticHarnessChart = ({ data }) => {
       series,
       points,
       pointColors,
+      pointShapes,
       displayNames,
       playerNames: new Set(points.map(player => player.player)),
     };
@@ -795,18 +837,20 @@ const AgenticHarnessChart = ({ data }) => {
     <section className="gobench-section" aria-labelledby="gobench-harness-chart-heading">
       <div className="gobench-section-header">
         <div>
-          <h2 id="gobench-harness-chart-heading">GPT-5.6 API and agentic harness cost per move vs. Elo</h2>
+          <h2 id="gobench-harness-chart-heading">GPT-5.6: API vs. agentic harnesses</h2>
         </div>
       </div>
 
       <div className="gobench-chart-grid is-single">
         <ChartPanel
-          title="GPT-5.6 Sol · API and agentic harnesses"
+          title="GPT-5.6: API vs. agentic harnesses"
+          showTitle={false}
           points={chartData.points}
           llmNames={chartData.playerNames}
           referenceNames={new Map()}
           displayNames={chartData.displayNames}
           pointColors={chartData.pointColors}
+          pointShapes={chartData.pointShapes}
           series={chartData.series}
           xDomain={[0.02, 0.5]}
           xTicks={[
@@ -821,17 +865,32 @@ const AgenticHarnessChart = ({ data }) => {
         />
       </div>
 
-      <div className="gobench-chart-legend is-harness" aria-label="API and agentic harness chart legend">
-        {chartData.series.map(item => (
-          <div className="gobench-legend-item" key={item.key}>
-            <span className="gobench-legend-line" style={{ backgroundColor: item.color }} />
-            <span>{item.label}</span>
+      <div className="gobench-harness-keys">
+        <div className="gobench-harness-key-group" role="group" aria-label="Color shows execution mode">
+          <div className="gobench-harness-key-title">Color · execution mode</div>
+          <div className="gobench-harness-key-items is-modes">
+            {chartData.series.map(item => (
+              <div className="gobench-legend-item" key={item.key}>
+                <span className="gobench-legend-line" style={{ backgroundColor: item.color }} />
+                <span>{item.label}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+        <div className="gobench-harness-key-group" role="group" aria-label="Shape shows reasoning effort">
+          <div className="gobench-harness-key-title">Shape · reasoning effort</div>
+          <div className="gobench-harness-key-items is-reasoning">
+            {Object.entries(REASONING_PRESENTATION).map(([key, item]) => (
+              <div className="gobench-legend-item" key={key}>
+                <svg className="gobench-marker-key" viewBox="-10 -10 20 20" aria-hidden="true">
+                  <PointMarker shape={item.shape} color="#5f5b56" />
+                </svg>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-      <p className="gobench-caption">
-        Each line connects the available reasoning-effort runs from left to right: low, high, then max. The API series stops at high.
-      </p>
     </section>
   );
 };
