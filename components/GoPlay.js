@@ -876,9 +876,14 @@ const GoPlay = () => {
     if (engineState.status === 'error') return 'Engine failed to load';
     if (gameState !== 'playing') return result;
     if (thinking) return 'KataGo is choosing a move…';
-    if (isHumanTurn) return `Your turn · ${colorName(humanColor)}`;
     return 'Waiting for KataGo…';
   })();
+  const showStatus = (
+    engineState.status !== 'ready' ||
+    gameState !== 'playing' ||
+    thinking ||
+    !isHumanTurn
+  );
 
   if (dataError) {
     return <div className="goplay-error" role="alert">{dataError}</div>;
@@ -896,16 +901,7 @@ const GoPlay = () => {
   return (
     <section className="goplay-root" aria-label="Play 9 by 9 Go against KataGo">
       <div className="goplay-game">
-        <div className="goplay-board-shell">
-          <GoBoard
-            board={board}
-            disabled={boardDisabled}
-            lastMove={lastMove}
-            onPlay={location => commitMove(location, humanColor)}
-          />
-        </div>
-
-        <aside className="goplay-panel">
+        <div className="goplay-settings">
           <div className="goplay-field">
             <label htmlFor="goplay-opponent">KataGo opponent</label>
             <select
@@ -949,15 +945,28 @@ const GoPlay = () => {
               ))}
             </div>
           </div>
+        </div>
 
-          <div className={gameState === 'playing' ? 'goplay-status' : 'goplay-status is-finished'} aria-live="polite">
-            <span>{statusText}</span>
-            {engineState.status === 'loading' ? (
-              <span className="goplay-progress" aria-hidden="true">
-                <span style={{ width: `${Math.max(4, engineState.progress * 100)}%` }} />
-              </span>
-            ) : null}
-          </div>
+        <div className="goplay-board-shell">
+          <GoBoard
+            board={board}
+            disabled={boardDisabled}
+            lastMove={lastMove}
+            onPlay={location => commitMove(location, humanColor)}
+          />
+        </div>
+
+        <div className="goplay-controls">
+          {showStatus ? (
+            <div className={gameState === 'playing' ? 'goplay-status' : 'goplay-status is-finished'} aria-live="polite">
+              <span>{statusText}</span>
+              {engineState.status === 'loading' ? (
+                <span className="goplay-progress" aria-hidden="true">
+                  <span style={{ width: `${Math.max(4, engineState.progress * 100)}%` }} />
+                </span>
+              ) : null}
+            </div>
+          ) : null}
 
           {engineState.error ? <p className="goplay-inline-error">{engineState.error}</p> : null}
           {moveError ? <p className="goplay-inline-error">{moveError}</p> : null}
@@ -1014,7 +1023,7 @@ const GoPlay = () => {
               )) : <em>No moves yet</em>}
             </div>
           </div>
-        </aside>
+        </div>
       </div>
 
       <section className="goplay-history" aria-labelledby="goplay-history-heading">
