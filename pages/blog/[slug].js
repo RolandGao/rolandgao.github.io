@@ -6,6 +6,13 @@ import Layout from '../../components/Layout';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 import { formatPacificDate } from '../../lib/dates';
 import { getAllSlugs, getPostBySlug } from '../../lib/posts';
+import {
+  PERSON_ID,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_IMAGE_URL,
+  WEBSITE_ID,
+} from '../../lib/site';
 
 export const getStaticPaths = () => {
   const slugs = getAllSlugs();
@@ -67,12 +74,38 @@ const BlogPostPage = ({
   const pageTitle = `${metadata.title} | Roland Gao`;
   const pageDescription =
     metadata.description || `Read "${metadata.title}" by Roland Gao.`;
+  const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+  const articleStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${canonicalUrl}#article`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    isPartOf: {
+      '@id': WEBSITE_ID,
+    },
+    headline: metadata.title,
+    description: pageDescription,
+    image: SOCIAL_IMAGE_URL,
+    datePublished: metadata.date,
+    dateModified: metadata.updated || metadata.date,
+    inLanguage: 'en',
+    author: {
+      '@type': 'Person',
+      '@id': PERSON_ID,
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
+    },
+  };
 
   return (
     <Layout
       title={pageTitle}
       description={pageDescription}
       canonicalPath={canonicalPath}
+      structuredData={isLegacySlug ? null : articleStructuredData}
     >
       {isLegacySlug ? (
         <Head>
@@ -82,13 +115,23 @@ const BlogPostPage = ({
       <article className={`blog-post${featureClass}`}>
         <header>
           <h1>{metadata.title}</h1>
-          {dateDisplay || updatedDisplay ? (
-            <p className="post-date">
-              {updatedDisplay ? `Updated: ${updatedDisplay} | ` : ''}
-              {dateDisplay ? `Original: ${dateDisplay} | ` : ''}
-              Author: Roland Gao
-            </p>
-          ) : null}
+          <p className="post-date">
+            {updatedDisplay ? (
+              <>
+                Updated:{' '}
+                <time dateTime={metadata.updated}>{updatedDisplay}</time>
+                {' | '}
+              </>
+            ) : null}
+            {dateDisplay ? (
+              <>
+                Original:{' '}
+                <time dateTime={metadata.date}>{dateDisplay}</time>
+                {' | '}
+              </>
+            ) : null}
+            Author: <Link href="/">Roland Gao</Link>
+          </p>
         </header>
         <MarkdownRenderer content={content} />
       </article>

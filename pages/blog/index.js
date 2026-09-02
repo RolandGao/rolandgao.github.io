@@ -32,7 +32,10 @@ const BlogIndexPage = ({ posts, drafts }) => {
             <Link href={post.path}>
               <h2>{post.title}</h2>
               {post.updatedDisplay ? (
-                <p className="post-date">Updated: {post.updatedDisplay}</p>
+                <p className="post-date">
+                  Updated:{' '}
+                  <time dateTime={post.updated}>{post.updatedDisplay}</time>
+                </p>
               ) : null}
             </Link>
           </li>

@@ -2,11 +2,13 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+import { SITE_URL, SOCIAL_IMAGE_URL } from '../lib/site';
 
-const SITE_URL = 'https://rolandgao.github.io';
 const DEFAULT_DESCRIPTION =
   'Independent AI researcher focused on safety alignment, adversarial training, long context, optimizers, and scalable reinforcement learning. Previously a Research Engineer at Meta Superintelligence Labs.';
-const SOCIAL_IMAGE_URL = `${SITE_URL}/social-preview.png`;
+
+const serializeStructuredData = data =>
+  JSON.stringify(data).replace(/</g, '\\u003c');
 
 const ensureCanonicalPath = path => {
   if (!path) {
@@ -45,6 +47,7 @@ const Layout = ({
   title = 'Roland Gao',
   description = DEFAULT_DESCRIPTION,
   canonicalPath,
+  structuredData,
   children,
 }) => {
   const router = useRouter();
@@ -73,6 +76,14 @@ const Layout = ({
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={SOCIAL_IMAGE_URL} />
         <meta name="twitter:image:alt" content="Roland Gao — Independent AI Researcher" />
+        {structuredData ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: serializeStructuredData(structuredData),
+            }}
+          />
+        ) : null}
       </Head>
       <div className="layout">
         <nav>
