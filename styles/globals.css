@@ -100,6 +100,11 @@ nav {
   font-size: 0.9em;
 }
 
+.blog-post .post-date a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .back-link {
   margin-top: 40px;
 }
