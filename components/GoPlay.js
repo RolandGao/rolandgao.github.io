@@ -287,16 +287,22 @@ const getKataGoLegalMoves = (board, color, positionHistory) => {
   const legalMoves = getLegalMoves(board, color, positionHistory);
   const pointMoves = legalMoves.filter(location => location >= 0);
   const score = scoreBoard(board);
-  const winsIfGameEnds = color === 1
-    ? score.black > score.white
-    : score.white > score.black;
+  const scoreMargin = ({ black, white }) => (
+    color === 1 ? black - white : white - black
+  );
+  const currentMargin = scoreMargin(score);
+  const hasCapturingMove = pointMoves.some(location => {
+    const played = playOnBoard(board, location, color, positionHistory);
+    return played?.captures > 0;
+  });
 
   // A raw policy evaluation can prefer pass based on the position it expects
   // after cleanup. Under strict Tromp–Taylor, however, the opponent can answer
-  // with pass and make the current board the final position. Do not offer pass
-  // to KataGo when that exact score would not be a win. Keep it only when no
-  // point move is legal, so the engine can still finish a completely full game.
-  return winsIfGameEnds || pointMoves.length === 0 ? legalMoves : pointMoves;
+  // with pass and make the current board the final position. Suppress pass when
+  // KataGo is not winning and can capture immediately. Do not use arbitrary
+  // one-ply score gains here: invasions can appear to erase settled territory
+  // temporarily and would make a losing engine fill the board instead of pass.
+  return currentMargin > 0 || !hasCapturingMove ? legalMoves : pointMoves;
 };
 
 const replayMoves = moves => {
@@ -665,10 +671,10 @@ const GoPlay = () => {
     ])
       .then(([baseData, supplementData]) => {
         const mergedPlayers = new Map();
-        baseData.datasets.katago_players
+        supplementData.players
           .filter(player => /^kata1-b6c96-/.test(player.player))
           .forEach(player => mergedPlayers.set(player.player, player));
-        supplementData.players
+        baseData.datasets.katago_players
           .filter(player => /^kata1-b6c96-/.test(player.player))
           .forEach(player => mergedPlayers.set(player.player, player));
 

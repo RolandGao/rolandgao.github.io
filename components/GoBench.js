@@ -3,6 +3,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import ProviderLogo, { getProvider } from './ProviderLogo';
 
 const DATA_URL = '/data/gobench_data/paper_results.json';
+const REPLAY_RATINGS_URL = '/data/goplay_players.json';
 const API_PLAYER_SUFFIX = '-api';
 const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
 const CHART_COLORS = {
@@ -81,8 +82,6 @@ const filterApiData = data => ({
   datasets: {
     ...data.datasets,
     llm_players: data.datasets.llm_players.filter(player => isApiPlayer(player.player)),
-    llm_vs_katago_games: data.datasets.llm_vs_katago_games.filter(game =>
-      isApiPlayer(game.llm_player)),
   },
 });
 
@@ -91,6 +90,42 @@ const formatPlayerDisplayName = player => {
   return presentation.tier
     ? presentation.label + ' · ' + presentation.tier
     : presentation.label;
+};
+
+const formatHarnessPlayerDisplayName = player => {
+  const details = getHarnessPlayerDetails(player);
+  if (!details) {
+    return formatPlayerDisplayName(player);
+  }
+
+  return 'GPT-5.6 Sol · ' +
+    details.reasoning[0].toUpperCase() + details.reasoning.slice(1) +
+    ' · ' + HARNESS_PRESENTATION[details.harness].label;
+};
+
+const formatReplayPlayerDisplayName = player => {
+  const details = getHarnessPlayerDetails(player);
+  return details && details.harness !== 'api'
+    ? formatHarnessPlayerDisplayName(player)
+    : formatPlayerDisplayName(player);
+};
+
+const formatReplayPlayerOption = (player, rating) => {
+  const presentation = getPlayerPresentation(player);
+  const details = getHarnessPlayerDetails(player);
+  const ratingLabel = Number.isFinite(rating)
+    ? ' · ' + formatInteger(rating) + ' Elo'
+    : '';
+
+  if (details && details.harness !== 'api') {
+    const reasoning = details.reasoning[0].toUpperCase() + details.reasoning.slice(1);
+    return 'GPT-5.6 Sol' + ratingLabel +
+      ' · ' + HARNESS_PRESENTATION[details.harness].label +
+      ' · ' + reasoning;
+  }
+
+  return presentation.label + ratingLabel +
+    (presentation.tier ? ' · ' + presentation.tier : '');
 };
 
 const getResultRowAlpha = (resultOrder, resultCount) => {
@@ -701,6 +736,10 @@ const CostChart = ({ data }) => {
     [llmPlayers],
   );
   const allPoints = useMemo(() => [...katagoPlayers, ...llmPlayers], [katagoPlayers, llmPlayers]);
+  const llmPointShapes = useMemo(
+    () => new Map(llmPlayers.map(player => [player.player, data.figure_2.llm_marker])),
+    [data.figure_2.llm_marker, llmPlayers],
+  );
   const referenceNames = useMemo(
     () => new Map(
       data.table_2.katago_reference_players.map(player => [player.player, player.label]),
@@ -742,6 +781,7 @@ const CostChart = ({ data }) => {
           points={allPoints}
           llmNames={llmNames}
           referenceNames={referenceNames}
+          pointShapes={llmPointShapes}
           xDomain={[1e-7, 0.6]}
           xTicks={[
             { value: 1e-7, label: '10⁻⁷' },
@@ -755,6 +795,7 @@ const CostChart = ({ data }) => {
           points={llmPlayers}
           llmNames={llmNames}
           referenceNames={referenceNames}
+          pointShapes={llmPointShapes}
           xDomain={llmCostDomain}
           xTicks={llmCostTicks}
           referenceElo={referenceElo}
@@ -768,10 +809,12 @@ const CostChart = ({ data }) => {
         </div>
         {llmPlayers.map(player => (
           <div className="gobench-legend-item" key={player.player}>
-            <span
-              className="gobench-legend-dot"
-              style={{ backgroundColor: getChartColor(player.player) }}
-            />
+            <svg className="gobench-marker-key" viewBox="-10 -10 20 20" aria-hidden="true">
+              <PointMarker
+                shape={data.figure_2.llm_marker}
+                color={getChartColor(player.player)}
+              />
+            </svg>
             <span>{formatPlayerDisplayName(player.player)}</span>
           </div>
         ))}
@@ -812,9 +855,7 @@ const AgenticHarnessChart = ({ data }) => {
         pointShapes.set(point.player, REASONING_PRESENTATION[point.reasoning].shape);
         displayNames.set(
           point.player,
-          'GPT-5.6 Sol · ' +
-            point.reasoning[0].toUpperCase() + point.reasoning.slice(1) +
-            ' · ' + item.label,
+          formatHarnessPlayerDisplayName(point.player),
         );
       });
     });
@@ -1100,6 +1141,11 @@ const getOpponentRating = (player, katagoPlayers) => {
     return { elo: 0, eloCi95: 0 };
   }
 
+  const exactPlayer = katagoPlayers.find(candidate => candidate.player === player);
+  if (exactPlayer) {
+    return { elo: exactPlayer.elo, eloCi95: exactPlayer.elo_ci_95 };
+  }
+
   const basePlayer = player.replace(/-temp-[\d.]+$/, '');
   const checkpoint = katagoPlayers.find(candidate => candidate.player === basePlayer);
   return checkpoint
@@ -1112,13 +1158,16 @@ const formatOpponentRating = ({ elo, eloCi95 }) =>
     ? 'Elo N/A'
     : 'Elo ' + formatInteger(elo) + ' ± ' + formatInteger(eloCi95);
 
-const formatOpponentOption = option =>
-  'KataGo · ' + formatOpponentRating(option) +
-  ' · ' + option.wins + '–' + option.losses + '–' + option.draws;
+const formatOpponentOption = option => {
+  const rating = option.elo === null
+    ? 'Elo N/A'
+    : formatInteger(option.elo) + ' ± ' + formatInteger(option.eloCi95) + ' Elo';
+  return rating + ' · ' + option.wins + '–' + option.losses + '–' + option.draws;
+};
 
 const compactGamePlayerName = (player, katagoPlayers) => {
   if (!player.startsWith('kata1-')) {
-    return formatPlayerDisplayName(player);
+    return formatReplayPlayerDisplayName(player);
   }
 
   const rating = getOpponentRating(player, katagoPlayers);
@@ -1129,17 +1178,32 @@ const compactGamePlayerName = (player, katagoPlayers) => {
 
 const GameReplayer = ({ data }) => {
   const games = data.datasets.llm_vs_katago_games;
-  const tablePlayerOrder = useMemo(
-    () => data.datasets.llm_players.map(player => player.player),
-    [data.datasets.llm_players],
+  const replayKatagoPlayers = data.replayKatagoPlayers || data.datasets.katago_players;
+  const replayLlmRatings = useMemo(
+    () => new Map(
+      [...data.datasets.llm_players, ...data.datasets.sol_harness_players]
+        .map(player => [player.player, player.elo]),
+    ),
+    [data.datasets.llm_players, data.datasets.sol_harness_players],
   );
-  const llmPlayers = useMemo(() => {
+  const llmPlayerGroups = useMemo(() => {
     const gamePlayers = Array.from(new Set(games.map(game => game.llm_player)));
+    const byElo = (left, right) =>
+      (replayLlmRatings.get(right) ?? Number.NEGATIVE_INFINITY) -
+      (replayLlmRatings.get(left) ?? Number.NEGATIVE_INFINITY);
+
     return [
-      ...tablePlayerOrder.filter(player => gamePlayers.includes(player)),
-      ...gamePlayers.filter(player => !tablePlayerOrder.includes(player)).sort(),
+      {
+        label: 'API',
+        players: gamePlayers.filter(isApiPlayer).sort(byElo),
+      },
+      {
+        label: 'Agentic harnesses',
+        players: gamePlayers.filter(player => !isApiPlayer(player)).sort(byElo),
+      },
     ];
-  }, [games, tablePlayerOrder]);
+  }, [games, replayLlmRatings]);
+  const llmPlayers = llmPlayerGroups.flatMap(group => group.players);
   const [llm, setLlm] = useState(llmPlayers[0] || '');
   const [opponent, setOpponent] = useState('');
   const [gameId, setGameId] = useState('');
@@ -1151,7 +1215,7 @@ const GameReplayer = ({ data }) => {
     games
       .filter(game => game.llm_player === llm)
       .forEach(game => {
-        const rating = getOpponentRating(game.katago_player, data.datasets.katago_players);
+        const rating = getOpponentRating(game.katago_player, replayKatagoPlayers);
         const key = String(rating.elo) + ':' + String(rating.eloCi95);
         const current = grouped.get(key) || {
           key,
@@ -1173,7 +1237,7 @@ const GameReplayer = ({ data }) => {
 
     return Array.from(grouped.values())
       .sort((left, right) => (right.elo ?? -1) - (left.elo ?? -1));
-  }, [data.datasets.katago_players, games, llm]);
+  }, [games, llm, replayKatagoPlayers]);
 
   useEffect(() => {
     if (!opponentOptions.some(option => option.key === opponent)) {
@@ -1228,11 +1292,11 @@ const GameReplayer = ({ data }) => {
   const visibleMoves = selectedGame.moves.slice(Math.max(0, moveCount - 8), moveCount);
   const blackPlayerName = compactGamePlayerName(
     selectedGame.black,
-    data.datasets.katago_players,
+    replayKatagoPlayers,
   );
   const whitePlayerName = compactGamePlayerName(
     selectedGame.white,
-    data.datasets.katago_players,
+    replayKatagoPlayers,
   );
 
   const moveTo = nextMove => {
@@ -1259,8 +1323,17 @@ const GameReplayer = ({ data }) => {
               setGameId('');
             }}
           >
-            {llmPlayers.map(player => (
-              <option key={player} value={player}>{formatPlayerDisplayName(player)}</option>
+            {llmPlayerGroups.map(group => (
+              <optgroup key={group.label} label={group.label}>
+                {group.players.map(player => {
+                  const rating = replayLlmRatings.get(player);
+                  return (
+                    <option key={player} value={player}>
+                      {formatReplayPlayerOption(player, rating)}
+                    </option>
+                  );
+                })}
+              </optgroup>
             ))}
           </select>
         </label>
@@ -1408,15 +1481,28 @@ const GoBench = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-
-    fetch(DATA_URL, { signal: controller.signal })
+    const fetchJson = (url, errorMessage) => fetch(url, { signal: controller.signal })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Unable to load the benchmark data.');
+          throw new Error(errorMessage);
         }
         return response.json();
+      });
+
+    Promise.all([
+      fetchJson(DATA_URL, 'Unable to load the benchmark data.'),
+      fetchJson(REPLAY_RATINGS_URL, 'Unable to load the replay ratings.'),
+    ])
+      .then(([result, supplementalRatings]) => {
+        const replayRatings = new Map();
+        supplementalRatings.players.forEach(player => replayRatings.set(player.player, player));
+        result.datasets.katago_players.forEach(player => replayRatings.set(player.player, player));
+
+        setData({
+          ...filterApiData(result),
+          replayKatagoPlayers: Array.from(replayRatings.values()),
+        });
       })
-      .then(result => setData(filterApiData(result)))
       .catch(fetchError => {
         if (fetchError.name !== 'AbortError') {
           setError(fetchError.message);
