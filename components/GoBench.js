@@ -320,7 +320,11 @@ const Leaderboard = ({ data }) => {
   };
 
   return (
-    <section className="gobench-section" aria-label="GoBench leaderboard">
+    <section className="gobench-section" aria-labelledby="gobench-leaderboard-heading">
+      <div className="gobench-section-header">
+        <h2 id="gobench-leaderboard-heading">Leaderboard</h2>
+        <p className="gobench-caption">API results · Elo ± 95% confidence interval. Select a column heading to sort.</p>
+      </div>
       <div className="gobench-table-shell">
         <div
           className={

@@ -1,3 +1,56 @@
+.blog-post--gobench .markdown-body > h2 {
+  margin: 56px 0 20px;
+  padding: 0;
+  border: 0;
+  color: #1c1c1a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.blog-post--gobench .markdown-body > p,
+.blog-post--gobench .markdown-body > ol {
+  max-width: 68ch;
+  color: #48433e;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.blog-post--gobench .markdown-body > ol {
+  margin: 28px 0 0;
+  padding-left: 1.6em;
+}
+
+.blog-post--gobench .markdown-body > ol > li {
+  padding-left: 0.5em;
+}
+
+.blog-post--gobench .markdown-body > ol > li + li {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e4e1dc;
+}
+
+.blog-post--gobench .markdown-body > ol > li::marker {
+  color: #087856;
+  font-variant-numeric: tabular-nums;
+}
+
+.blog-post--gobench .markdown-body > ol > li > p {
+  margin: 0;
+}
+
+.blog-post--gobench .markdown-body > ol > li > p:first-child {
+  margin-bottom: 8px;
+  color: #1c1c1a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
 .gobench-root {
   --gobench-bg: #f7f6f3;
   --gobench-surface: #ffffff;
@@ -25,6 +78,7 @@
 
 .gobench-picker-grid label > span,
 .gobench-now-playing > span,
+.markdown-body .gobench-game-meta dt,
 .gobench-game-meta dt {
   color: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -76,6 +130,8 @@
 
 .markdown-body .gobench-harness-definitions dt,
 .gobench-harness-definitions dt {
+  margin: 0;
+  padding: 0;
   color: var(--gobench-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 15px;
@@ -88,6 +144,7 @@
 .markdown-body .gobench-harness-definitions dd,
 .gobench-harness-definitions dd {
   margin: 0;
+  padding: 0;
   color: var(--gobench-muted);
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 16px;
@@ -564,9 +621,7 @@
 
 .gobench-legend-item > span:last-child {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: break-word;
 }
 
 .gobench-legend-dot {
@@ -637,7 +692,7 @@
   overflow: visible;
 }
 
-@media (min-width: 881px) {
+@media (min-width: 621px) {
   .gobench-chart-legend > .gobench-legend-item:last-child:nth-child(3n + 1) {
     grid-column: 1 / -1;
   }
@@ -793,12 +848,14 @@
   font-weight: 500;
 }
 
+.markdown-body .gobench-game-meta dd,
 .gobench-game-meta dd {
   display: flex;
   min-width: 0;
   align-items: center;
   gap: 7px;
   margin: 0;
+  padding: 0;
   overflow: hidden;
   color: var(--gobench-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -1372,9 +1429,9 @@
 
   .gobench-player-details > span:first-child {
     display: block;
-    overflow: hidden;
-    overflow-wrap: normal;
-    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    white-space: normal;
+    line-height: 1.3;
   }
 
   .gobench-table .gobench-reference-heading th {
