@@ -59,6 +59,41 @@
   margin-bottom: 20px;
 }
 
+.markdown-body .gobench-harness-definitions,
+.gobench-harness-definitions {
+  margin: 20px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--gobench-line);
+}
+
+.gobench-harness-definitions > div {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 20px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--gobench-line);
+}
+
+.markdown-body .gobench-harness-definitions dt,
+.gobench-harness-definitions dt {
+  color: var(--gobench-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.markdown-body .gobench-harness-definitions dd,
+.gobench-harness-definitions dd {
+  margin: 0;
+  color: var(--gobench-muted);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 .gobench-table-shell {
   position: relative;
   width: 100%;
@@ -237,20 +272,6 @@
   white-space: nowrap;
 }
 
-.gobench-player-tier {
-  padding: 2px 5px 1px;
-  border: 1px solid #b8c9c0;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.52);
-  color: #52645c;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0.045em;
-  line-height: 1.35;
-  text-transform: uppercase;
-}
-
 .gobench-provider-logo {
   display: inline-flex;
   width: 20px;
@@ -331,12 +352,6 @@
 
 .gobench-reference-heading th > span:first-child {
   color: var(--gobench-ink);
-}
-
-.gobench-reference-heading th > span:last-child {
-  margin-left: 9px;
-  color: var(--gobench-faint);
-  font-weight: 500;
 }
 
 .sort-indicator {
@@ -444,8 +459,7 @@
 }
 
 .gobench-chart-tick,
-.gobench-chart-axis-label,
-.gobench-reference-label {
+.gobench-chart-axis-label {
   fill: var(--gobench-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 16px;
@@ -457,13 +471,6 @@
   font-size: 16px;
 }
 
-.gobench-reference-line {
-  stroke: #687789;
-  stroke-width: 1.5;
-  stroke-dasharray: 7 5;
-  vector-effect: non-scaling-stroke;
-}
-
 .gobench-chart-series {
   fill: none;
   stroke-linecap: round;
@@ -471,11 +478,6 @@
   stroke-width: 2.25;
   opacity: 0.8;
   vector-effect: non-scaling-stroke;
-}
-
-.gobench-reference-label {
-  fill: #536171;
-  font-size: 16px;
 }
 
 .gobench-error-bar {
@@ -587,7 +589,7 @@
 
 .gobench-harness-keys {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 4fr 3fr;
   border-left: 1px solid var(--gobench-line);
   background: var(--gobench-surface);
 }
@@ -598,24 +600,12 @@
   border-bottom: 1px solid var(--gobench-line);
 }
 
-.gobench-harness-key-title {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--gobench-line);
-  color: var(--gobench-faint);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1.35;
-  text-transform: uppercase;
-}
-
 .gobench-harness-key-items {
   display: grid;
 }
 
 .gobench-harness-key-items.is-modes {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .gobench-harness-key-items.is-reasoning {
@@ -627,7 +617,7 @@
   border-bottom: 0;
 }
 
-.gobench-harness-key-items.is-modes .gobench-legend-item:nth-child(2n),
+.gobench-harness-key-items.is-modes .gobench-legend-item:last-child,
 .gobench-harness-key-items.is-reasoning .gobench-legend-item:last-child {
   border-right: 0;
 }
@@ -1236,6 +1226,17 @@
     margin-top: 56px;
   }
 
+  .gobench-harness-definitions > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    padding: 10px 0;
+  }
+
+  .markdown-body .gobench-harness-definitions dt,
+  .gobench-harness-definitions dt {
+    white-space: normal;
+  }
+
   .gobench-table-shell {
     width: 100vw;
     margin-left: calc(50% - 50vw);
@@ -1376,23 +1377,10 @@
     text-overflow: ellipsis;
   }
 
-  .gobench-player-tier {
-    display: inline-block;
-    flex: 0 0 auto;
-    margin-left: 0;
-    padding-right: 3px;
-    padding-left: 3px;
-    font-size: 12px;
-  }
-
   .gobench-table .gobench-reference-heading th {
     height: auto;
     padding: 12px 5px;
     white-space: normal;
-  }
-
-  .gobench-reference-heading th > span:last-child {
-    display: none;
   }
 
   .gobench-elo-value {
@@ -1425,10 +1413,6 @@
   }
 
   .gobench-chart-axis-label {
-    font-size: 19px;
-  }
-
-  .gobench-reference-label {
     font-size: 19px;
   }
 
@@ -1471,6 +1455,10 @@
 
   .gobench-harness-keys {
     grid-template-columns: 1fr;
+  }
+
+  .gobench-harness-key-items.is-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .gobench-harness-key-items .gobench-legend-item {

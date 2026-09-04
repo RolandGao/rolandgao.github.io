@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import goplayPlayerData from '../public/data/goplay_players.json';
 
-const BASE_DATA_URL = '/data/gobench_data/paper_results.json';
-const SUPPLEMENT_DATA_URL = '/data/goplay_players.json';
 const ENGINE_WORKER_URL = '/goplay/kata-worker.js';
 const BOARD_SIZE = 9;
 const KOMI = 7;
@@ -275,6 +274,15 @@ const thinOpponents = players => {
   return thinned.sort((left, right) => left.elo - right.elo);
 };
 
+const DEFAULT_OPPONENTS = thinOpponents(
+  goplayPlayerData.players.filter(player => /^kata1-b6c96-/.test(player.player)),
+);
+const DEFAULT_PLAYER = DEFAULT_OPPONENTS.reduce((closest, player) => (
+  !closest || Math.abs(player.elo - DEFAULT_ELO) < Math.abs(closest.elo - DEFAULT_ELO)
+    ? player
+    : closest
+), null)?.player || '';
+
 const getLegalMoves = (board, color, positionHistory) => {
   const legalMoves = [-1];
   board.forEach((_, location) => {
@@ -486,9 +494,8 @@ const GoBoard = ({ board, disabled, lastMove, onPlay }) => {
 };
 
 const GoPlay = () => {
-  const [opponents, setOpponents] = useState([]);
-  const [selectedPlayer, setSelectedPlayer] = useState('');
-  const [dataError, setDataError] = useState('');
+  const [selectedPlayer, setSelectedPlayer] = useState(DEFAULT_PLAYER);
+  const [engineLoadAttempt, setEngineLoadAttempt] = useState(0);
   const [engineState, setEngineState] = useState({ status: 'idle', progress: 0, error: '' });
   const [humanColor, setHumanColor] = useState(1);
   const [board, setBoard] = useState(() => emptyBoard());
@@ -511,6 +518,8 @@ const GoPlay = () => {
   const gameTokenRef = useRef(0);
   const completedGameIdRef = useRef(null);
   const katagoLosingTurnsRef = useRef(0);
+  const opponents = DEFAULT_OPPONENTS;
+  const engineRequested = engineLoadAttempt > 0;
   const selectedModel = basePlayerName(selectedPlayer);
   const selectedTemperatureTarget = temperatureTarget(selectedPlayer);
 
@@ -659,48 +668,7 @@ const GoPlay = () => {
   }, [gameState, lastHumanMoveIndex, moves, result]);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const fetchRatings = url => fetch(url, { signal: controller.signal }).then(response => {
-      if (!response.ok) throw new Error(`ratings request failed (${response.status})`);
-      return response.json();
-    });
-
-    Promise.all([
-      fetchRatings(BASE_DATA_URL),
-      fetchRatings(SUPPLEMENT_DATA_URL),
-    ])
-      .then(([baseData, supplementData]) => {
-        const mergedPlayers = new Map();
-        supplementData.players
-          .filter(player => /^kata1-b6c96-/.test(player.player))
-          .forEach(player => mergedPlayers.set(player.player, player));
-        baseData.datasets.katago_players
-          .filter(player => /^kata1-b6c96-/.test(player.player))
-          .forEach(player => mergedPlayers.set(player.player, player));
-
-        const b6c96Players = thinOpponents(
-          Array.from(mergedPlayers.values()),
-        );
-
-        setOpponents(b6c96Players);
-        const defaultOpponent = b6c96Players.reduce((closest, player) => (
-          !closest || Math.abs(player.elo - DEFAULT_ELO) < Math.abs(closest.elo - DEFAULT_ELO)
-            ? player
-            : closest
-        ), null);
-        setSelectedPlayer(defaultOpponent?.player || '');
-      })
-      .catch(error => {
-        if (error.name !== 'AbortError') {
-          setDataError(`Unable to load KataGo ratings: ${error.message}`);
-        }
-      });
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    if (!selectedModel) return undefined;
+    if (!selectedModel || !engineRequested) return undefined;
 
     let active = true;
     const worker = new Worker(ENGINE_WORKER_URL);
@@ -732,7 +700,7 @@ const GoPlay = () => {
       if (engineRef.current === engine) engineRef.current = null;
       engine.destroy();
     };
-  }, [selectedModel]);
+  }, [engineLoadAttempt, engineRequested, selectedModel]);
 
   const commitMove = useCallback((location, color) => {
     const played = playOnBoard(board, location, color, positionHistory);
@@ -891,6 +859,9 @@ const GoPlay = () => {
   }, []);
 
   const statusText = (() => {
+    if (engineState.status === 'idle') {
+      return 'Ready to load the selected opponent';
+    }
     if (engineState.status === 'loading') {
       const percentage = Math.round(engineState.progress * 100);
       return `Loading selected model${percentage ? ` · ${percentage}%` : '…'}`;
@@ -902,19 +873,6 @@ const GoPlay = () => {
     engineState.status !== 'ready' ||
     gameState !== 'playing'
   );
-
-  if (dataError) {
-    return <div className="goplay-error" role="alert">{dataError}</div>;
-  }
-
-  if (!opponents.length) {
-    return (
-      <div className="goplay-loading" role="status">
-        <span />
-        <p>Loading GoPlay…</p>
-      </div>
-    );
-  }
 
   return (
     <section className="goplay-root" aria-label="Play 9 by 9 Go against KataGo">
@@ -929,7 +887,11 @@ const GoPlay = () => {
               onChange={event => {
                 const nextPlayer = event.target.value;
                 if (basePlayerName(nextPlayer) !== selectedModel) {
-                  setEngineState({ status: 'loading', progress: 0, error: '' });
+                  setEngineState({
+                    status: engineRequested ? 'loading' : 'idle',
+                    progress: 0,
+                    error: '',
+                  });
                 }
                 resetGame();
                 setSelectedPlayer(nextPlayer);
@@ -990,6 +952,18 @@ const GoPlay = () => {
           {moveError ? <p className="goplay-inline-error">{moveError}</p> : null}
 
           <div className="goplay-actions">
+            {['idle', 'error'].includes(engineState.status) ? (
+              <button
+                type="button"
+                className="is-primary goplay-start"
+                onClick={() => {
+                  setEngineState({ status: 'loading', progress: 0, error: '' });
+                  setEngineLoadAttempt(attempt => attempt + 1);
+                }}
+              >
+                {engineState.status === 'error' ? 'Retry loading' : 'Start game'}
+              </button>
+            ) : null}
             <button
               type="button"
               disabled={
@@ -1026,9 +1000,11 @@ const GoPlay = () => {
             >
               Resign
             </button>
-            <button type="button" className="is-primary" disabled={thinking} onClick={resetGame}>
-              New game
-            </button>
+            {engineRequested ? (
+              <button type="button" className="is-primary" disabled={thinking} onClick={resetGame}>
+                New game
+              </button>
+            ) : null}
           </div>
 
           <div className="goplay-moves" aria-label="Recent moves">

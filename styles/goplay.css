@@ -337,6 +337,10 @@
   background: var(--goplay-accent-dark);
 }
 
+.goplay-actions .goplay-start {
+  grid-column: 1 / -1;
+}
+
 .goplay-moves {
   margin-top: 20px;
   padding-top: 15px;
@@ -615,6 +619,10 @@
   gap: 12px;
 }
 
+.goplay-loading--reserved {
+  min-height: 940px;
+}
+
 .markdown-body .goplay-loading p,
 .goplay-loading p {
   margin: 0;
@@ -635,6 +643,10 @@
 }
 
 @media (max-width: 900px) {
+  .goplay-loading--reserved {
+    min-height: calc(100vw + 597px);
+  }
+
   .goplay-game {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;

@@ -6,6 +6,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import { GoBenchDataProvider } from './GoBenchData';
 import 'github-markdown-css/github-markdown-light.css';
 import 'katex/dist/katex.min.css';
 
@@ -20,7 +21,7 @@ const GoBench = dynamic(() => import('./GoBench'), {
 
 const GoPlay = dynamic(() => import('./GoPlay'), {
   loading: () => (
-    <div className="goplay-loading" role="status">
+    <div className="goplay-loading goplay-loading--reserved" role="status">
       <span />
       <p>Loading GoPlay…</p>
     </div>
@@ -40,12 +41,24 @@ const MarkdownRenderer = ({ content = '' }) => {
       return <a {...props} />;
     },
     gobench: () => <GoBench />,
+    'gobench-api-chart': () => <GoBench section="api" />,
+    'gobench-leaderboard': () => <GoBench section="leaderboard" />,
+    'gobench-agentic-chart': () => <GoBench section="agentic" />,
+    'gobench-replayer': () => <GoBench section="replayer" />,
     goplay: () => <GoPlay />,
   };
 
   const markdownSchema = {
     ...defaultSchema,
-    tagNames: [...(defaultSchema.tagNames || []), 'gobench', 'goplay'],
+    tagNames: [
+      ...(defaultSchema.tagNames || []),
+      'gobench',
+      'gobench-api-chart',
+      'gobench-leaderboard',
+      'gobench-agentic-chart',
+      'gobench-replayer',
+      'goplay',
+    ],
     attributes: {
       ...defaultSchema.attributes,
       code: [
@@ -56,19 +69,25 @@ const MarkdownRenderer = ({ content = '' }) => {
     },
   };
 
+  const renderedMarkdown = (
+    <Markdown
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[
+        rehypeRaw,
+        [rehypeSanitize, markdownSchema],
+        rehypeKatex,
+      ]}
+      components={markdownComponents}
+    >
+      {content}
+    </Markdown>
+  );
+
   return (
     <div className="markdown-body">
-      <Markdown
-        remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[
-          rehypeRaw,
-          [rehypeSanitize, markdownSchema],
-          rehypeKatex,
-        ]}
-        components={markdownComponents}
-      >
-        {content}
-      </Markdown>
+      {content.includes('<gobench') ? (
+        <GoBenchDataProvider>{renderedMarkdown}</GoBenchDataProvider>
+      ) : renderedMarkdown}
     </div>
   );
 };

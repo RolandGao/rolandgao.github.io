@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 
+import { useGoBenchData } from './GoBenchData';
 import ProviderLogo, { getProvider } from './ProviderLogo';
 
-const DATA_URL = '/data/gobench_data/paper_results.json';
-const REPLAY_RATINGS_URL = '/data/goplay_players.json';
 const API_PLAYER_SUFFIX = '-api';
 const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
 const CHART_COLORS = {
@@ -31,22 +30,22 @@ const REASONING_PRESENTATION = {
 };
 
 const PLAYER_PRESENTATION = {
-  'opus-5-high': { label: 'Claude Opus 5', tier: 'High' },
-  'gemini-3.1-pro-high': { label: 'Gemini 3.1 Pro', tier: 'High' },
-  'DeepSeek-V4-Flash-0731-high': { label: 'DeepSeek V4 Flash 0731', tier: 'High' },
-  'kimi-k3-high': { label: 'Kimi K3', tier: 'High' },
-  'gpt5.6-sol-high': { label: 'GPT-5.6 Sol', tier: 'High' },
-  'gpt5.6-sol-low': { label: 'GPT-5.6 Sol', tier: 'Low' },
-  'gpt5.6-sol-high-context': { label: 'GPT-5.6 Sol', tier: 'High · Context' },
-  'gpt5.6-sol-max-context': { label: 'GPT-5.6 Sol', tier: 'Max · Context' },
-  'gpt5.6-luna-high': { label: 'GPT-5.6 Luna', tier: 'High' },
-  'gpt5.6-luna-low': { label: 'GPT-5.6 Luna', tier: 'Low' },
-  'gpt5.6-luna-high-context': { label: 'GPT-5.6 Luna', tier: 'High · Context' },
-  'gpt5.6-luna-max-context': { label: 'GPT-5.6 Luna', tier: 'Max · Context' },
-  'muse-spark-1.2-openrouter-high': { label: 'Muse Spark 1.2', tier: 'High' },
-  'gpt-5.4-low': { label: 'GPT-5.4', tier: 'Low' },
-  'grok-4.5-high': { label: 'Grok 4.5', tier: 'High' },
-  'gemini-3.6-flash-high': { label: 'Gemini 3.6 Flash', tier: 'High' },
+  'opus-5-high': { label: 'Claude Opus 5' },
+  'gemini-3.1-pro-high': { label: 'Gemini 3.1 Pro' },
+  'DeepSeek-V4-Flash-0731-high': { label: 'DeepSeek V4 Flash 0731' },
+  'kimi-k3-high': { label: 'Kimi K3' },
+  'gpt5.6-sol-high': { label: 'GPT-5.6 Sol' },
+  'gpt5.6-sol-low': { label: 'GPT-5.6 Sol' },
+  'gpt5.6-sol-high-context': { label: 'GPT-5.6 Sol' },
+  'gpt5.6-sol-max-context': { label: 'GPT-5.6 Sol' },
+  'gpt5.6-luna-high': { label: 'GPT-5.6 Luna' },
+  'gpt5.6-luna-low': { label: 'GPT-5.6 Luna' },
+  'gpt5.6-luna-high-context': { label: 'GPT-5.6 Luna' },
+  'gpt5.6-luna-max-context': { label: 'GPT-5.6 Luna' },
+  'muse-spark-1.2-openrouter-high': { label: 'Muse Spark 1.2' },
+  'gpt-5.4-low': { label: 'GPT-5.4' },
+  'grok-4.5-high': { label: 'Grok 4.5' },
+  'gemini-3.6-flash-high': { label: 'Gemini 3.6 Flash' },
 };
 
 const getApiPlayerBaseName = player => player.endsWith(API_PLAYER_SUFFIX)
@@ -73,7 +72,6 @@ const getPlayerPresentation = player => {
 
   return PLAYER_PRESENTATION[baseName] || {
     label: baseName,
-    tier: null,
   };
 };
 
@@ -85,12 +83,7 @@ const filterApiData = data => ({
   },
 });
 
-const formatPlayerDisplayName = player => {
-  const presentation = getPlayerPresentation(player);
-  return presentation.tier
-    ? presentation.label + ' · ' + presentation.tier
-    : presentation.label;
-};
+const formatPlayerDisplayName = player => getPlayerPresentation(player).label;
 
 const formatHarnessPlayerDisplayName = player => {
   const details = getHarnessPlayerDetails(player);
@@ -124,8 +117,7 @@ const formatReplayPlayerOption = (player, rating) => {
       ' · ' + reasoning;
   }
 
-  return presentation.label + ratingLabel +
-    (presentation.tier ? ' · ' + presentation.tier : '');
+  return presentation.label + ratingLabel;
 };
 
 const getResultRowAlpha = (resultOrder, resultCount) => {
@@ -160,11 +152,6 @@ const TABLE_COLUMNS = [
         <ProviderLogo player={row.player} />
         <span className="gobench-player-details">
           <span>{row.label}</span>
-          {row.tier ? (
-            <span className="gobench-player-tier" data-short={row.tier.slice(0, 1)}>
-              {row.tier}
-            </span>
-          ) : null}
         </span>
       </span>
     ),
@@ -333,13 +320,7 @@ const Leaderboard = ({ data }) => {
   };
 
   return (
-    <section className="gobench-section" aria-labelledby="gobench-leaderboard-title">
-      <div className="gobench-section-header">
-        <div>
-          <h2 id="gobench-leaderboard-title">GoBench results</h2>
-        </div>
-      </div>
-
+    <section className="gobench-section" aria-label="GoBench leaderboard">
       <div className="gobench-table-shell">
         <div
           className={
@@ -419,7 +400,6 @@ const Leaderboard = ({ data }) => {
                       <tr className="gobench-reference-heading">
                         <th colSpan={TABLE_COLUMNS.length} scope="rowgroup">
                           <span>KataGo references</span>
-                          <span>Calibrated engine baselines</span>
                         </th>
                       </tr>
                     ) : null}
@@ -531,7 +511,6 @@ const ChartPanel = ({
   referenceNames,
   xDomain,
   xTicks,
-  referenceElo,
   displayNames,
   pointColors,
   pointShapes,
@@ -639,25 +618,6 @@ const ChartPanel = ({
             />
           ))}
 
-          {referenceElo ? (
-            <g>
-              <line
-                className="gobench-reference-line"
-                x1={margin.left}
-                x2={margin.left + plotWidth}
-                y1={yPosition(referenceElo)}
-                y2={yPosition(referenceElo)}
-              />
-              <text
-                className="gobench-reference-label"
-                x={margin.left + 8}
-                y={yPosition(referenceElo) - 8}
-              >
-                Strongest KataGo · {formatInteger(referenceElo)} Elo
-              </text>
-            </g>
-          ) : null}
-
           {points.map(point => {
             const isLlm = llmNames.has(point.player);
             const displayName = displayNames?.get(point.player) || (isLlm
@@ -699,7 +659,7 @@ const ChartPanel = ({
             y={height - 10}
             textAnchor="middle"
           >
-            Cost, USD / move (log scale)
+            Cost / move
           </text>
           <text
             className="gobench-chart-axis-label"
@@ -746,9 +706,6 @@ const CostChart = ({ data }) => {
     ),
     [data.table_2.katago_reference_players],
   );
-  const referenceElo = Math.max(
-    ...data.table_2.katago_reference_players.map(player => player.elo),
-  );
   const llmCostDomain = useMemo(() => {
     const costs = llmPlayers
       .map(player => player.cost_usd_per_move)
@@ -765,19 +722,13 @@ const CostChart = ({ data }) => {
     .map(value => ({
       value,
       label: '$' + value,
-    }));
+  }));
 
   return (
-    <section className="gobench-section" aria-labelledby="gobench-chart-heading">
-      <div className="gobench-section-header">
-        <div>
-          <h2 id="gobench-chart-heading">Cost per move vs. Elo</h2>
-        </div>
-      </div>
-
+    <section className="gobench-section" aria-label="LLM Elo versus cost charts">
       <div className="gobench-chart-grid">
         <ChartPanel
-          title="(a) All players"
+          title="(a) KataGo and LLMs"
           points={allPoints}
           llmNames={llmNames}
           referenceNames={referenceNames}
@@ -791,14 +742,15 @@ const CostChart = ({ data }) => {
           ]}
         />
         <ChartPanel
-          title="(b) LLMs only"
+          title="(b) LLMs (high reasoning effort)"
           points={llmPlayers}
           llmNames={llmNames}
           referenceNames={referenceNames}
           pointShapes={llmPointShapes}
           xDomain={llmCostDomain}
           xTicks={llmCostTicks}
-          referenceElo={referenceElo}
+          yDomain={[750, 2500]}
+          yTicks={[1000, 1500, 2000, 2500]}
         />
       </div>
 
@@ -878,13 +830,31 @@ const AgenticHarnessChart = ({ data }) => {
     <section className="gobench-section" aria-labelledby="gobench-harness-chart-heading">
       <div className="gobench-section-header">
         <div>
-          <h2 id="gobench-harness-chart-heading">GPT-5.6: API vs. agentic harnesses</h2>
+          <h2 id="gobench-harness-chart-heading">Elo vs cost for agentic harnesses</h2>
+          <dl className="gobench-harness-definitions">
+            <div>
+              <dt>API</dt>
+              <dd>A single-turn API call with no tools.</dd>
+            </div>
+            <div>
+              <dt>Codex multi</dt>
+              <dd>Multi-turn execution with automatic context compaction and no tools.</dd>
+            </div>
+            <div>
+              <dt>Codex workspace</dt>
+              <dd>Multi-turn execution with offline tools and a sandboxed workspace for each game.</dd>
+            </div>
+            <div>
+              <dt>Codex workspace continual</dt>
+              <dd>The same setup, but with the workspace and conversation preserved across games.</dd>
+            </div>
+          </dl>
         </div>
       </div>
 
       <div className="gobench-chart-grid is-single">
         <ChartPanel
-          title="GPT-5.6: API vs. agentic harnesses"
+          title="Elo vs cost for agentic harnesses"
           showTitle={false}
           points={chartData.points}
           llmNames={chartData.playerNames}
@@ -908,7 +878,6 @@ const AgenticHarnessChart = ({ data }) => {
 
       <div className="gobench-harness-keys">
         <div className="gobench-harness-key-group" role="group" aria-label="Color shows execution mode">
-          <div className="gobench-harness-key-title">Color · execution mode</div>
           <div className="gobench-harness-key-items is-modes">
             {chartData.series.map(item => (
               <div className="gobench-legend-item" key={item.key}>
@@ -919,7 +888,6 @@ const AgenticHarnessChart = ({ data }) => {
           </div>
         </div>
         <div className="gobench-harness-key-group" role="group" aria-label="Shape shows reasoning effort">
-          <div className="gobench-harness-key-title">Shape · reasoning effort</div>
           <div className="gobench-harness-key-items is-reasoning">
             {Object.entries(REASONING_PRESENTATION).map(([key, item]) => (
               <div className="gobench-legend-item" key={key}>
@@ -1178,7 +1146,7 @@ const compactGamePlayerName = (player, katagoPlayers) => {
 
 const GameReplayer = ({ data }) => {
   const games = data.datasets.llm_vs_katago_games;
-  const replayKatagoPlayers = data.replayKatagoPlayers || data.datasets.katago_players;
+  const katagoPlayers = data.datasets.katago_players;
   const replayLlmRatings = useMemo(
     () => new Map(
       [...data.datasets.llm_players, ...data.datasets.sol_harness_players]
@@ -1215,7 +1183,7 @@ const GameReplayer = ({ data }) => {
     games
       .filter(game => game.llm_player === llm)
       .forEach(game => {
-        const rating = getOpponentRating(game.katago_player, replayKatagoPlayers);
+        const rating = getOpponentRating(game.katago_player, katagoPlayers);
         const key = String(rating.elo) + ':' + String(rating.eloCi95);
         const current = grouped.get(key) || {
           key,
@@ -1237,7 +1205,7 @@ const GameReplayer = ({ data }) => {
 
     return Array.from(grouped.values())
       .sort((left, right) => (right.elo ?? -1) - (left.elo ?? -1));
-  }, [games, llm, replayKatagoPlayers]);
+  }, [games, llm, katagoPlayers]);
 
   useEffect(() => {
     if (!opponentOptions.some(option => option.key === opponent)) {
@@ -1292,11 +1260,11 @@ const GameReplayer = ({ data }) => {
   const visibleMoves = selectedGame.moves.slice(Math.max(0, moveCount - 8), moveCount);
   const blackPlayerName = compactGamePlayerName(
     selectedGame.black,
-    replayKatagoPlayers,
+    katagoPlayers,
   );
   const whitePlayerName = compactGamePlayerName(
     selectedGame.white,
-    replayKatagoPlayers,
+    katagoPlayers,
   );
 
   const moveTo = nextMove => {
@@ -1471,61 +1439,32 @@ const GameReplayer = ({ data }) => {
 const LoadingState = () => (
   <div className="gobench-loading" role="status">
     <span />
-    <p>Loading GoBench results…</p>
+    <p>Loading benchmark…</p>
   </div>
 );
 
-const GoBench = () => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const fetchJson = (url, errorMessage) => fetch(url, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(errorMessage);
-        }
-        return response.json();
-      });
-
-    Promise.all([
-      fetchJson(DATA_URL, 'Unable to load the benchmark data.'),
-      fetchJson(REPLAY_RATINGS_URL, 'Unable to load the replay ratings.'),
-    ])
-      .then(([result, supplementalRatings]) => {
-        const replayRatings = new Map();
-        supplementalRatings.players.forEach(player => replayRatings.set(player.player, player));
-        result.datasets.katago_players.forEach(player => replayRatings.set(player.player, player));
-
-        setData({
-          ...filterApiData(result),
-          replayKatagoPlayers: Array.from(replayRatings.values()),
-        });
-      })
-      .catch(fetchError => {
-        if (fetchError.name !== 'AbortError') {
-          setError(fetchError.message);
-        }
-      });
-
-    return () => controller.abort();
-  }, []);
+const GoBench = ({ section = 'all' }) => {
+  const { data: result, error } = useGoBenchData();
+  const data = result ? filterApiData(result) : null;
+  const showAll = section === 'all';
+  const showStatus = showAll || section === 'api';
 
   if (error) {
-    return <div className="gobench-error" role="alert">{error}</div>;
+    return showStatus
+      ? <div className="gobench-error" role="alert">{error}</div>
+      : null;
   }
 
   if (!data) {
-    return <LoadingState />;
+    return showStatus ? <LoadingState /> : null;
   }
 
   return (
     <div className="gobench-root">
-      <Leaderboard data={data} />
-      <CostChart data={data} />
-      <AgenticHarnessChart data={data} />
-      <GameReplayer data={data} />
+      {showAll || section === 'leaderboard' ? <Leaderboard data={data} /> : null}
+      {showAll || section === 'api' ? <CostChart data={data} /> : null}
+      {showAll || section === 'agentic' ? <AgenticHarnessChart data={data} /> : null}
+      {showAll || section === 'replayer' ? <GameReplayer data={data} /> : null}
     </div>
   );
 };

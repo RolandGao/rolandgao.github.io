@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { SITE_URL, SOCIAL_IMAGE_URL } from '../lib/site';
 
 const DEFAULT_DESCRIPTION =
-  'Independent AI researcher focused on safety alignment, adversarial training, long context, optimizers, and scalable reinforcement learning. Previously a Research Engineer at Meta Superintelligence Labs.';
+  'Independent AI researcher exploring alignment, adversarial training, long-context systems, optimization, and scalable reinforcement learning. Formerly at Meta.';
 
 const serializeStructuredData = data =>
   JSON.stringify(data).replace(/</g, '\\u003c');

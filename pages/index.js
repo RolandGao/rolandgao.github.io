@@ -83,7 +83,7 @@ const HomePage = ({ content, posts }) => {
   return (
     <Layout
       title="Roland Gao"
-      description="Independent AI researcher focused on safety alignment, adversarial training, long context, optimizers, and scalable reinforcement learning. Previously a Research Engineer at Meta Superintelligence Labs."
+      description="Independent AI researcher exploring alignment, adversarial training, long-context systems, optimization, and scalable reinforcement learning. Formerly at Meta."
       canonicalPath="/"
       structuredData={homepageStructuredData}
     >
