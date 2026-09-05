@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import goplayPlayerData from '../public/data/goplay_players.json';
+import goplayPlayerData from '../public/data/goplay_opponents.json';
 
 const ENGINE_WORKER_URL = '/goplay/kata-worker.js';
 const BOARD_SIZE = 9;

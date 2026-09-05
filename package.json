@@ -17,7 +17,9 @@
     "remark-math": "^6.0.0"
   },
   "scripts": {
+    "predev": "node scripts/generate-goplay-opponents.js",
     "dev": "next dev",
+    "prebuild": "node scripts/generate-goplay-opponents.js",
     "build": "next build",
     "lint": "eslint .",
     "start": "next start",
