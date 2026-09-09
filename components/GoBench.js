@@ -3,7 +3,6 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useGoBenchData } from './GoBenchData';
 import ProviderLogo, { getProvider } from './ProviderLogo';
 
-const API_PLAYER_SUFFIX = '-api';
 const GO_COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J'];
 const CHART_COLORS = {
   anthropic: '#9b4f32',
@@ -15,109 +14,62 @@ const CHART_COLORS = {
   xai: '#272727',
   unknown: '#767676',
 };
-const HARNESS_PRESENTATION = {
-  api: { label: 'API', color: '#272727' },
-  'codex-multi': { label: 'Codex multi', color: '#6754d9' },
-  'codex-workspace': { label: 'Codex workspace', color: '#109b78' },
-  'codex-workspace-continual': { label: 'Codex workspace continual', color: '#d06f32' },
-};
-const HARNESS_ORDER = Object.keys(HARNESS_PRESENTATION);
-const REASONING_ORDER = { low: 0, high: 1, max: 2 };
 const REASONING_PRESENTATION = {
   low: { label: 'Low', shape: 'triangle' },
   high: { label: 'High', shape: 'diamond' },
+  xhigh: { label: 'Extra high', shape: 'square' },
   max: { label: 'Max', shape: 'pentagon' },
 };
 
-const PLAYER_PRESENTATION = {
-  'opus-5-high': { label: 'Claude Opus 5' },
-  'gemini-3.1-pro-high': { label: 'Gemini 3.1 Pro' },
-  'DeepSeek-V4-Flash-0731-high': { label: 'DeepSeek V4 Flash 0731' },
-  'kimi-k3-high': { label: 'Kimi K3' },
-  'gpt5.6-sol-high': { label: 'GPT-5.6 Sol' },
-  'gpt5.6-sol-low': { label: 'GPT-5.6 Sol' },
-  'gpt5.6-sol-high-context': { label: 'GPT-5.6 Sol' },
-  'gpt5.6-sol-max-context': { label: 'GPT-5.6 Sol' },
-  'gpt5.6-luna-high': { label: 'GPT-5.6 Luna' },
-  'gpt5.6-luna-low': { label: 'GPT-5.6 Luna' },
-  'gpt5.6-luna-high-context': { label: 'GPT-5.6 Luna' },
-  'gpt5.6-luna-max-context': { label: 'GPT-5.6 Luna' },
-  'muse-spark-1.2-openrouter-high': { label: 'Muse Spark 1.2' },
-  'gpt-5.4-low': { label: 'GPT-5.4' },
-  'grok-4.5-high': { label: 'Grok 4.5' },
-  'gemini-3.6-flash-high': { label: 'Gemini 3.6 Flash' },
-};
-
-const getApiPlayerBaseName = player => player.endsWith(API_PLAYER_SUFFIX)
-  ? player.slice(0, -API_PLAYER_SUFFIX.length)
-  : player;
-
-const isApiPlayer = player => typeof player === 'string' && player.endsWith(API_PLAYER_SUFFIX);
-
-const getHarnessPlayerDetails = player => {
-  const match = player.match(/^gpt5\.6-sol-(low|high|max)-(.+)$/);
-
-  if (!match || !HARNESS_PRESENTATION[match[2]]) {
-    return null;
-  }
-
-  return {
-    reasoning: match[1],
-    harness: match[2],
-  };
+const MODEL_NAMES = {
+  'opus-5': 'Claude Opus 5',
+  'DeepSeek-V4-Flash-0731': 'DeepSeek V4 Flash 0731',
+  'gpt6-astra': 'GPT-6 Astra',
+  'gpt5.6-sol': 'GPT-5.6 Sol',
+  'gpt5.6-luna': 'GPT-5.6 Luna',
+  'gemini-3.6-flash': 'Gemini 3.6 Flash',
+  'gemini-3.8-flash': 'Gemini 3.8 Flash',
+  'muse-spark-1.3-contributor': 'Muse Spark 1.3 Contributor',
+  'grok-4.6': 'Grok 4.6',
 };
 
 const getPlayerPresentation = player => {
-  const baseName = getApiPlayerBaseName(player);
+  const baseName = player.replace(/-api(?:-multi\d*)?$/, '');
+  const match = baseName.match(/^(.*)-(low|high|xhigh|max)$/);
+  if (!match) {
+    return { label: MODEL_NAMES[baseName] || baseName, shape: 'circle' };
+  }
 
-  return PLAYER_PRESENTATION[baseName] || {
-    label: baseName,
+  const reasoning = REASONING_PRESENTATION[match[2]];
+  return {
+    label: (MODEL_NAMES[match[1]] || match[1]) + ' · ' + reasoning.label,
+    shape: reasoning.shape,
   };
 };
 
-const filterApiData = data => ({
-  ...data,
-  datasets: {
-    ...data.datasets,
-    llm_players: data.datasets.llm_players.filter(player => isApiPlayer(player.player)),
-  },
-});
-
 const formatPlayerDisplayName = player => getPlayerPresentation(player).label;
 
-const formatHarnessPlayerDisplayName = player => {
-  const details = getHarnessPlayerDetails(player);
-  if (!details) {
-    return formatPlayerDisplayName(player);
-  }
-
-  return 'GPT-5.6 Sol · ' +
-    details.reasoning[0].toUpperCase() + details.reasoning.slice(1) +
-    ' · ' + HARNESS_PRESENTATION[details.harness].label;
-};
-
-const formatReplayPlayerDisplayName = player => {
-  const details = getHarnessPlayerDetails(player);
-  return details && details.harness !== 'api'
-    ? formatHarnessPlayerDisplayName(player)
-    : formatPlayerDisplayName(player);
-};
-
-const formatReplayPlayerOption = (player, rating) => {
-  const presentation = getPlayerPresentation(player);
-  const details = getHarnessPlayerDetails(player);
-  const ratingLabel = Number.isFinite(rating)
+const formatReplayPlayerOption = (player, rating) =>
+  formatPlayerDisplayName(player) + (Number.isFinite(rating)
     ? ' · ' + formatInteger(rating) + ' Elo'
-    : '';
+    : '');
 
-  if (details && details.harness !== 'api') {
-    const reasoning = details.reasoning[0].toUpperCase() + details.reasoning.slice(1);
-    return 'GPT-5.6 Sol' + ratingLabel +
-      ' · ' + HARNESS_PRESENTATION[details.harness].label +
-      ' · ' + reasoning;
-  }
+const getKatagoReferences = players => {
+  const timedPlayers = players.filter(player =>
+    Number.isFinite(player.seconds_per_move) && player.seconds_per_move > 0,
+  );
+  if (!timedPlayers.length) return [];
 
-  return presentation.label + ratingLabel;
+  const fastest = timedPlayers.reduce((best, player) =>
+    player.seconds_per_move < best.seconds_per_move ||
+    (player.seconds_per_move === best.seconds_per_move && player.elo > best.elo)
+      ? player : best,
+  );
+  const strongest = timedPlayers.reduce((best, player) => player.elo > best.elo ? player : best);
+  return [
+    { ...fastest, label: 'KataGo (fastest)' },
+    { ...strongest, label: 'KataGo (strongest)' },
+  ];
 };
 
 const getResultRowAlpha = (resultOrder, resultCount) => {
@@ -255,7 +207,7 @@ const getTableRows = data => {
       rowType: 'llm',
     };
   });
-  const references = data.table_2.katago_reference_players.map(player => ({
+  const references = getKatagoReferences(data.datasets.katago_players).map(player => ({
     ...player,
     rank: '—',
     seconds: player.seconds_per_move,
@@ -463,6 +415,10 @@ const PointMarker = ({ shape = 'circle', color, muted = false }) => {
 
   if (shape === 'diamond') {
     return <polygon {...markerProps} points="0,-7 7,0 0,7 -7,0" />;
+  }
+
+  if (shape === 'square') {
+    return <rect {...markerProps} x="-5.5" y="-5.5" width="11" height="11" />;
   }
 
   if (shape === 'pentagon') {
@@ -694,21 +650,23 @@ const ChartPanel = ({
 
 const CostChart = ({ data }) => {
   const llmPlayers = data.datasets.llm_players;
-  const katagoPlayers = data.datasets.katago_players;
+  const katagoPlayers = useMemo(() => data.datasets.katago_players.filter(player =>
+    Number.isFinite(player.cost_usd_per_move) && player.cost_usd_per_move > 0,
+  ), [data.datasets.katago_players]);
   const llmNames = useMemo(
     () => new Set(llmPlayers.map(player => player.player)),
     [llmPlayers],
   );
   const allPoints = useMemo(() => [...katagoPlayers, ...llmPlayers], [katagoPlayers, llmPlayers]);
   const llmPointShapes = useMemo(
-    () => new Map(llmPlayers.map(player => [player.player, data.figure_2.llm_marker])),
-    [data.figure_2.llm_marker, llmPlayers],
+    () => new Map(llmPlayers.map(player => [player.player, getPlayerPresentation(player.player).shape])),
+    [llmPlayers],
   );
   const referenceNames = useMemo(
     () => new Map(
-      data.table_2.katago_reference_players.map(player => [player.player, player.label]),
+      getKatagoReferences(katagoPlayers).map(player => [player.player, player.label]),
     ),
-    [data.table_2.katago_reference_players],
+    [katagoPlayers],
   );
   const llmCostDomain = useMemo(() => {
     const costs = llmPlayers
@@ -721,6 +679,12 @@ const CostChart = ({ data }) => {
 
     return [Math.min(...costs) / 1.45, Math.max(...costs) * 1.3];
   }, [llmPlayers]);
+  const llmEloMin = Math.floor(Math.min(...llmPlayers.map(player => player.elo - player.elo_ci_95)) / 500) * 500;
+  const llmEloMax = Math.ceil(Math.max(...llmPlayers.map(player => player.elo + player.elo_ci_95)) / 500) * 500;
+  const llmEloTicks = Array.from(
+    { length: (llmEloMax - llmEloMin) / 500 + 1 },
+    (_, index) => llmEloMin + index * 500,
+  );
   const llmCostTicks = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5]
     .filter(value => value > llmCostDomain[0] && value < llmCostDomain[1])
     .map(value => ({
@@ -746,15 +710,15 @@ const CostChart = ({ data }) => {
           ]}
         />
         <ChartPanel
-          title="(b) LLMs (high reasoning effort)"
+          title="(b) LLMs by reasoning effort"
           points={llmPlayers}
           llmNames={llmNames}
           referenceNames={referenceNames}
           pointShapes={llmPointShapes}
           xDomain={llmCostDomain}
           xTicks={llmCostTicks}
-          yDomain={[750, 2500]}
-          yTicks={[1000, 1500, 2000, 2500]}
+          yDomain={[llmEloMin, llmEloMax]}
+          yTicks={llmEloTicks}
         />
       </div>
 
@@ -767,142 +731,13 @@ const CostChart = ({ data }) => {
           <div className="gobench-legend-item" key={player.player}>
             <svg className="gobench-marker-key" viewBox="-10 -10 20 20" aria-hidden="true">
               <PointMarker
-                shape={data.figure_2.llm_marker}
+                shape={getPlayerPresentation(player.player).shape}
                 color={getChartColor(player.player)}
               />
             </svg>
             <span>{formatPlayerDisplayName(player.player)}</span>
           </div>
         ))}
-      </div>
-    </section>
-  );
-};
-
-const AgenticHarnessChart = ({ data }) => {
-  const chartData = useMemo(() => {
-    const groupedPlayers = new Map(HARNESS_ORDER.map(harness => [harness, []]));
-
-    data.datasets.sol_harness_players.forEach(player => {
-      const details = getHarnessPlayerDetails(player.player);
-      if (details) {
-        groupedPlayers.get(details.harness).push({ ...player, ...details });
-      }
-    });
-
-    const series = HARNESS_ORDER.map(harness => {
-      const presentation = HARNESS_PRESENTATION[harness];
-      return {
-        key: harness,
-        label: presentation.label,
-        color: presentation.color,
-        points: groupedPlayers.get(harness)
-          .sort((left, right) => REASONING_ORDER[left.reasoning] - REASONING_ORDER[right.reasoning]),
-      };
-    }).filter(item => item.points.length);
-    const points = series.flatMap(item => item.points);
-    const pointColors = new Map();
-    const displayNames = new Map();
-    const pointShapes = new Map();
-
-    series.forEach(item => {
-      item.points.forEach(point => {
-        pointColors.set(point.player, item.color);
-        pointShapes.set(point.player, REASONING_PRESENTATION[point.reasoning].shape);
-        displayNames.set(
-          point.player,
-          formatHarnessPlayerDisplayName(point.player),
-        );
-      });
-    });
-
-    return {
-      series,
-      points,
-      pointColors,
-      pointShapes,
-      displayNames,
-      playerNames: new Set(points.map(player => player.player)),
-    };
-  }, [data.datasets.sol_harness_players]);
-
-  if (!chartData.points.length) {
-    return null;
-  }
-
-  return (
-    <section className="gobench-section" aria-labelledby="gobench-harness-chart-heading">
-      <div className="gobench-section-header">
-        <div>
-          <h2 id="gobench-harness-chart-heading">Elo vs cost for agentic harnesses</h2>
-          <dl className="gobench-harness-definitions">
-            <div>
-              <dt>API</dt>
-              <dd>A single-turn API call with no tools.</dd>
-            </div>
-            <div>
-              <dt>Codex multi</dt>
-              <dd>Multi-turn execution with automatic context compaction and no tools.</dd>
-            </div>
-            <div>
-              <dt>Codex workspace</dt>
-              <dd>Multi-turn execution with offline tools and a sandboxed workspace for each game.</dd>
-            </div>
-            <div>
-              <dt>Codex workspace continual</dt>
-              <dd>The same setup, but with the workspace and conversation preserved across games.</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-
-      <div className="gobench-chart-grid is-single">
-        <ChartPanel
-          title="Elo vs cost for agentic harnesses"
-          showTitle={false}
-          points={chartData.points}
-          llmNames={chartData.playerNames}
-          referenceNames={new Map()}
-          displayNames={chartData.displayNames}
-          pointColors={chartData.pointColors}
-          pointShapes={chartData.pointShapes}
-          series={chartData.series}
-          xDomain={[0.02, 0.5]}
-          xTicks={[
-            { value: 0.02, label: '$0.02' },
-            { value: 0.05, label: '$0.05' },
-            { value: 0.1, label: '$0.10' },
-            { value: 0.2, label: '$0.20' },
-            { value: 0.5, label: '$0.50' },
-          ]}
-          yDomain={[750, 2500]}
-          yTicks={[1000, 1500, 2000, 2500]}
-        />
-      </div>
-
-      <div className="gobench-harness-keys">
-        <div className="gobench-harness-key-group" role="group" aria-label="Color shows execution mode">
-          <div className="gobench-harness-key-items is-modes">
-            {chartData.series.map(item => (
-              <div className="gobench-legend-item" key={item.key}>
-                <span className="gobench-legend-line" style={{ backgroundColor: item.color }} />
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="gobench-harness-key-group" role="group" aria-label="Shape shows reasoning effort">
-          <div className="gobench-harness-key-items is-reasoning">
-            {Object.entries(REASONING_PRESENTATION).map(([key, item]) => (
-              <div className="gobench-legend-item" key={key}>
-                <svg className="gobench-marker-key" viewBox="-10 -10 20 20" aria-hidden="true">
-                  <PointMarker shape={item.shape} color="#5f5b56" />
-                </svg>
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -1139,7 +974,7 @@ const formatOpponentOption = option => {
 
 const compactGamePlayerName = (player, katagoPlayers) => {
   if (!player.startsWith('kata1-')) {
-    return formatReplayPlayerDisplayName(player);
+    return formatPlayerDisplayName(player);
   }
 
   const rating = getOpponentRating(player, katagoPlayers);
@@ -1153,29 +988,17 @@ const GameReplayer = ({ data }) => {
   const katagoPlayers = data.datasets.katago_players;
   const replayLlmRatings = useMemo(
     () => new Map(
-      [...data.datasets.llm_players, ...data.datasets.sol_harness_players]
+      data.datasets.llm_players
         .map(player => [player.player, player.elo]),
     ),
-    [data.datasets.llm_players, data.datasets.sol_harness_players],
+    [data.datasets.llm_players],
   );
-  const llmPlayerGroups = useMemo(() => {
-    const gamePlayers = Array.from(new Set(games.map(game => game.llm_player)));
-    const byElo = (left, right) =>
+  const llmPlayers = useMemo(() =>
+    Array.from(new Set(games.map(game => game.llm_player))).sort((left, right) =>
       (replayLlmRatings.get(right) ?? Number.NEGATIVE_INFINITY) -
-      (replayLlmRatings.get(left) ?? Number.NEGATIVE_INFINITY);
-
-    return [
-      {
-        label: 'API',
-        players: gamePlayers.filter(isApiPlayer).sort(byElo),
-      },
-      {
-        label: 'Agentic harnesses',
-        players: gamePlayers.filter(player => !isApiPlayer(player)).sort(byElo),
-      },
-    ];
-  }, [games, replayLlmRatings]);
-  const llmPlayers = llmPlayerGroups.flatMap(group => group.players);
+      (replayLlmRatings.get(left) ?? Number.NEGATIVE_INFINITY),
+    ),
+  [games, replayLlmRatings]);
   const [llm, setLlm] = useState(llmPlayers[0] || '');
   const [opponent, setOpponent] = useState('');
   const [gameId, setGameId] = useState('');
@@ -1295,17 +1118,10 @@ const GameReplayer = ({ data }) => {
               setGameId('');
             }}
           >
-            {llmPlayerGroups.map(group => (
-              <optgroup key={group.label} label={group.label}>
-                {group.players.map(player => {
-                  const rating = replayLlmRatings.get(player);
-                  return (
-                    <option key={player} value={player}>
-                      {formatReplayPlayerOption(player, rating)}
-                    </option>
-                  );
-                })}
-              </optgroup>
+            {llmPlayers.map(player => (
+              <option key={player} value={player}>
+                {formatReplayPlayerOption(player, replayLlmRatings.get(player))}
+              </option>
             ))}
           </select>
         </label>
@@ -1448,8 +1264,7 @@ const LoadingState = () => (
 );
 
 const GoBench = ({ section = 'all' }) => {
-  const { data: result, error } = useGoBenchData();
-  const data = result ? filterApiData(result) : null;
+  const { data, error } = useGoBenchData();
   const showAll = section === 'all';
   const showStatus = showAll || section === 'api';
 
@@ -1467,7 +1282,6 @@ const GoBench = ({ section = 'all' }) => {
     <div className="gobench-root">
       {showAll || section === 'leaderboard' ? <Leaderboard data={data} /> : null}
       {showAll || section === 'api' ? <CostChart data={data} /> : null}
-      {showAll || section === 'agentic' ? <AgenticHarnessChart data={data} /> : null}
       {showAll || section === 'replayer' ? <GameReplayer data={data} /> : null}
     </div>
   );

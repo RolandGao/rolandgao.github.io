@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-const DATA_URL = '/data/gobench_data/paper_results.json';
+const DATA_URL = '/data/gobench_data/results.json';
 const GoBenchDataContext = createContext({ data: null, error: '' });
 
 export const GoBenchDataProvider = ({ children }) => {

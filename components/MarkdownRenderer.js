@@ -43,7 +43,6 @@ const MarkdownRenderer = ({ content = '' }) => {
     gobench: () => <GoBench />,
     'gobench-api-chart': () => <GoBench section="api" />,
     'gobench-leaderboard': () => <GoBench section="leaderboard" />,
-    'gobench-agentic-chart': () => <GoBench section="agentic" />,
     'gobench-replayer': () => <GoBench section="replayer" />,
     goplay: () => <GoPlay />,
   };
@@ -55,7 +54,6 @@ const MarkdownRenderer = ({ content = '' }) => {
       'gobench',
       'gobench-api-chart',
       'gobench-leaderboard',
-      'gobench-agentic-chart',
       'gobench-replayer',
       'goplay',
     ],

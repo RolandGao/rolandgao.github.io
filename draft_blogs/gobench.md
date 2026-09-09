@@ -20,6 +20,4 @@ We believe GoBench can measure progress toward AGI. There are three ways to satu
 
 <div><gobench-leaderboard></gobench-leaderboard></div>
 
-<div><gobench-agentic-chart></gobench-agentic-chart></div>
-
 <div><gobench-replayer></gobench-replayer></div>

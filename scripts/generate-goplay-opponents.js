@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const supplement = require('../public/data/goplay_players.json');
-const base = require('../public/data/gobench_data/paper_results.json');
+const base = require('../public/data/gobench_data/results.json');
 
 // Keep GoBench's current ratings authoritative and avoid bundling its game
-// records into GoPlay. Supplemental ratings fill gaps in the paper dataset.
+// records into GoPlay. Supplemental ratings fill gaps in the benchmark dataset.
 const players = new Map();
 for (const { player, elo, elo_ci_95 } of [
   ...supplement.players,
