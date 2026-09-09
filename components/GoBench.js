@@ -20,6 +20,13 @@ const REASONING_PRESENTATION = {
   xhigh: { label: 'Extra high', shape: 'square' },
   max: { label: 'Max', shape: 'pentagon' },
 };
+const MODEL_CHART_COLORS = {
+  'gpt6-astra': '#109b78',
+  'gpt5.6-sol': '#087b95',
+  'gpt5.6-luna': '#8a941b',
+  'gemini-3.6-flash': '#7298dc',
+  'gemini-3.8-flash': '#356fd4',
+};
 
 const MODEL_NAMES = {
   'opus-5': 'Claude Opus 5',
@@ -37,11 +44,13 @@ const getPlayerPresentation = player => {
   const baseName = player.replace(/-api(?:-multi\d*)?$/, '');
   const match = baseName.match(/^(.*)-(low|high|xhigh|max)$/);
   if (!match) {
-    return { label: MODEL_NAMES[baseName] || baseName, shape: 'circle' };
+    return { model: baseName, label: MODEL_NAMES[baseName] || baseName, shape: 'circle' };
   }
 
   const reasoning = REASONING_PRESENTATION[match[2]];
   return {
+    model: match[1],
+    reasoning: match[2],
     label: (MODEL_NAMES[match[1]] || match[1]) + ' · ' + reasoning.label,
     shape: reasoning.shape,
   };
@@ -81,7 +90,8 @@ const getResultRowAlpha = (resultOrder, resultCount) => {
   return 0.17 + (0.03 - 0.17) * progress;
 };
 
-const getChartColor = player => CHART_COLORS[getProvider(player)] || CHART_COLORS.unknown;
+const getChartColor = player => MODEL_CHART_COLORS[getPlayerPresentation(player).model] ||
+  CHART_COLORS[getProvider(player)] || CHART_COLORS.unknown;
 
 const TABLE_COLUMNS = [
   {
@@ -662,6 +672,32 @@ const CostChart = ({ data }) => {
     () => new Map(llmPlayers.map(player => [player.player, getPlayerPresentation(player.player).shape])),
     [llmPlayers],
   );
+  const modelGroups = useMemo(() => {
+    const groups = new Map();
+    const effortOrder = Object.keys(REASONING_PRESENTATION);
+    llmPlayers.forEach(player => {
+      const { model } = getPlayerPresentation(player.player);
+      if (!groups.has(model)) {
+        groups.set(model, {
+          key: model,
+          label: MODEL_NAMES[model] || model,
+          color: getChartColor(player.player),
+          points: [],
+        });
+      }
+      groups.get(model).points.push(player);
+    });
+    return [...groups.values()].map(group => ({
+      ...group,
+      points: group.points.sort((left, right) =>
+        effortOrder.indexOf(getPlayerPresentation(left.player).reasoning) -
+        effortOrder.indexOf(getPlayerPresentation(right.player).reasoning)),
+    }));
+  }, [llmPlayers]);
+  const modelSeries = modelGroups.filter(group => group.points.length > 1);
+  const reasoningKeys = Object.entries(REASONING_PRESENTATION).filter(([effort]) =>
+    llmPlayers.some(player => getPlayerPresentation(player.player).reasoning === effort));
+  const hasDefaultEffort = llmPlayers.some(player => !getPlayerPresentation(player.player).reasoning);
   const referenceNames = useMemo(
     () => new Map(
       getKatagoReferences(katagoPlayers).map(player => [player.player, player.label]),
@@ -685,7 +721,7 @@ const CostChart = ({ data }) => {
     { length: (llmEloMax - llmEloMin) / 500 + 1 },
     (_, index) => llmEloMin + index * 500,
   );
-  const llmCostTicks = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5]
+  const llmCostTicks = [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1]
     .filter(value => value > llmCostDomain[0] && value < llmCostDomain[1])
     .map(value => ({
       value,
@@ -701,6 +737,7 @@ const CostChart = ({ data }) => {
           llmNames={llmNames}
           referenceNames={referenceNames}
           pointShapes={llmPointShapes}
+          series={modelSeries}
           xDomain={[1e-7, 0.6]}
           xTicks={[
             { value: 1e-7, label: '10⁻⁷' },
@@ -710,11 +747,12 @@ const CostChart = ({ data }) => {
           ]}
         />
         <ChartPanel
-          title="(b) LLMs by reasoning effort"
+          title="(b) LLMs"
           points={llmPlayers}
           llmNames={llmNames}
           referenceNames={referenceNames}
           pointShapes={llmPointShapes}
+          series={modelSeries}
           xDomain={llmCostDomain}
           xTicks={llmCostTicks}
           yDomain={[llmEloMin, llmEloMax]}
@@ -722,22 +760,32 @@ const CostChart = ({ data }) => {
         />
       </div>
 
-      <div className="gobench-chart-legend" aria-label="Chart legend">
+      <div className="gobench-model-legend" aria-label="Model legend">
         <div className="gobench-legend-item">
           <span className="gobench-legend-dot is-katago" />
           <span>KataGo ({katagoPlayers.length})</span>
         </div>
-        {llmPlayers.map(player => (
-          <div className="gobench-legend-item" key={player.player}>
-            <svg className="gobench-marker-key" viewBox="-10 -10 20 20" aria-hidden="true">
-              <PointMarker
-                shape={getPlayerPresentation(player.player).shape}
-                color={getChartColor(player.player)}
-              />
-            </svg>
-            <span>{formatPlayerDisplayName(player.player)}</span>
+        {modelGroups.map(model => (
+          <div className="gobench-legend-item" key={model.key}>
+            <span className="gobench-legend-line" style={{ background: model.color }} aria-hidden="true" />
+            <span>{model.label}</span>
           </div>
         ))}
+      </div>
+      <div className="gobench-reasoning-legend" aria-label="Reasoning effort legend">
+        <span>Reasoning effort</span>
+        {[
+          ...(hasDefaultEffort ? [{ label: 'Default', shape: 'circle' }] : []),
+          ...reasoningKeys.map(([, presentation]) => presentation),
+        ].map(reasoning => (
+          <span className="gobench-reasoning-key" key={reasoning.label}>
+            <svg className="gobench-marker-key" viewBox="-10 -10 20 20" aria-hidden="true">
+              <PointMarker shape={reasoning.shape} color="#77716b" />
+            </svg>
+            <span>{reasoning.label}</span>
+          </span>
+        ))}
+        <span className="gobench-series-note">Lines connect efforts of the same model.</span>
       </div>
     </section>
   );

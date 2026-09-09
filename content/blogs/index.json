@@ -2,6 +2,15 @@
   "generatedAt": "2026-09-02T05:26:09Z",
   "posts": [
     {
+      "id": "gobench",
+      "title": "GoBench",
+      "path": "/blog/gobench/",
+      "date": "2026-09-09",
+      "dateDisplay": "September 9, 2026",
+      "updated": "2026-09-09",
+      "description": "Measuring how well frontier language models play 9×9 Go against a calibrated ladder of KataGo opponents."
+    },
+    {
       "id": "goplay",
       "title": "GoPlay",
       "path": "/blog/goplay/",

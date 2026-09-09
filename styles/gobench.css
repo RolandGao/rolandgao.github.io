@@ -642,6 +642,46 @@
   border-radius: 999px;
 }
 
+.gobench-model-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding: 18px 16px;
+  border: 1px solid var(--gobench-line);
+  border-top: 0;
+  background: var(--gobench-surface);
+}
+
+.gobench-model-legend .gobench-legend-item {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.gobench-reasoning-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding: 12px 16px;
+  border: 1px solid var(--gobench-line);
+  border-top: 0;
+  color: var(--gobench-muted);
+  font-size: 14px;
+}
+
+.gobench-reasoning-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gobench-series-note {
+  margin-left: auto;
+}
+
 .gobench-harness-keys {
   display: grid;
   grid-template-columns: 4fr 3fr;
@@ -1275,6 +1315,19 @@
 }
 
 @media (max-width: 620px) {
+  .gobench-model-legend {
+    gap: 12px 20px;
+  }
+
+  .gobench-reasoning-legend > span:first-child {
+    flex-basis: 100%;
+  }
+
+  .gobench-series-note {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+
   .gobench-root {
     margin-top: 36px;
   }
