@@ -20,6 +20,10 @@ jobs:
         with:
           node-version: 22
 
+      # Match the npm version that generated the lockfile. npm 10 does not
+      # resolve the miniflare/sharp override consistently with npm 11.
+      - run: npm install --global npm@11.4.2
+
       - run: npm ci
       - run: npm run build
 
