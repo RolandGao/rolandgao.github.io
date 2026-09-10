@@ -864,7 +864,7 @@ const GoPlay = () => {
   );
 
   return (
-    <section className="goplay-root" aria-label="Play 9 by 9 Go against KataGo">
+    <section id="goplay" className="goplay-root" aria-label="Play 9 by 9 Go against KataGo">
       <div className="goplay-game">
         <div className="goplay-settings">
           <div className="goplay-field">

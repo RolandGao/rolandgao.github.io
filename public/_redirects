@@ -3,3 +3,8 @@
 /blog/unsaturated_evals_before_gpt5 /blog/finding_unsaturated_evals/ 301
 /blog/unsaturated_evals_before_gpt5/ /blog/finding_unsaturated_evals/ 301
 /blog/unsaturated_evals_before_gpt5/index.html /blog/finding_unsaturated_evals/ 301
+
+# GoPlay now lives at the end of GoBench.
+/blog/goplay /blog/gobench/#goplay 301
+/blog/goplay/ /blog/gobench/#goplay 301
+/blog/goplay/index.html /blog/gobench/#goplay 301
