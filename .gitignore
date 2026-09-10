@@ -12,6 +12,7 @@
 /.next
 /build
 /out
+/out-github-redirects
 
 # misc
 .DS_Store
