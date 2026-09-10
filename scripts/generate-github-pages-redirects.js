@@ -23,6 +23,7 @@ const redirectDocument = relativePath => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="pHoclPMk7JxKTzhumOUZkGq9YA5Tg3zCDWPOvitT09U">
   <title>Moved to Roland Gao's new website</title>
   <link rel="canonical" href="${escapedDestination}">
   <script>

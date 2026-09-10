@@ -65,6 +65,7 @@ const Layout = ({
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
+        <meta name="google-site-verification" content="pHoclPMk7JxKTzhumOUZkGq9YA5Tg3zCDWPOvitT09U" />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={title} />
