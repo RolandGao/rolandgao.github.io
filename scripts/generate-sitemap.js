@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const domain = 'https://rolandgao.github.io';
+const domain = 'https://rolandgao.com';
 const outputPath = path.join(__dirname, '../out');
 const contentPath = path.join(__dirname, '../content');
 const blogDirectory = path.join(contentPath, 'blogs');

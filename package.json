@@ -1,7 +1,7 @@
 {
   "name": "personal-website",
   "version": "0.1.0",
-  "homepage": "https://rolandgao.github.io",
+  "homepage": "https://rolandgao.com",
   "private": true,
   "dependencies": {
     "github-markdown-css": "^5.9.0",

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rolandgao.github.io/sitemap.xml
+Sitemap: https://rolandgao.com/sitemap.xml
