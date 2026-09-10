@@ -52,6 +52,11 @@ const visit = directory => {
       const relativePath = path.relative(sourceDirectory, sourcePath);
       const outputPath = path.join(redirectDirectory, relativePath);
       fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+      // Search Console must still read the original ownership verification file.
+      if (/^google[a-z0-9]+\.html$/.test(relativePath)) {
+        fs.copyFileSync(sourcePath, outputPath);
+        continue;
+      }
       fs.writeFileSync(outputPath, redirectDocument(relativePath));
       count += 1;
     }
