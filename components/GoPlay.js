@@ -99,8 +99,14 @@ const playOnBoard = (board, location, color, positionHistory) => {
     }
   });
 
-  if (getGroup(nextBoard, location).liberties.size === 0) {
-    return null;
+  // Resolve opponent captures first, then remove our own group if it has
+  // no liberties. Self capture is allowed under Tromp–Taylor; positional
+  // superko still applies to the resulting board.
+  const ownGroup = getGroup(nextBoard, location);
+  if (ownGroup.liberties.size === 0) {
+    ownGroup.stones.forEach(stone => {
+      nextBoard[stone] = 0;
+    });
   }
 
   const signature = boardSignature(nextBoard);
@@ -688,7 +694,7 @@ const GoPlay = () => {
   const commitMove = useCallback((location, color) => {
     const played = playOnBoard(board, location, color, positionHistory);
     if (!played) {
-      setMoveError('That move is illegal (occupied, suicide, ko, or superko).');
+      setMoveError('That move is illegal: the point is occupied or the move repeats an earlier board position.');
       return false;
     }
 
