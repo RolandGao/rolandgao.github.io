@@ -257,26 +257,8 @@ const temperatureTarget = player => {
   return match ? Number(match[1]) : 0.1;
 };
 
-const thinOpponents = players => {
-  const sorted = players.slice().sort((left, right) => left.elo - right.elo);
-  const thinned = [];
-
-  sorted.forEach(player => {
-    const previous = thinned[thinned.length - 1];
-    if (!previous || player.elo - previous.elo >= 50) thinned.push(player);
-  });
-
-  const strongest = sorted[sorted.length - 1];
-  if (strongest && !thinned.some(player => player.player === strongest.player)) {
-    thinned.push(strongest);
-  }
-
-  return thinned.sort((left, right) => left.elo - right.elo);
-};
-
-const DEFAULT_OPPONENTS = thinOpponents(
-  goplayPlayerData.players.filter(player => /^kata1-b6c96-/.test(player.player)),
-);
+// Selection and minimum rating gaps are validated when the catalog is built.
+const DEFAULT_OPPONENTS = goplayPlayerData.players;
 const DEFAULT_PLAYER = DEFAULT_OPPONENTS.reduce((closest, player) => (
   !closest || Math.abs(player.elo - DEFAULT_ELO) < Math.abs(closest.elo - DEFAULT_ELO)
     ? player
@@ -683,7 +665,8 @@ const GoPlay = () => {
 
     engine.call({
       type: 'init',
-      modelUrl: `/goplay/networks/${selectedModel}.txt.gz`,
+      modelUrl: goplayPlayerData.networks[selectedModel].url,
+      modelBytes: goplayPlayerData.networks[selectedModel].size_bytes,
       boardSize: BOARD_SIZE,
     }).then(() => {
       if (active) {

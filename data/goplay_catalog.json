@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "max_network_bytes": 100000000,
+  "min_elo_gap": 50,
+  "strongest_player": "kata1-b18c384nbt-s9761732864-d4253420187",
+  "players": [
+    "kata1-b6c96-s1248000-d550347-temp-0.3",
+    "kata1-b6c96-s1995008-d1329786-temp-0.9",
+    "kata1-b6c96-s938496-d1208807-temp-0.3",
+    "kata1-b6c96-s938496-d1208807",
+    "kata1-b6c96-s4136960-d1510003-temp-0.9",
+    "kata1-b6c96-s1995008-d1329786",
+    "kata1-b6c96-s6127360-d1754797-temp-0.9",
+    "kata1-b6c96-s5214720-d1690538-temp-0.7",
+    "kata1-b6c96-s5214720-d1690538-temp-0.5",
+    "kata1-b6c96-s4136960-d1510003-temp-0.3",
+    "kata1-b6c96-s8080640-d1961030-temp-0.7",
+    "kata1-b6c96-s10014464-d2201128-temp-0.9",
+    "kata1-b6c96-s8982784-d2082583-temp-0.7",
+    "kata1-b6c96-s8080640-d1961030-temp-0.5",
+    "kata1-b6c96-s8982784-d2082583-temp-0.5",
+    "kata1-b6c96-s8982784-d2082583-temp-0.3",
+    "kata1-b6c96-s8982784-d2082583",
+    "kata1-b6c96-s10014464-d2201128",
+    "kata1-b6c96-s11888896-d2416753-temp-0.5",
+    "kata1-b6c96-s11888896-d2416753",
+    "kata1-b6c96-s13733120-d2631546-temp-0.5",
+    "kata1-b6c96-s13733120-d2631546",
+    "kata1-b6c96-s14649344-d2727367-temp-0.3",
+    "kata1-b6c96-s16525312-d2925067-temp-0.5",
+    "kata1-b6c96-s16525312-d2925067",
+    "kata1-b6c96-s17434112-d3038653",
+    "kata1-b6c96-s18429184-d3197121",
+    "kata1-b6c96-s19408128-d3280178",
+    "kata1-b6c96-s21371392-d3529696",
+    "kata1-b6c96-s23401472-d3742377",
+    "kata1-b6c96-s24455424-d3879081",
+    "kata1-b6c96-s27415296-d4256697",
+    "kata1-b6c96-s31390976-d4781382",
+    "kata1-b6c96-s33239552-d5016295",
+    "kata1-b6c96-s37368064-d5536083",
+    "kata1-b6c96-s43286272-d6326857",
+    "kata1-b6c96-s50894592-d7380655",
+    "kata1-b6c96-s63439616-d9138325",
+    "kata1-b6c96-s78659584-d11478487",
+    "kata1-b6c96-s115648256-d17228996",
+    "kata1-b10c128-s41138688-d27396855",
+    "kata1-b10c128-s56992512-d31122236",
+    "kata1-b10c128-s108710656-d44395882",
+    "kata1-b10c128-s356821760-d90717864",
+    "kata1-b15c192-s172540416-d88080224",
+    "kata1-b15c192-s315428352-d115173910",
+    "kata1-b15c192-s798345984-d202388589",
+    "kata1-b20c256x2-s2430231552-d525879064",
+    "kata1-b20c256x2-s5055114240-d1149032340",
+    "kata1-b18c384nbt-s9761732864-d4253420187"
+  ],
+  "networks": {
+    "kata1-b10c128-s108710656-d44395882": {
+      "file": "kata1-b10c128-s108710656-d44395882.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b10c128-s108710656-d44395882.txt.gz",
+      "size_bytes": 14488412,
+      "sha256": "76c71239f0ce9747ea8e83ebc52b806ad9ab010160c19ffd7164840040dfbeb3"
+    },
+    "kata1-b10c128-s356821760-d90717864": {
+      "file": "kata1-b10c128-s356821760-d90717864.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b10c128-s356821760-d90717864.txt.gz",
+      "size_bytes": 14468292,
+      "sha256": "4c1d3035dd00986e455cb9a47e13c9cfa7db51097364d92e78bae0c770dc02fb"
+    },
+    "kata1-b10c128-s41138688-d27396855": {
+      "file": "kata1-b10c128-s41138688-d27396855.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b10c128-s41138688-d27396855.txt.gz",
+      "size_bytes": 14525424,
+      "sha256": "dfc3fe98d85d394cb46420bb46577ca563174663a4e37c6dafc8986c3a65f022"
+    },
+    "kata1-b10c128-s56992512-d31122236": {
+      "file": "kata1-b10c128-s56992512-d31122236.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b10c128-s56992512-d31122236.txt.gz",
+      "size_bytes": 14510662,
+      "sha256": "553f9ab42a2250a40f6713f0bde680b594081fec1e6effa8da747dce251db36d"
+    },
+    "kata1-b15c192-s172540416-d88080224": {
+      "file": "kata1-b15c192-s172540416-d88080224.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b15c192-s172540416-d88080224.txt.gz",
+      "size_bytes": 48099137,
+      "sha256": "5ff95d9e4f8743041720c2d77ba59f0a78c16ff3fc3b98dac8c4bc10ebbfd199"
+    },
+    "kata1-b15c192-s315428352-d115173910": {
+      "file": "kata1-b15c192-s315428352-d115173910.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b15c192-s315428352-d115173910.txt.gz",
+      "size_bytes": 48035961,
+      "sha256": "291e330a53345b4af77ea2ba9dc885640a1a92837c7ba762dde98dacda1aa1a5"
+    },
+    "kata1-b15c192-s798345984-d202388589": {
+      "file": "kata1-b15c192-s798345984-d202388589.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b15c192-s798345984-d202388589.txt.gz",
+      "size_bytes": 48021185,
+      "sha256": "f529a0d1c0c4741772c19440423782a9113b685880552facc8c061ff785a48b0"
+    },
+    "kata1-b18c384nbt-s9761732864-d4253420187": {
+      "file": "kata1-b18c384nbt-s9761732864-d4253420187.bin.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b18c384nbt-s9761732864-d4253420187.bin.gz",
+      "size_bytes": 97896221,
+      "sha256": "7754306f1b00f43d1832e7d85b6419afc0d01fa977291b32832dbb7666ade38f"
+    },
+    "kata1-b20c256x2-s2430231552-d525879064": {
+      "file": "kata1-b20c256x2-s2430231552-d525879064.bin.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b20c256x2-s2430231552-d525879064.bin.gz",
+      "size_bytes": 87357603,
+      "sha256": "770f65c5cfa6e7ebba1b972768406668afdfc2e65d61e45b8cb468677f5fea4d"
+    },
+    "kata1-b20c256x2-s5055114240-d1149032340": {
+      "file": "kata1-b20c256x2-s5055114240-d1149032340.bin.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b20c256x2-s5055114240-d1149032340.bin.gz",
+      "size_bytes": 87356821,
+      "sha256": "4817615f6707e3c218a9f2aa802b46f3589b46d8cbd788abb84ead0fe147b028"
+    },
+    "kata1-b6c96-s10014464-d2201128": {
+      "file": "kata1-b6c96-s10014464-d2201128.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s10014464-d2201128.txt.gz",
+      "size_bytes": 4991481,
+      "sha256": "760206c686a481e83bbb859c8b0062177c4717742c76ca81d8b23f960a54bfa7"
+    },
+    "kata1-b6c96-s115648256-d17228996": {
+      "file": "kata1-b6c96-s115648256-d17228996.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s115648256-d17228996.txt.gz",
+      "size_bytes": 4971334,
+      "sha256": "178ea3ee8ad293b2e1b776e5dc553d980dd3907ad15930885767e03eda1dd733"
+    },
+    "kata1-b6c96-s11888896-d2416753": {
+      "file": "kata1-b6c96-s11888896-d2416753.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s11888896-d2416753.txt.gz",
+      "size_bytes": 4987223,
+      "sha256": "25d8f45292d99493c2ba059a3c4527c5eb61d88c66744d3aac664efcaf6fd260"
+    },
+    "kata1-b6c96-s1248000-d550347": {
+      "file": "kata1-b6c96-s1248000-d550347.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s1248000-d550347.txt.gz",
+      "size_bytes": 5074165,
+      "sha256": "53213c59621497291dfad3415b44465ac82e302c3fd606381027581832be0f58"
+    },
+    "kata1-b6c96-s13733120-d2631546": {
+      "file": "kata1-b6c96-s13733120-d2631546.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s13733120-d2631546.txt.gz",
+      "size_bytes": 4984114,
+      "sha256": "23dcbed4f9abd264283dbd762463350abe760f46cb976dd7f83069788cdf8483"
+    },
+    "kata1-b6c96-s14649344-d2727367": {
+      "file": "kata1-b6c96-s14649344-d2727367.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s14649344-d2727367.txt.gz",
+      "size_bytes": 4982801,
+      "sha256": "b079db0a116698ce3cb07348fa39b9172e176a356b6fe2f670c5471e32b1f9ce"
+    },
+    "kata1-b6c96-s16525312-d2925067": {
+      "file": "kata1-b6c96-s16525312-d2925067.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s16525312-d2925067.txt.gz",
+      "size_bytes": 4980520,
+      "sha256": "d37e7501e498c9bc754d869438d8d3b4a736619fe9d7055022426aaff5dd6470"
+    },
+    "kata1-b6c96-s17434112-d3038653": {
+      "file": "kata1-b6c96-s17434112-d3038653.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s17434112-d3038653.txt.gz",
+      "size_bytes": 4978626,
+      "sha256": "5c9c52344befe2d57acf10b829cf699e999d7972cc00372c98bfe2b713253b4c"
+    },
+    "kata1-b6c96-s18429184-d3197121": {
+      "file": "kata1-b6c96-s18429184-d3197121.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s18429184-d3197121.txt.gz",
+      "size_bytes": 4978412,
+      "sha256": "fc59caa7083de7937cc515042e372e9ae90bb7f3954cafddee3eeac83e39ae99"
+    },
+    "kata1-b6c96-s19408128-d3280178": {
+      "file": "kata1-b6c96-s19408128-d3280178.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s19408128-d3280178.txt.gz",
+      "size_bytes": 4976760,
+      "sha256": "3952fe4b02579982ea211bc7b65f22a233c9a5da370bce7c9b835e6cedd00d6b"
+    },
+    "kata1-b6c96-s1995008-d1329786": {
+      "file": "kata1-b6c96-s1995008-d1329786.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s1995008-d1329786.txt.gz",
+      "size_bytes": 5054936,
+      "sha256": "a05dae87faab9a6a1559ce337af320dcfe8af7009f27881ff6ed6d382484cbe9"
+    },
+    "kata1-b6c96-s21371392-d3529696": {
+      "file": "kata1-b6c96-s21371392-d3529696.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s21371392-d3529696.txt.gz",
+      "size_bytes": 4975873,
+      "sha256": "ccac3bdb94386ccb83693eae596455273f7ee6c7abe0c81e1b617e56f4244b46"
+    },
+    "kata1-b6c96-s23401472-d3742377": {
+      "file": "kata1-b6c96-s23401472-d3742377.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s23401472-d3742377.txt.gz",
+      "size_bytes": 4975958,
+      "sha256": "30f647891fc441865b2a07c0bffa36a71a8b6e4a3636a29c5c54e2e4b3165d79"
+    },
+    "kata1-b6c96-s24455424-d3879081": {
+      "file": "kata1-b6c96-s24455424-d3879081.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s24455424-d3879081.txt.gz",
+      "size_bytes": 4975306,
+      "sha256": "36420d10c6a4bbf243d991b4a2920dc6ff42f6c2d0a1cfaa438a4daf2b0254ac"
+    },
+    "kata1-b6c96-s27415296-d4256697": {
+      "file": "kata1-b6c96-s27415296-d4256697.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s27415296-d4256697.txt.gz",
+      "size_bytes": 4974591,
+      "sha256": "0cb0c8c9fc5708ede398cf3d3a585838600ffba42976ce28145bad8ec6d8ec36"
+    },
+    "kata1-b6c96-s31390976-d4781382": {
+      "file": "kata1-b6c96-s31390976-d4781382.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s31390976-d4781382.txt.gz",
+      "size_bytes": 4974071,
+      "sha256": "eccc8a5e0dd5032aaf20cc4c103b70effe263497c41eb58302a822dda8b667f5"
+    },
+    "kata1-b6c96-s33239552-d5016295": {
+      "file": "kata1-b6c96-s33239552-d5016295.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s33239552-d5016295.txt.gz",
+      "size_bytes": 4974090,
+      "sha256": "f52168e69813815589ca0fcb0a574c0631e05d6ed6ffa5d4f77ae0cca060a99b"
+    },
+    "kata1-b6c96-s37368064-d5536083": {
+      "file": "kata1-b6c96-s37368064-d5536083.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s37368064-d5536083.txt.gz",
+      "size_bytes": 4975020,
+      "sha256": "d186af769250d8e522da34c1183ed715a1d5e98978be6e3b00acea11b688bdaf"
+    },
+    "kata1-b6c96-s4136960-d1510003": {
+      "file": "kata1-b6c96-s4136960-d1510003.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s4136960-d1510003.txt.gz",
+      "size_bytes": 5025737,
+      "sha256": "cf197f535434d11dc55ca0302f785edb18141433ea6c54f04ee55dd2ff9aa2f9"
+    },
+    "kata1-b6c96-s43286272-d6326857": {
+      "file": "kata1-b6c96-s43286272-d6326857.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s43286272-d6326857.txt.gz",
+      "size_bytes": 4976037,
+      "sha256": "1c4f24d160568491485ed90c142ec60d6a0f33f19428bd07d860fadf9220d6ca"
+    },
+    "kata1-b6c96-s50894592-d7380655": {
+      "file": "kata1-b6c96-s50894592-d7380655.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s50894592-d7380655.txt.gz",
+      "size_bytes": 4975526,
+      "sha256": "f27003f5b13822e365a27e0bd2918dce6adef018f5cec102f0a15a34205ec228"
+    },
+    "kata1-b6c96-s5214720-d1690538": {
+      "file": "kata1-b6c96-s5214720-d1690538.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s5214720-d1690538.txt.gz",
+      "size_bytes": 5017539,
+      "sha256": "9c12b6b02f9b52052ed12ea586921fe9f8c05795d88cfcac3acb6eadc2a89f5e"
+    },
+    "kata1-b6c96-s6127360-d1754797": {
+      "file": "kata1-b6c96-s6127360-d1754797.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s6127360-d1754797.txt.gz",
+      "size_bytes": 5008928,
+      "sha256": "493f3537fe0adfef16c898c223eaa78f243a199ac3f6c00343f0da3b9ba12b51"
+    },
+    "kata1-b6c96-s63439616-d9138325": {
+      "file": "kata1-b6c96-s63439616-d9138325.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s63439616-d9138325.txt.gz",
+      "size_bytes": 4974495,
+      "sha256": "5db3e5ac0a38e4ef40acd2127ad7bf22d0702d652514d280e2f2803db6dbbb52"
+    },
+    "kata1-b6c96-s78659584-d11478487": {
+      "file": "kata1-b6c96-s78659584-d11478487.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s78659584-d11478487.txt.gz",
+      "size_bytes": 4973561,
+      "sha256": "7553ba808087b3561e1cdf5dd1ba464187e77d5d617fd7bc315eb256adb44f86"
+    },
+    "kata1-b6c96-s8080640-d1961030": {
+      "file": "kata1-b6c96-s8080640-d1961030.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s8080640-d1961030.txt.gz",
+      "size_bytes": 4999191,
+      "sha256": "bb7cac22fab47560a8778fd291069fbb2f42ea3323ad6a9f2a952cff44b81463"
+    },
+    "kata1-b6c96-s8982784-d2082583": {
+      "file": "kata1-b6c96-s8982784-d2082583.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s8982784-d2082583.txt.gz",
+      "size_bytes": 4995550,
+      "sha256": "7b7d561835c2821c9ddfb1c8fd1688ba20e4a252f1dea15268b0361653ef7b59"
+    },
+    "kata1-b6c96-s938496-d1208807": {
+      "file": "kata1-b6c96-s938496-d1208807.txt.gz",
+      "source_url": "https://media.katagotraining.org/uploaded/networks/models/kata1/kata1-b6c96-s938496-d1208807.txt.gz",
+      "size_bytes": 5077550,
+      "sha256": "d07ae856740d284494325661d7cbcde0d1aa3ece3ede6b54c70f2fa5da9e0c09"
+    }
+  }
+}

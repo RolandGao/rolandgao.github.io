@@ -63,41 +63,46 @@ const postProgress = (loaded, total) => {
   postMessage({ type: 'progress', loaded, total });
 };
 
-const downloadModel = async url => {
-  const response = await fetch(url, { cache: 'no-store' });
+const downloadModel = async (url, expectedBytes) => {
+  const response = await fetch(url, { cache: 'no-store', credentials: 'omit' });
   if (!response.ok) {
     throw new Error(`model request failed (${response.status})`);
   }
 
-  const total = Number(response.headers.get('content-length')) || 0;
-  if (!response.body || !total) {
+  const total = expectedBytes;
+  if (!Number.isSafeInteger(total) || total <= 0 || total > 100000000) {
+    throw new Error('invalid network size in the opponent catalog');
+  }
+  if (!response.body) {
     const buffer = await response.arrayBuffer();
+    if (buffer.byteLength !== total) throw new Error('incomplete network download');
     postProgress(buffer.byteLength, buffer.byteLength);
     return new Uint8Array(buffer);
   }
 
   const reader = response.body.getReader();
-  const chunks = [];
+  // Allocate once: retaining chunks and combining them doubles the memory
+  // needed for a large compressed network.
+  const bytes = new Uint8Array(total);
   let loaded = 0;
 
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
-    chunks.push(value);
+    if (loaded + value.byteLength > total) {
+      await reader.cancel();
+      throw new Error('network download exceeds its expected size');
+    }
+    bytes.set(value, loaded);
     loaded += value.byteLength;
     postProgress(loaded, total);
   }
 
-  const bytes = new Uint8Array(loaded);
-  let offset = 0;
-  chunks.forEach(chunk => {
-    bytes.set(chunk, offset);
-    offset += chunk.byteLength;
-  });
+  if (loaded !== total) throw new Error('incomplete network download');
   return bytes;
 };
 
-const initialize = async ({ modelUrl, boardSize: requestedBoardSize }) => {
+const initialize = async ({ modelUrl, modelBytes: expectedBytes, boardSize: requestedBoardSize }) => {
   boardSize = requestedBoardSize;
   moduleInstance = await createKata({
     locateFile: file => file.endsWith('.wasm')
@@ -106,9 +111,11 @@ const initialize = async ({ modelUrl, boardSize: requestedBoardSize }) => {
   });
 
   moduleInstance.ccall('kgeSetForceCpu', null, ['number'], [1]);
-  const modelBytes = await downloadModel(modelUrl);
-  modelPath = '/selected-model.txt.gz';
-  moduleInstance.FS.writeFile(modelPath, modelBytes);
+  const modelBytes = await downloadModel(modelUrl, expectedBytes);
+  // KataGo selects the text/binary parser from the filename extension.
+  const extension = new URL(modelUrl).pathname.endsWith('.bin.gz') ? 'bin.gz' : 'txt.gz';
+  modelPath = `/selected-model.${extension}`;
+  moduleInstance.FS.writeFile(modelPath, modelBytes, { canOwn: true });
 
   const loaded = await moduleInstance.ccall(
     'kgeLoad',
@@ -124,6 +131,9 @@ const initialize = async ({ modelUrl, boardSize: requestedBoardSize }) => {
   if (moduleInstance.ccall('kgeBackendIsGpu', 'number', [], [])) {
     throw new Error('CPU-only mode could not be enabled');
   }
+  // The evaluator now owns the parsed weights; release the compressed file.
+  moduleInstance.FS.unlink(modelPath);
+  modelPath = '';
 
   moveLocationsPointer = moduleInstance._malloc(MAX_MOVES * 4);
   moveColorsPointer = moduleInstance._malloc(MAX_MOVES * 4);

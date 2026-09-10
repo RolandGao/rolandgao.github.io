@@ -15,10 +15,14 @@ Runtime provenance
 - CPU backend: Eigen 3.4.0, compiled with EIGEN_MPL2_ONLY.
 - GoPlay's build excludes the WebGPU backend. Dawn and half are not present in
   the distributed JavaScript or WebAssembly.
-- Base kata1-b6c96 network weights come from:
+- The selected kata1-b6c96, b10c128, b15c192, b20c256x2, and b18c384nbt
+  network weights come from:
   https://katagotraining.org/networks/
 - The same base checkpoint may be used by more than one temperature-labelled
   opponent.
+- Weights are distributed from the repository's networks/goplay/ directory
+  through GitHub raw downloads. Their filenames, source URLs, sizes, and
+  SHA-256 hashes are recorded in data/goplay_catalog.json.
 
 Source availability for MPL-covered Eigen files
 ------------------------------------------------
