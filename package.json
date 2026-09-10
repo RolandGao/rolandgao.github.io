@@ -22,15 +22,20 @@
     "prebuild": "node scripts/generate-goplay-opponents.js",
     "build": "next build",
     "lint": "eslint .",
-    "start": "next start",
+    "start": "wrangler dev --local",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d out",
+    "deploy": "wrangler deploy",
     "postbuild": "node scripts/generate-sitemap.js"
   },
   "devDependencies": {
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.4",
-    "gh-pages": "^6.3.0"
+    "wrangler": "^4.130.0"
+  },
+  "overrides": {
+    "miniflare": {
+      "sharp": "^0.35.4"
+    }
   },
   "browserslist": {
     "production": [

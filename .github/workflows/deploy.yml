@@ -16,14 +16,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # If you need Node – replace with setup-python, setup-go, etc. for other stacks
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      # Install deps and build your site
-      - run: npm ci           # or pnpm install / yarn install
-      - run: npm run build    # make sure dist/ (or out/) is produced
+      - run: npm ci
+      - run: npm run build
 
       # Only GitHub Pages receives redirects; Cloudflare still publishes out/.
       - run: node scripts/generate-github-pages-redirects.js

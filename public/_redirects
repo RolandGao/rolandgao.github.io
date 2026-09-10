@@ -1,0 +1,5 @@
+# Cloudflare Workers Static Assets: permanently redirect the renamed article.
+# Keep the exported legacy page as a fallback for GitHub Pages and local previews.
+/blog/unsaturated_evals_before_gpt5 /blog/finding_unsaturated_evals/ 301
+/blog/unsaturated_evals_before_gpt5/ /blog/finding_unsaturated_evals/ 301
+/blog/unsaturated_evals_before_gpt5/index.html /blog/finding_unsaturated_evals/ 301

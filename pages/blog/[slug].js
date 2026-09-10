@@ -105,13 +105,16 @@ const BlogPostPage = ({
       title={pageTitle}
       description={pageDescription}
       canonicalPath={canonicalPath}
+      ogType="article"
       structuredData={isLegacySlug ? null : articleStructuredData}
     >
-      {isLegacySlug ? (
-        <Head>
+      <Head>
+        <meta property="article:published_time" content={metadata.date} />
+        <meta property="article:modified_time" content={metadata.updated || metadata.date} />
+        {isLegacySlug ? (
           <meta httpEquiv="refresh" content={`0; url=${canonicalPath}`} />
-        </Head>
-      ) : null}
+        ) : null}
+      </Head>
       <article className={`blog-post${featureClass}`}>
         <header>
           <h1>{metadata.title}</h1>

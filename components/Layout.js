@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { SITE_URL, SOCIAL_IMAGE_URL } from '../lib/site';
+import { SITE_NAME, SITE_URL, SOCIAL_IMAGE_URL } from '../lib/site';
 
 const DEFAULT_DESCRIPTION =
   'Independent AI researcher exploring alignment, adversarial training, long-context systems, optimization, and scalable reinforcement learning. Formerly at Meta.';
@@ -47,6 +47,7 @@ const Layout = ({
   title = 'Roland Gao',
   description = DEFAULT_DESCRIPTION,
   canonicalPath,
+  ogType = 'website',
   structuredData,
   children,
 }) => {
@@ -68,6 +69,8 @@ const Layout = ({
         <meta name="google-site-verification" content="pHoclPMk7JxKTzhumOUZkGq9YA5Tg3zCDWPOvitT09U" />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content={ogType} />
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={SOCIAL_IMAGE_URL} />

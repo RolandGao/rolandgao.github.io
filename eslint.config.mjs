@@ -13,6 +13,8 @@ export default defineConfig([
   globalIgnores([
     '.next/**',
     'out/**',
+    'out-github-redirects/**',
+    '.wrangler/**',
     'build/**',
   ]),
 ]);

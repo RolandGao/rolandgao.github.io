@@ -13,6 +13,7 @@
 /build
 /out
 /out-github-redirects
+/.wrangler
 
 # misc
 .DS_Store
