@@ -31,27 +31,34 @@ const MODEL_CHART_COLORS = {
 const MODEL_NAMES = {
   'opus-5': 'Claude Opus 5',
   'DeepSeek-V4-Flash-0731': 'DeepSeek V4 Flash 0731',
+  'DeepSeek-V4.1-Flash': 'DeepSeek V4.1 Flash',
   'gpt6-astra': 'GPT-6 Astra',
   'gpt5.6-sol': 'GPT-5.6 Sol',
   'gpt5.6-luna': 'GPT-5.6 Luna',
   'gemini-3.6-flash': 'Gemini 3.6 Flash',
+  'gemini-3.1-pro': 'Gemini 3.1 Pro',
   'gemini-3.8-flash': 'Gemini 3.8 Flash',
   'muse-spark-1.3-contributor': 'Muse Spark 1.3 Contributor',
   'grok-4.6': 'Grok 4.6',
 };
 
+const isApiMultiRun = player => /-api-multi\d*$/.test(player);
+const isCodexRun = player => /-codex(?:-|$)/.test(player);
+
 const getPlayerPresentation = player => {
-  const baseName = player.replace(/-api(?:-multi\d*)?$/, '');
+  const codexRun = player.match(/-codex(?:-(.+))?$/);
+  const runLabel = codexRun ? ' · Codex' + (codexRun[1] ? ' · ' + codexRun[1] : '') : '';
+  const baseName = player.replace(/-api(?:-multi\d*)?$|-codex(?:-.*)?$/, '');
   const match = baseName.match(/^(.*)-(low|high|xhigh|max)$/);
   if (!match) {
-    return { model: baseName, label: MODEL_NAMES[baseName] || baseName, shape: 'circle' };
+    return { model: baseName, label: (MODEL_NAMES[baseName] || baseName) + runLabel, shape: 'circle' };
   }
 
   const reasoning = REASONING_PRESENTATION[match[2]];
   return {
     model: match[1],
     reasoning: match[2],
-    label: (MODEL_NAMES[match[1]] || match[1]) + ' · ' + reasoning.label,
+    label: (MODEL_NAMES[match[1]] || match[1]) + ' · ' + reasoning.label + runLabel,
     shape: reasoning.shape,
   };
 };
@@ -205,12 +212,17 @@ const formatCompactCost = value => {
 };
 
 const getTableRows = data => {
-  const llmRows = data.datasets.llm_players.map((player, resultOrder) => {
+  const llmPlayers = data.datasets.llm_players.filter(player => isApiMultiRun(player.player));
+  const llmRows = llmPlayers.map((player, resultOrder) => {
     const presentation = getPlayerPresentation(player.player);
+    // Keep confidence-interval-overlap ranks relative to the displayed runs.
+    const bestRank = 1 + llmPlayers.filter(other => other.ci_low > player.ci_high).length;
+    const worstRank = llmPlayers.length - llmPlayers.filter(other => other.ci_high < player.ci_low).length;
 
     return {
       ...player,
       ...presentation,
+      rank: bestRank === worstRank ? String(bestRank) : bestRank + '-' + worstRank,
       resultOrder,
       seconds: player.api_seconds_per_move,
       cost: player.cost_usd_per_move,
@@ -230,7 +242,7 @@ const getTableRows = data => {
 
 const Leaderboard = ({ data }) => {
   const rows = useMemo(() => getTableRows(data), [data]);
-  const resultCount = data.datasets.llm_players.length;
+  const resultCount = rows.filter(row => row.rowType === 'llm').length;
   const [sort, setSort] = useState(null);
 
   const displayedRows = useMemo(() => {
@@ -687,7 +699,10 @@ const ChartPanel = ({
 };
 
 const CostChart = ({ data }) => {
-  const llmPlayers = data.datasets.llm_players;
+  const llmPlayers = useMemo(
+    () => data.datasets.llm_players.filter(player => isApiMultiRun(player.player)),
+    [data.datasets.llm_players],
+  );
   const katagoPlayers = useMemo(() => data.datasets.katago_players.filter(player =>
     Number.isFinite(player.cost_usd_per_move) && player.cost_usd_per_move > 0,
   ), [data.datasets.katago_players]);
@@ -1059,7 +1074,11 @@ const compactGamePlayerName = (player, katagoPlayers) => {
 };
 
 const GameReplayer = ({ data }) => {
-  const games = data.datasets.llm_vs_katago_games;
+  const games = useMemo(
+    () => data.datasets.llm_vs_katago_games.filter(game =>
+      isApiMultiRun(game.llm_player) || isCodexRun(game.llm_player)),
+    [data.datasets.llm_vs_katago_games],
+  );
   const katagoPlayers = data.datasets.katago_players;
   const replayLlmRatings = useMemo(
     () => new Map(
@@ -1070,6 +1089,7 @@ const GameReplayer = ({ data }) => {
   );
   const llmPlayers = useMemo(() =>
     Array.from(new Set(games.map(game => game.llm_player))).sort((left, right) =>
+      Number(isCodexRun(left)) - Number(isCodexRun(right)) ||
       (replayLlmRatings.get(right) ?? Number.NEGATIVE_INFINITY) -
       (replayLlmRatings.get(left) ?? Number.NEGATIVE_INFINITY),
     ),
