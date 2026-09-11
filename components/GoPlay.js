@@ -513,6 +513,7 @@ const GoPlay = () => {
 
   const ratingEstimate = useMemo(() => estimatePlayerElo(gameHistory), [gameHistory]);
   const ratingConfidenceInterval = CONFIDENCE_95_Z_SCORE * ratingEstimate.standardDeviation;
+  const recentMove = moves[moves.length - 1];
 
   const lastHumanMoveIndex = useMemo(() => {
     for (let index = moves.length - 1; index >= 0; index -= 1) {
@@ -961,6 +962,15 @@ const GoPlay = () => {
 
           {engineState.error ? <p className="goplay-inline-error">{engineState.error}</p> : null}
           {moveError ? <p className="goplay-inline-error">{moveError}</p> : null}
+
+          <div className="goplay-latest-move" role="status" aria-live="polite" aria-atomic="true">
+            <span>Latest move</span>
+            <strong>
+              {recentMove
+                ? `${colorName(recentMove.col)} ${toCoordinate(recentMove.loc)}`
+                : 'No moves played'}
+            </strong>
+          </div>
 
           <div className="goplay-actions">
             {startGameButton ? <div className="goplay-start-desktop">{startGameButton}</div> : null}
