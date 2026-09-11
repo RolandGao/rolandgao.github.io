@@ -848,9 +848,6 @@ const GoPlay = () => {
   }, []);
 
   const statusText = (() => {
-    if (engineState.status === 'idle') {
-      return 'Ready to load the selected opponent';
-    }
     if (engineState.status === 'loading') {
       const percentage = Math.round(engineState.progress * 100);
       return `Loading selected model${percentage ? ` · ${percentage}%` : '…'}`;
@@ -858,10 +855,34 @@ const GoPlay = () => {
     if (engineState.status === 'error') return 'Engine failed to load';
     return result;
   })();
-  const showStatus = (
+  const showStatus = engineState.status !== 'idle' && (
     engineState.status !== 'ready' ||
     gameState !== 'playing'
   );
+
+  const statusMessage = showStatus ? (
+    <div className={gameState === 'playing' ? 'goplay-status' : 'goplay-status is-finished'} aria-live="polite">
+      <span>{statusText}</span>
+      {engineState.status === 'loading' ? (
+        <span className="goplay-progress" aria-hidden="true">
+          <span style={{ width: `${Math.max(4, engineState.progress * 100)}%` }} />
+        </span>
+      ) : null}
+    </div>
+  ) : null;
+
+  const startGameButton = ['idle', 'error'].includes(engineState.status) ? (
+    <button
+      type="button"
+      className="is-primary goplay-start"
+      onClick={() => {
+        setEngineState({ status: 'loading', progress: 0, error: '' });
+        setEngineLoadAttempt(attempt => attempt + 1);
+      }}
+    >
+      {engineState.status === 'error' ? 'Retry loading' : 'Start game'}
+    </button>
+  ) : null;
 
   return (
     <section id="goplay" className="goplay-root" aria-label="Play 9 by 9 Go against KataGo">
@@ -914,6 +935,12 @@ const GoPlay = () => {
               ))}
             </div>
           </div>
+          {engineState.status === 'loading' ? (
+            <div className="goplay-loading-mobile">{statusMessage}</div>
+          ) : null}
+          {startGameButton ? (
+            <div className="goplay-actions goplay-start-mobile">{startGameButton}</div>
+          ) : null}
         </div>
 
         <div className="goplay-board-shell">
@@ -927,13 +954,8 @@ const GoPlay = () => {
 
         <div className="goplay-controls">
           {showStatus ? (
-            <div className={gameState === 'playing' ? 'goplay-status' : 'goplay-status is-finished'} aria-live="polite">
-              <span>{statusText}</span>
-              {engineState.status === 'loading' ? (
-                <span className="goplay-progress" aria-hidden="true">
-                  <span style={{ width: `${Math.max(4, engineState.progress * 100)}%` }} />
-                </span>
-              ) : null}
+            <div className={engineState.status === 'loading' ? 'goplay-loading-desktop' : undefined}>
+              {statusMessage}
             </div>
           ) : null}
 
@@ -941,18 +963,7 @@ const GoPlay = () => {
           {moveError ? <p className="goplay-inline-error">{moveError}</p> : null}
 
           <div className="goplay-actions">
-            {['idle', 'error'].includes(engineState.status) ? (
-              <button
-                type="button"
-                className="is-primary goplay-start"
-                onClick={() => {
-                  setEngineState({ status: 'loading', progress: 0, error: '' });
-                  setEngineLoadAttempt(attempt => attempt + 1);
-                }}
-              >
-                {engineState.status === 'error' ? 'Retry loading' : 'Start game'}
-              </button>
-            ) : null}
+            {startGameButton ? <div className="goplay-start-desktop">{startGameButton}</div> : null}
             <button
               type="button"
               disabled={
@@ -996,15 +1007,12 @@ const GoPlay = () => {
             ) : null}
           </div>
 
-          <div className="goplay-moves" aria-label="Recent moves">
-            <span>Recent moves</span>
-            <div>
-              {moves.length ? moves.slice(-8).map((move, index) => (
-                <span key={`${moves.length - 8 + index}-${move.loc}`}>
-                  {moves.length - Math.min(8, moves.length) + index + 1}. {move.col === 1 ? 'B' : 'W'} {toCoordinate(move.loc)}
-                </span>
-              )) : <em>No moves yet</em>}
-            </div>
+          <div className="goplay-estimated-elo">
+            <span>Your estimated Elo</span>
+            <strong aria-label={`${formatElo(ratingEstimate.rating)} plus or minus ${formatElo(ratingConfidenceInterval)} Elo at 95 percent confidence`}>
+              {formatElo(ratingEstimate.rating)}
+              <span>± {formatElo(ratingConfidenceInterval)}</span>
+            </strong>
           </div>
         </div>
       </div>
@@ -1037,16 +1045,6 @@ const GoPlay = () => {
             </button>
           </div>
         </header>
-
-        <div className="goplay-history-summary">
-          <div className="goplay-estimated-elo">
-            <span>Your estimated Elo</span>
-            <strong aria-label={`${formatElo(ratingEstimate.rating)} plus or minus ${formatElo(ratingConfidenceInterval)} Elo at 95 percent confidence`}>
-              {formatElo(ratingEstimate.rating)}
-              <span>± {formatElo(ratingConfidenceInterval)}</span>
-            </strong>
-          </div>
-        </div>
 
         {historyError ? <p className="goplay-inline-error">{historyError}</p> : null}
 

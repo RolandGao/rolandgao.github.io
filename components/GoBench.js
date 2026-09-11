@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useGoBenchData } from './GoBenchData';
 import ProviderLogo, { getProvider } from './ProviderLogo';
@@ -137,7 +137,7 @@ const TABLE_COLUMNS = [
     render: row => (
       <span className="gobench-cost-value">
         <span className="gobench-cost-value-full">{formatCost(row.cost)}</span>
-        <span className="gobench-cost-value-compact" aria-hidden="true">
+        <span className="gobench-cost-value-compact">
           {formatCompactCost(row.cost)}
         </span>
       </span>
@@ -232,7 +232,6 @@ const Leaderboard = ({ data }) => {
   const rows = useMemo(() => getTableRows(data), [data]);
   const resultCount = data.datasets.llm_players.length;
   const [sort, setSort] = useState(null);
-  const [isHorizontallyScrolled, setIsHorizontallyScrolled] = useState(false);
 
   const displayedRows = useMemo(() => {
     if (!sort) {
@@ -285,21 +284,15 @@ const Leaderboard = ({ data }) => {
     <section className="gobench-section" aria-labelledby="gobench-leaderboard-heading">
       <div className="gobench-section-header">
         <h2 id="gobench-leaderboard-heading">Leaderboard</h2>
-        <p className="gobench-caption">API results · Elo ± 95% confidence interval. Select a column heading to sort.</p>
       </div>
+      <div id="gobench-scroll-hint" className="gobench-scroll-hint">Scroll horizontally for all columns, including seconds per move →</div>
       <div className="gobench-table-shell">
         <div
-          className={
-            isHorizontallyScrolled
-              ? 'gobench-table-scroll is-horizontally-scrolled'
-              : 'gobench-table-scroll'
-          }
-          onScroll={event => {
-            const nextIsScrolled = event.currentTarget.scrollLeft > 1;
-            if (nextIsScrolled !== isHorizontallyScrolled) {
-              setIsHorizontallyScrolled(nextIsScrolled);
-            }
-          }}
+          className="gobench-table-scroll"
+          tabIndex={0}
+          role="region"
+          aria-label="GoBench leaderboard"
+          aria-describedby="gobench-scroll-hint"
         >
           <table className="gobench-table">
             <colgroup>
@@ -364,7 +357,8 @@ const Leaderboard = ({ data }) => {
                   <Fragment key={row.player}>
                     {isFirstReference ? (
                       <tr className="gobench-reference-heading">
-                        <th colSpan={TABLE_COLUMNS.length} scope="rowgroup">
+                        <th className="is-rank" aria-hidden="true" />
+                        <th colSpan={TABLE_COLUMNS.length - 1} scope="rowgroup">
                           <span>KataGo references</span>
                         </th>
                       </tr>
@@ -460,15 +454,24 @@ const PointGlyph = ({
     <g
       className={muted ? 'gobench-chart-point is-muted' : 'gobench-chart-point'}
       transform={'translate(' + x + ' ' + y + ')'}
-      role="img"
+      role={muted ? "img" : "button"}
       aria-label={label}
       tabIndex={muted ? undefined : 0}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onFocus={onEnter}
       onBlur={onLeave}
+      onClick={event => { event.stopPropagation(); onEnter(); }}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onEnter();
+        }
+        if (event.key === 'Escape') onLeave();
+      }}
     >
       <title>{label}</title>
+      <circle r="12" fill="transparent" aria-hidden="true" />
       <PointMarker shape={shape} color={color} muted={muted} />
     </g>
   );
@@ -489,9 +492,33 @@ const ChartPanel = ({
   yDomain = [0, 4600],
   yTicks = [0, 1000, 2000, 3000, 4000],
 }) => {
-  const width = 560;
-  const height = 390;
-  const margin = { top: 45, right: 22, bottom: 60, left: 96 };
+  const canvasRef = useRef(null);
+  const [width, setWidth] = useState(560);
+  const [heightLimit, setHeightLimit] = useState(390);
+  useEffect(() => {
+    const observer = new ResizeObserver(([entry]) => {
+      setWidth(Math.min(720, Math.max(240, entry.contentRect.width)));
+    });
+    const resize = () => {
+      const shortLandscape = window.matchMedia(
+        '(min-width: 568px) and (max-height: 600px) and (orientation: landscape)',
+      ).matches;
+      setHeightLimit(shortLandscape ? Math.max(240, window.innerHeight - 104) : 390);
+    };
+    observer.observe(canvasRef.current);
+    resize();
+    window.addEventListener('resize', resize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+  const compact = width < 420;
+  const height = Math.min(compact ? 340 : 390, heightLimit);
+  const margin = { top: 32, right: 26, bottom: 60, left: compact ? 62 : 80 };
+  const visibleXTicks = compact && xTicks.length > 4
+    ? xTicks.filter((_, index) => index % 2 === 0)
+    : xTicks;
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
   const [hovered, setHovered] = useState(null);
@@ -516,10 +543,11 @@ const ChartPanel = ({
   return (
     <div className="gobench-chart-panel">
       {showTitle ? <div className="gobench-chart-title">{title}</div> : null}
-      <div className="gobench-chart-canvas">
+      <div className="gobench-chart-canvas" ref={canvasRef}>
         <svg
           viewBox={'0 0 ' + width + ' ' + height}
-          role="img"
+          role="group"
+          onClick={() => setHovered(null)}
           aria-label={title + ': Elo by cost per move'}
         >
           {yTicks.map(tick => {
@@ -540,7 +568,7 @@ const ChartPanel = ({
             );
           })}
 
-          {xTicks.map(tick => {
+          {visibleXTicks.map(tick => {
             const x = xPosition(tick.value);
             return (
               <g key={'x-' + tick.value}>
@@ -629,7 +657,7 @@ const ChartPanel = ({
             y={height - 10}
             textAnchor="middle"
           >
-            Cost / move
+            Cost / move (USD)
           </text>
           <text
             className="gobench-chart-axis-label"
@@ -785,7 +813,6 @@ const CostChart = ({ data }) => {
             <span>{reasoning.label}</span>
           </span>
         ))}
-        <span className="gobench-series-note">Lines connect efforts of the same model.</span>
       </div>
     </section>
   );
@@ -1283,16 +1310,19 @@ const GameReplayer = ({ data }) => {
             </strong>
           </div>
 
-          <div
-            className="gobench-move-strip"
-            data-count={visibleMoves.length}
-            aria-hidden="true"
-          >
-            {visibleMoves.length ? visibleMoves.map(move => (
-              <span key={move.number} className={move.number === currentMove?.number ? 'is-current' : undefined}>
-                {move.number} {move.move}
-              </span>
-            )) : <span className="is-empty">No moves played</span>}
+          <div className="gobench-recent-moves" role="group" aria-label="Last eight moves">
+            <span className="gobench-recent-moves-label">Recent moves</span>
+            <div className="gobench-move-strip">
+              {visibleMoves.length ? visibleMoves.map(move => (
+                <span
+                  key={move.number}
+                  className={move.number === currentMove?.number ? 'is-current' : undefined}
+                  title={'Move ' + move.number}
+                >
+                  {move.color} {move.move}
+                </span>
+              )) : <span>No moves played</span>}
+            </div>
           </div>
 
         </div>

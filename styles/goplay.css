@@ -337,40 +337,18 @@
   background: var(--goplay-accent-dark);
 }
 
-.goplay-actions .goplay-start {
+.goplay-actions .goplay-start,
+.goplay-start-desktop {
   grid-column: 1 / -1;
 }
 
-.goplay-moves {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid var(--goplay-line);
+.goplay-start-desktop .goplay-start {
+  width: 100%;
 }
 
-.goplay-moves > span {
-  color: var(--goplay-muted);
-  font-size: 0.69rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.goplay-moves > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 8px;
-}
-
-.goplay-moves > div span,
-.goplay-moves em {
-  padding: 3px 6px;
-  border-radius: 4px;
-  background: #f0eee9;
-  color: #5f5b54;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.67rem;
-  font-style: normal;
+.goplay-actions.goplay-start-mobile,
+.goplay-loading-mobile {
+  display: none;
 }
 
 .goplay-history {
@@ -445,13 +423,8 @@
   background: #fff3f1;
 }
 
-.goplay-history-summary {
-  padding: 16px 22px;
-  border-bottom: 1px solid var(--goplay-line);
-  background: #faf9f6;
-}
-
 .goplay-estimated-elo {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -643,6 +616,29 @@
 }
 
 @media (max-width: 900px) {
+  .goplay-actions.goplay-start-mobile {
+    display: grid;
+    margin-top: 20px;
+  }
+
+  .goplay-start-mobile .goplay-start {
+    min-height: 44px;
+  }
+
+  .goplay-start-desktop,
+  .goplay-loading-desktop {
+    display: none;
+  }
+
+  .goplay-loading-mobile {
+    display: block;
+    margin-top: 20px;
+  }
+
+  .goplay-loading-mobile .goplay-status {
+    margin-bottom: 0;
+  }
+
   .goplay-loading--reserved {
     min-height: calc(100vw + 597px);
   }
@@ -711,33 +707,78 @@
     padding: 17px 15px;
   }
 
-  .goplay-history-summary {
-    padding: 14px 15px;
-  }
-
   .goplay-history-table {
     min-width: 610px;
   }
 
 }
 
-@media (max-width: 900px) and (max-height: 500px) {
+@media (min-width: 568px) and (max-height: 600px) and (orientation: landscape) {
+  .goplay-game {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr);
+    grid-template-rows: auto 1fr;
+    overflow: clip;
+  }
+
   .goplay-board-shell {
-    padding: 4px;
+    position: sticky;
+    top: 12px;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: start;
+    padding: 10px;
   }
 
   .goplay-board {
-    width: min(100%, max(160px, calc(100vh - 90px)));
-    width: min(100%, max(160px, calc(100dvh - 90px)));
+    width: min(100%, calc(100svh - 44px));
+  }
+
+  .goplay-settings,
+  .goplay-controls {
+    grid-column: 2;
+    padding: 12px;
+    border-left: 1px solid var(--goplay-line);
+  }
+
+  .goplay-settings {
+    grid-row: 1;
+    padding-bottom: 0;
+    border-bottom: 0;
   }
 
   .goplay-controls {
-    padding: 10px 15px;
+    grid-row: 2;
+    border-top: 0;
   }
 
-  .goplay-moves {
+  .goplay-field + .goplay-field,
+  .goplay-estimated-elo {
+    margin-top: 12px;
+  }
+
+  .goplay-actions.goplay-start-mobile,
+  .goplay-loading-mobile {
     display: none;
   }
+
+  .goplay-start-desktop,
+  .goplay-loading-desktop {
+    display: block;
+  }
+
+  .goplay-color-picker button,
+  .goplay-actions button {
+    min-height: 44px;
+  }
+
+  .goplay-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .goplay-actions > button:last-child:nth-of-type(4) {
+    grid-column: 1 / -1;
+  }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

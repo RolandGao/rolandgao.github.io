@@ -24,6 +24,6 @@ We believe GoBench can measure progress toward AGI. There are three ways to satu
 
 ## GoPlay
 
-Play 9×9 Go against the same calibrated KataGo opponents. Pick an Elo, choose a color, and click **Start game** to play locally in your browser. Tromp–Taylor area scoring · 7 komi · Self capture allowed.
+Play 9×9 Go against the same calibrated KataGo opponents. Pick an Elo, choose a color, and click **Start game** to play locally in your browser. Tromp-Taylor rules: area scoring, self-capture allowed, positional superko. 7 komi.
 
 <div><goplay></goplay></div>
