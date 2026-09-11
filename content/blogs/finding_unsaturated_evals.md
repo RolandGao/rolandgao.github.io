@@ -4,22 +4,23 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 | Category     | Benchmark                                                      |      Score | Best model                       |
 | ------------ | -------------------------------------------------------------- | ---------: | -------------------------------- |
-| Puzzles      | [SimpleBench](https://simple-bench.com/)                       |        82% | Fable 5                          |
-| Puzzles      | [MazeBench](https://mazebench.com/leaderboard/ai)              |        1% | Opus 5                          |
-| Coding      | [Code Migration](https://www.vals.ai/benchmarks/code-migration)  |        57% | Opus 5                         |
-| Coding       | [ProgramBench](https://www.vals.ai/benchmarks/programbench)    |         3% | Opus 5 |
-| Game       | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) | 11k / $63k | Opus 5                  |
-| Game        | [Chess](https://dubesor.de/chess/chess-leaderboard)            |   1.8k Elo | Gemini 3.0 Pro                   |
-| Vision       | [ZeroBench](https://zerobench.github.io/)                      |        30% | GPT-5.6 |
-| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |        63% | GPT-5.6             |
+| Puzzles      | [SimpleBench](https://simple-bench.com/)                       |        87% | Fable 5.1                          |
+| Puzzles      | [MazeBench](https://mazebench.com/leaderboard/ai)              |        14% | GPT-6 Astra                 |
+| Coding      | [Code Migration](https://www.vals.ai/benchmarks/code-migration)  |        68% | GPT-6 Astra                         |
+| Coding       | [Terminal-Bench 4](https://www.tbench.ai/)    |         58% | GPT-6 Astra |
+| Game       | [GoBench](https://rolandgao.com/blog/gobench/)    |         2500 Elo / 4400 Elo | GPT-6 Astra |
 | Law       | [Harvey's Legal Agent Benchmark](https://www.vals.ai/benchmarks/hlab)    |         25% | Muse Spark 1.2|
 
 
 <!-- | Coding       | [SlopCodeBench](https://www.scbench.ai/leaderboard)            |        14% | GPT 5.5 (no GPT-5.6) | -->
 
-<!-- | Game        | [GoBench]()            |   1.8k Elo | Gemini 3.0 Pro                   | -->
 
 <!-- ## Recently saturated evals
+| Vision       | [ZeroBench](https://zerobench.github.io/)                      |        30% | GPT-5.6 (no Astra yet) |
+| Coding       | [ProgramBench](https://www.vals.ai/benchmarks/programbench)    |         7% | Fable 5.1 |
+| Long context | [MRCR (512k, 8 needles)](https://contextarena.ai/?needles=8)   |        63% | GPT-5.6             |
+| Game       | [Vending-Bench 2](https://andonlabs.com/evals/vending-bench-2) | 11k / $63k | Opus 5                  |
+| Game        | [Chess](https://dubesor.de/chess/chess-leaderboard)            |   1.8k Elo | Gemini 3.0 Pro                   |
 https://www.frontierbench.ai/
 HLE: https://lastexam.ai/
 zapier: https://zapier.com/benchmarks

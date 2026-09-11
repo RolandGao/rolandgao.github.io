@@ -1,3 +1,5 @@
+> **Disclaimer:** This post reflects my personal interpretation of the sources I’ve read and my approach to managing COVID risk. It is not medical advice or a comprehensive review of the evidence. Some statements may be uncertain, oversimplified, or out of date, and individual risks and circumstances differ. For personal decisions about vaccination, treatment, or recovery, consult a qualified healthcare professional and current public-health guidance. I welcome corrections supported by evidence.
+
 In terms of long-term negative consequences, the severity rank is generally: COVID >> flu > common cold.
 
 According to [the World Heart Federation](https://world-heart-federation.org/news/covid-19-and-the-heart-new-evidence-highlights-lasting-risks/), COVID damages the entire body, including the heart, blood vessels, and brain. Many people end up disabled or bedridden.
