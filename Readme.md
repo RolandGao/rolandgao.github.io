@@ -38,6 +38,8 @@ npm run build
 
 The build step runs `next build` (configured for static export), writes the static site to `out/`, and regenerates `sitemap.xml` and its compatibility alias `sitemap2.xml`. Cloudflare publishes `out/` using `wrangler.jsonc`, which preserves trailing slashes and returns a real 404 for missing pages. `public/_redirects` supplies permanent redirects for renamed articles.
 
+Production builds disable Turbopack's persistent filesystem cache in `next.config.js`. This avoids build failures when Cloudflare partially restores a cached `.next/cache/turbopack` database (for example, `block header truncated` errors in `.sst` files). Production compilation starts fresh each time; development caching keeps its default behavior.
+
 After building, run `npm start` to preview the exported site with Cloudflare's local runtime at http://localhost:8787, including redirect and 404 behavior. A static export cannot be served with `next start`.
 
 For Cloudflare's Git integration, use `npm run build` as the build command and `npx wrangler deploy` as the deploy command. To build and deploy locally with a Cloudflare account authorized for this Worker:
