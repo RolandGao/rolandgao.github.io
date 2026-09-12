@@ -4,11 +4,11 @@ I have compiled a list of unsaturated evals, most of which have up-to-date publi
 
 | Category     | Benchmark                                                      |      Score | Best model                       |
 | ------------ | -------------------------------------------------------------- | ---------: | -------------------------------- |
+| Game       | [GoBench](https://rolandgao.com/blog/gobench/)    |         2500 Elo / 4400 Elo | GPT-6 Astra |
 | Puzzles      | [SimpleBench](https://simple-bench.com/)                       |        87% | Fable 5.1                          |
 | Puzzles      | [MazeBench](https://mazebench.com/leaderboard/ai)              |        14% | GPT-6 Astra                 |
 | Coding      | [Code Migration](https://www.vals.ai/benchmarks/code-migration)  |        68% | GPT-6 Astra                         |
 | Coding       | [Terminal-Bench 4](https://www.tbench.ai/)    |         58% | GPT-6 Astra |
-| Game       | [GoBench](https://rolandgao.com/blog/gobench/)    |         2500 Elo / 4400 Elo | GPT-6 Astra |
 | Law       | [Harvey's Legal Agent Benchmark](https://www.vals.ai/benchmarks/hlab)    |         25% | Muse Spark 1.2|
 
 
@@ -93,7 +93,17 @@ water maybe not a risk
 immigration 1: 0/3
 immigration 2: 2.5/3
 
-
+astra:
+immigration1: 0/3
+immigration2: 0/3
+battery: 0/1
+multicalc: 0/1
+ap calc: 0/1
+401k: 1/1
+good companies: 0/1
+cs edu: 1/1
+optimizer: 1/1
+uoft cs phd: 183/200
 
 im eating amox clav antibiotics and have some stomach issues, what probiotic should i buy from amazon.ca 
 
@@ -289,8 +299,6 @@ Write the complete Python code for a new LLM eval, where model calls use the abo
 Improving LLM performance on video games is a great step toward achieving physical intelligence. Simulated environments can be made to mimic real environments, and an algorithm that outperforms other algorithms in the simulated environment is likely to outperform in the real environment as well. Video games challenge LLMs on many fronts, including image understanding, long context, and reasoning.
 
 There are many games in the browser and in mobile app stores, so how do we turn all those games into RL environments? I'm not sure and would be happy for someone to teach me. One thing I'm not a big fan of is developing games just for evaluating AIs because it is time-consuming and the additional value over existing games might be minimal.
-
-A particular game that I care about is Go. How do we develop an LLM learning algorithm that can simultaneously teach the model Go, coding, and math? AlphaZero hard-coded the Monte Carlo tree search algorithm. To make the algorithm more general, the model should decide, through reasoning, which nodes to explore further and what data to learn from. We know it's possible to achieve superhuman-level strength in Go. Now we just have to do it one more time, with a more general algorithm that also works for coding and math. The impact of developing such an algorithm will extend far beyond just Go.
 
 ## Web browsing
 Web browsing is my main use case for LLMs. If one Google search request can give me the answer, I will use Google Search. Otherwise, I will use an LLM. Many of my queries require synthesizing information across 10+ articles, so an LLM can save me a lot of time. 
